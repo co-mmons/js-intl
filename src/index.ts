@@ -1,2 +1,2 @@
-export { IntlHelper, CurrencyAndNumber } from "./helper";
-export { IntlMessageBundleGenerator } from "./message-bundle-generator";
+export {IntlHelper, CurrencyAndNumber} from "./helper";
+export {IntlBundleGenerator} from "./bundle-generator";

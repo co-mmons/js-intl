@@ -1,0 +1,72 @@
+import * as fsextra from "fs-extra";
+import * as path from "path";
+
+export interface IntlBundleItem {
+    type: "message",
+    namespace?: string,
+    path: string
+}
+
+export class IntlBundleGenerator {
+
+    constructor(private locales: string[], private input: IntlBundleItem[], private outputFile: string) {
+    }
+
+    public generate() {
+
+        for (let baseLocale of this.locales) {
+
+            let contents = "";
+            let messages: {[key: string]: string};
+
+            for (let locale of this.extractLocales(baseLocale)) {
+
+                for (let item of this.input) {
+
+                    let itemPath = path.resolve(item.path.replace("{{LOCALE}}", locale));
+
+                    if (fsextra.existsSync(itemPath)) {
+                        if (item.type == "message") {
+
+                            if (!messages) {
+                                messages = {};
+                            }
+                            
+                            Object.assign(messages, fsextra.readJsonSync(itemPath));
+                            
+                        } else {
+                            contents += fsextra.readFileSync(itemPath);
+                        }
+                    }
+                }
+            }
+
+            let outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
+            fsextra.ensureFileSync(outputFile);
+
+            if (messages) {
+                contents += "{var INTL_MESSAGES;";
+                contents += "if(window){INTL_MESSAGES=window.INTL_MESSAGES=(window.INTL_MESSAGES||{});}";
+                contents += "if(global){INTL_MESSAGES=global.INTL_MESSAGES=(global.INTL_MESSAGES||{});}";
+                contents += "Object.assign(INTL_MESSAGES, " + JSON.stringify(messages) + ");";
+                contents += "}";
+            }
+
+            fsextra.writeFileSync(outputFile, contents);
+        }
+    }
+
+    private extractLocales(locale: string) {
+
+        let locales: string[] = [];
+
+        let segments = locale.split("-");
+
+        for (let i = 0; i < segments.length; i++) {
+            locales.push(segments.slice(0, i + 1).join("-"));
+            locales.push(segments.slice(0, i + 1).join("_"));
+        }
+
+        return locales;
+    }
+}
