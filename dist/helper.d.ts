@@ -1,6 +1,7 @@
 /// <reference types="bignumber.js" />
-import { Type } from "@co.mmons/typescript-utils/core";
-import { Money, BigNumber, Currency } from "@co.mmons/typescript-utils/finance";
+import { Type, BigNumber } from "@co.mmons/js-utils/core";
+import { Money } from "./money";
+import { Currency } from "./currency";
 export declare type CurrencyAndNumber = [string | Currency, number | BigNumber];
 export declare class IntlHelper {
     private defaultNamespace;

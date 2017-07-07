@@ -23,7 +23,13 @@ var IntlBundleGenerator = (function () {
                             if (!messages) {
                                 messages = {};
                             }
-                            Object.assign(messages, fsextra.readJsonSync(itemPath));
+                            if (!messages[item.namespace]) {
+                                messages[item.namespace] = {};
+                            }
+                            if (!messages[item.namespace][baseLocale]) {
+                                messages[item.namespace][baseLocale] = {};
+                            }
+                            Object.assign(messages[item.namespace][baseLocale], fsextra.readJsonSync(itemPath));
                         }
                         else {
                             contents += fsextra.readFileSync(itemPath);

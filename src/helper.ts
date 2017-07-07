@@ -1,8 +1,10 @@
-import {Type} from "@co.mmons/typescript-utils/core";
-import {Money, BigNumber, Currency} from "@co.mmons/typescript-utils/finance";
+import {Type, BigNumber} from "@co.mmons/js-utils/core";
 
 import IntlMessageFormat from "intl-messageformat";
 import IntlRelativeFormat from "intl-relativeformat";
+
+import {Money} from "./money";
+import {Currency} from "./currency";
 
 declare var INTL_MESSAGES: {
     [locale: string]: {

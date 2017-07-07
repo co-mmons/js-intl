@@ -1,41 +1,41 @@
-// import { Type } from "../core";
-// import { Serializer, ObjectAsMapSerializer } from "../json";
+import {Type} from "@co.mmons/js-utils/core";
+import {Serializer, ObjectAsMapSerializer} from "@co.mmons/js-utils/json";
 
-// export interface IntlValue<V> {
-//     [locale: string]: V;
-// }
+export interface IntlValue<V> {
+    [locale: string]: V;
+}
 
-// export namespace IntlValue {
+export namespace IntlValue {
 
-//     export function value<V>(value: IntlValue<V>, locale?: string): V {
+    export function value<V>(value: IntlValue<V>, locale?: string): V {
 
-//         if (value) {
-//             return value[locale];
-//         }
+        if (value) {
+            return value[locale];
+        }
 
-//         return undefined;
-//     }
+        return undefined;
+    }
 
-//     export function clone<V>(value: IntlValue<V>): IntlValue<V> {
+    export function clone<V>(value: IntlValue<V>): IntlValue<V> {
 
-//         if (!value) {
-//             return value;
-//         }
+        if (!value) {
+            return value;
+        }
 
-//         let niu: IntlValue<V> = {};
+        let niu: IntlValue<V> = {};
 
-//         for (let i in value) {
-//             niu[i] = value[i];
-//         }
+        for (let i in value) {
+            niu[i] = value[i];
+        }
 
-//         return niu;
-//     }
-// }
+        return niu;
+    }
+}
 
-// export class IntlValueSerializer extends ObjectAsMapSerializer {
+export class IntlValueSerializer extends ObjectAsMapSerializer {
 
-//     constructor(valueType: any | Serializer) {
-//         super(valueType);
-//     }
+    constructor(valueType: any | Serializer) {
+        super(valueType);
+    }
 
-// }
+}

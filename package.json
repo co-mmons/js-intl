@@ -10,12 +10,10 @@
   },
   "dependencies": {
     "@co.mmons/node-utils": "git://github.com/co-mmons/node-utils.git",
-    "@co.mmons/typescript-utils": "git://github.com/co-mmons/typescript-utils.git",
+    "@co.mmons/js-utils": "git://github.com/co-mmons/js-utils.git",
     "fs-extra": "^3.0.1",
     "intl-messageformat": "^1.3.0",
-    "intl-relativeformat": "^1.3.0",
-    "bignumber.js": "^4.0.0",
-    "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js"
+    "intl-relativeformat": "^1.3.0"
   },
   "devDependencies": {
     "@types/intl-messageformat": "^1.3.0",

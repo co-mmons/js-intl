@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var finance_1 = require("@co.mmons/typescript-utils/finance");
+var core_1 = require("@co.mmons/js-utils/core");
 var intl_messageformat_1 = require("intl-messageformat");
 var intl_relativeformat_1 = require("intl-relativeformat");
+var money_1 = require("./money");
+var currency_1 = require("./currency");
 if (typeof window !== "undefined" && window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
@@ -132,7 +134,7 @@ var IntlHelper = (function () {
     IntlHelper.prototype.message = function (key, values, formats) {
         var namespaceAndKey = this.extractMessageNamespaceAndKey(key);
         if (!namespaceAndKey.namespace) {
-            throw "Undefined i18n messages namespace";
+            throw new Error("Undefined i18n messages namespace");
         }
         var formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key);
         if (formatter && formatter !== intl_messageformat_1.default.default && !formats) {
@@ -208,25 +210,25 @@ var IntlHelper = (function () {
         else {
             options.style = "decimal";
         }
-        if (value instanceof finance_1.Money) {
+        if (value instanceof money_1.Money) {
             if (mode == "currency") {
                 options.currency = value.currency.code;
             }
             value = value.amount.toNumber();
         }
-        else if (value instanceof finance_1.BigNumber) {
+        else if (value instanceof core_1.BigNumber) {
             value = value.toNumber();
         }
         else if (Array.isArray(value) && value) {
             if (mode == "currency") {
-                if (value[0] instanceof finance_1.Currency) {
+                if (value[0] instanceof currency_1.Currency) {
                     options.currency = value[0].code;
                 }
                 else if (value[0]) {
                     options.currency = value[0];
                 }
             }
-            if (value[1] instanceof finance_1.BigNumber) {
+            if (value[1] instanceof core_1.BigNumber) {
                 value = value[1].toNumber();
             }
             else {
