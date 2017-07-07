@@ -10,11 +10,11 @@ declare var INTL_MESSAGES: {
     }
 };
 
-if (window && window["INTL_MESSAGES"]) {
+if (typeof window !== "undefined" && window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
 
-if (global && !global["INTL_MESSAGES"]) {
+if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
     global["INTL_MESSAGES"] = {};
 }
 

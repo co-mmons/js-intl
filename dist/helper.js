@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var finance_1 = require("@co.mmons/typescript-utils/finance");
 var intl_messageformat_1 = require("intl-messageformat");
 var intl_relativeformat_1 = require("intl-relativeformat");
-if (window && window["INTL_MESSAGES"]) {
+if (typeof window !== "undefined" && window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
-if (global && !global["INTL_MESSAGES"]) {
+if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
     global["INTL_MESSAGES"] = {};
 }
 var IntlHelper = (function () {
