@@ -13,7 +13,9 @@
     "@co.mmons/typescript-utils": "git://github.com/co-mmons/typescript-utils.git",
     "fs-extra": "^3.0.1",
     "intl-messageformat": "^1.3.0",
-    "intl-relativeformat": "^1.3.0"
+    "intl-relativeformat": "^1.3.0",
+    "bignumber.js": "^4.0.0",
+    "@types/bignumber.js": "git://github.com/co-mmons/types-bignumber.js"
   },
   "devDependencies": {
     "@types/intl-messageformat": "^1.3.0",

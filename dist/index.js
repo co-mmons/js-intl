@@ -4,5 +4,4 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./helper"));
-__export(require("./bundle-generator"));
 //# sourceMappingURL=index.js.map

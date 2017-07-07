@@ -184,7 +184,7 @@ export class IntlHelper {
 
         let namespaceAndKey = this.extractMessageNamespaceAndKey(key);
         if (!namespaceAndKey.namespace) {
-            throw "Undefined i18n messages namespace";
+            throw new Error("Undefined i18n messages namespace");
         }
 
         let formatter: IntlMessageFormat = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);

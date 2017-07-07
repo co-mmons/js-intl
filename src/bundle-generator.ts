@@ -2,7 +2,7 @@ import * as fsextra from "fs-extra";
 import * as path from "path";
 
 export interface IntlBundleItem {
-    type: "message",
+    type?: "message" | null | undefined,
     namespace?: string,
     path: string
 }
@@ -17,7 +17,7 @@ export class IntlBundleGenerator {
         for (let baseLocale of this.locales) {
 
             let contents = "";
-            let messages: {[key: string]: string};
+            let messages: any;
 
             for (let locale of this.extractLocales(baseLocale)) {
 
@@ -31,8 +31,16 @@ export class IntlBundleGenerator {
                             if (!messages) {
                                 messages = {};
                             }
+
+                            if (!messages[item.namespace]) {
+                                messages[item.namespace] = {};
+                            }
+
+                            if (!messages[item.namespace][baseLocale]) {
+                                messages[item.namespace][baseLocale] = {};
+                            }
                             
-                            Object.assign(messages, fsextra.readJsonSync(itemPath));
+                            Object.assign(messages[item.namespace][baseLocale], fsextra.readJsonSync(itemPath));
                             
                         } else {
                             contents += fsextra.readFileSync(itemPath);
