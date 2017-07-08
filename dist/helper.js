@@ -5,7 +5,7 @@ var intl_messageformat_1 = require("intl-messageformat");
 var intl_relativeformat_1 = require("intl-relativeformat");
 var money_1 = require("./money");
 var currency_1 = require("./currency");
-if (typeof window !== "undefined" && window["INTL_MESSAGES"]) {
+if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
 if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
