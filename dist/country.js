@@ -12,13 +12,17 @@ var Country = (function () {
             throw "Country code must be given in order to create Country instance";
         }
     }
-    Object.defineProperty(Country, "codes", {
-        get: function () {
-            return Country._codes.slice();
-        },
-        enumerable: true,
-        configurable: true
-    });
+    Country.codes = function () {
+        return Country._codes.slice();
+    };
+    Country.countries = function () {
+        var cntrs = [];
+        for (var _i = 0, _a = Country._codes; _i < _a.length; _i++) {
+            var c = _a[_i];
+            cntrs.push(new Country(c));
+        }
+        return cntrs;
+    };
     Object.defineProperty(Country.prototype, "code", {
         get: function () {
             return this._code;
@@ -26,6 +30,9 @@ var Country = (function () {
         enumerable: true,
         configurable: true
     });
+    Country.prototype.name = function (intl) {
+        return intl.message("country-list." + this.code);
+    };
     Country.prototype.toString = function () {
         return this._code;
     };

@@ -1,6 +1,6 @@
 export declare class Currency {
     private static _codes;
-    static readonly codes: string[];
+    static codes(): string[];
     constructor(code: string);
     private _code;
     readonly code: string;

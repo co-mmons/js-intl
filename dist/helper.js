@@ -136,12 +136,12 @@ var IntlHelper = (function () {
         if (!namespaceAndKey.namespace) {
             throw new Error("Undefined i18n messages namespace");
         }
-        var formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key);
+        var formatter = values ? this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key) : undefined;
         if (formatter && formatter !== intl_messageformat_1.default.default && !formats) {
             return formatter.format(values);
         }
         var message = this.findMessage(namespaceAndKey.namespace, namespaceAndKey.key);
-        formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
+        formatter = values ? this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]) : undefined;
         if (formats && formatter !== intl_messageformat_1.default.default) {
             formatter = new intl_messageformat_1.default(message, this._locale, formats);
         }

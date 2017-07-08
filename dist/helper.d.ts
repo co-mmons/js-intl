@@ -31,7 +31,7 @@ export declare class IntlHelper {
     private findMessage(namespace, key);
     private isMessageNeedsFormatter(message);
     private extractMessageNamespaceAndKey(namespaceAndKey, useDefaultNamespace?);
-    message(key: string, values: any, formats?: any): any;
+    message(key: string, values?: any, formats?: any): any;
     relativeFormat(dateTime: number | Date, options: any): string;
     dateFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
     timeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;

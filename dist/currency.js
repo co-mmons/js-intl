@@ -12,13 +12,9 @@ var Currency = (function () {
             throw new Error("Currency code must be given in order to create Currency instance");
         }
     }
-    Object.defineProperty(Currency, "codes", {
-        get: function () {
-            return Currency._codes.slice();
-        },
-        enumerable: true,
-        configurable: true
-    });
+    Currency.codes = function () {
+        return Currency._codes.slice();
+    };
     Object.defineProperty(Currency.prototype, "code", {
         get: function () {
             return this._code;

@@ -182,14 +182,14 @@ export class IntlHelper {
         return result;
     }
 
-    public message(key: string, values: any, formats?: any) {
+    public message(key: string, values?: any, formats?: any) {
 
         let namespaceAndKey = this.extractMessageNamespaceAndKey(key);
         if (!namespaceAndKey.namespace) {
             throw new Error("Undefined i18n messages namespace");
         }
 
-        let formatter: IntlMessageFormat = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
+        let formatter: IntlMessageFormat = values ? this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`) : undefined;
 
         if (formatter && formatter !== IntlMessageFormat.default && !formats) {
             return formatter.format(values);
@@ -197,7 +197,7 @@ export class IntlHelper {
 
         let message = this.findMessage(namespaceAndKey.namespace, namespaceAndKey.key);
 
-        formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
+        formatter = values ? this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]) : undefined;
 
         if (formats && formatter !== IntlMessageFormat.default) {
             formatter = new IntlMessageFormat(message, this._locale, formats);
