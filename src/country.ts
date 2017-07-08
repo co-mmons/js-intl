@@ -38,7 +38,7 @@ export class Country {
 		return this._code;
 	}
 
-	name(intl: IntlHelper) {
+	name(intl: IntlHelper): string {
 		return intl.message(`country-list.${this.code}`);
 	}
 

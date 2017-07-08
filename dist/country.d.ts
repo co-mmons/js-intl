@@ -6,7 +6,7 @@ export declare class Country {
     constructor(code: string);
     private _code;
     readonly code: string;
-    name(intl: IntlHelper): any;
+    name(intl: IntlHelper): string;
     toString(): string;
     toJSON(): any;
     protected fromJSON(json: any): void;
