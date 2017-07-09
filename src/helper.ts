@@ -1,7 +1,7 @@
 import {Type, BigNumber} from "@co.mmons/js-utils/core";
 
-import IntlMessageFormat from "intl-messageformat";
-import IntlRelativeFormat from "intl-relativeformat";
+import IntlMessageFormat = require("intl-messageformat");
+import IntlRelativeFormat = require("intl-relativeformat");
 
 import {Money} from "./money";
 import {Currency} from "./currency";
@@ -95,7 +95,7 @@ export class IntlHelper {
 
         if (!formatter && constructorArguments) {
 
-            if (formatterConstructor === IntlMessageFormat && !this.isMessageNeedsFormatter(constructorArguments[0])) {
+            if (formatterConstructor === <any>IntlMessageFormat && !this.isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = IntlMessageFormat.default;
             } else if (formatterConstructor === IntlRelativeFormat) {
                 formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
@@ -154,7 +154,7 @@ export class IntlHelper {
             }
         }
 
-        return "???";
+        return key;
     }
 
     private isMessageNeedsFormatter(message: string) {
@@ -189,7 +189,7 @@ export class IntlHelper {
             throw new Error("Undefined i18n messages namespace");
         }
 
-        let formatter: IntlMessageFormat = values ? this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`) : undefined;
+        let formatter: IntlMessageFormat = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
 
         if (formatter && formatter !== IntlMessageFormat.default && !formats) {
             return formatter.format(values);
@@ -197,7 +197,7 @@ export class IntlHelper {
 
         let message = this.findMessage(namespaceAndKey.namespace, namespaceAndKey.key);
 
-        formatter = values ? this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]) : undefined;
+        formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
 
         if (formats && formatter !== IntlMessageFormat.default) {
             formatter = new IntlMessageFormat(message, this._locale, formats);

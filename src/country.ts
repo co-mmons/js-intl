@@ -8,12 +8,17 @@ export class Country {
 		return Country._codes.slice();
 	}
 
-	static countries(): Country[] {
+	static countries(intl?: IntlHelper): Country[] {
 
 		let cntrs: Country[] = [];
 
 		for (let c of Country._codes) {
-			cntrs.push(new Country(c));
+			let i = new Country(c);
+			if (intl) {
+				i._intl = intl;
+			}
+
+			cntrs.push(i);
 		}
 
 		return cntrs;
@@ -32,14 +37,17 @@ export class Country {
 		}
 	}
 
+	private _intl: IntlHelper;
+
 	private _code: string;
 
 	get code(): string {
 		return this._code;
 	}
 
-	name(intl: IntlHelper): string {
-		return intl.message(`country-list.${this.code}`);
+	name(intl?: IntlHelper): string {
+		let i = intl || this._intl;
+		return i ? i.message(`countries-list.${this.code}`) : this.code;
 	}
 
 	toString(): string {

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@co.mmons/js-utils/core");
-var intl_messageformat_1 = require("intl-messageformat");
-var intl_relativeformat_1 = require("intl-relativeformat");
+var IntlMessageFormat = require("intl-messageformat");
+var IntlRelativeFormat = require("intl-relativeformat");
 var money_1 = require("./money");
 var currency_1 = require("./currency");
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
@@ -61,11 +61,11 @@ var IntlHelper = (function () {
         var cacheKey = id ? formatterConstructor.name + "_" + id : getCacheId([formatterConstructor.name].concat(constructorArguments));
         var formatter = this.formatters[cacheKey];
         if (!formatter && constructorArguments) {
-            if (formatterConstructor === intl_messageformat_1.default && !this.isMessageNeedsFormatter(constructorArguments[0])) {
-                formatter = intl_messageformat_1.default.default;
+            if (formatterConstructor === IntlMessageFormat && !this.isMessageNeedsFormatter(constructorArguments[0])) {
+                formatter = IntlMessageFormat.default;
             }
-            else if (formatterConstructor === intl_relativeformat_1.default) {
-                formatter = new intl_relativeformat_1.default(this._locales, constructorArguments[0]);
+            else if (formatterConstructor === IntlRelativeFormat) {
+                formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
             }
             else if (formatterConstructor === Intl.DateTimeFormat) {
                 formatter = new Intl.DateTimeFormat(this._locales, constructorArguments[0]);
@@ -106,7 +106,7 @@ var IntlHelper = (function () {
                 return INTL_MESSAGES[namespace][locale][key];
             }
         }
-        return "???";
+        return key;
     };
     IntlHelper.prototype.isMessageNeedsFormatter = function (message) {
         return message.indexOf("{") > -1 || message.indexOf("}") > -1;
@@ -136,16 +136,16 @@ var IntlHelper = (function () {
         if (!namespaceAndKey.namespace) {
             throw new Error("Undefined i18n messages namespace");
         }
-        var formatter = values ? this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key) : undefined;
-        if (formatter && formatter !== intl_messageformat_1.default.default && !formats) {
+        var formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key);
+        if (formatter && formatter !== IntlMessageFormat.default && !formats) {
             return formatter.format(values);
         }
         var message = this.findMessage(namespaceAndKey.namespace, namespaceAndKey.key);
-        formatter = values ? this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]) : undefined;
-        if (formats && formatter !== intl_messageformat_1.default.default) {
-            formatter = new intl_messageformat_1.default(message, this._locale, formats);
+        formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
+        if (formats && formatter !== IntlMessageFormat.default) {
+            formatter = new IntlMessageFormat(message, this._locale, formats);
         }
-        if (formatter && formatter !== intl_messageformat_1.default.default) {
+        if (formatter && formatter !== IntlMessageFormat.default) {
             return formatter.format(values);
         }
         else {
@@ -153,7 +153,7 @@ var IntlHelper = (function () {
         }
     };
     IntlHelper.prototype.relativeFormat = function (dateTime, options) {
-        return this.formatterInstance(intl_relativeformat_1.default, undefined, [options]).format(typeof dateTime == "number" ? new Date(dateTime) : dateTime, options);
+        return this.formatterInstance(IntlRelativeFormat, undefined, [options]).format(typeof dateTime == "number" ? new Date(dateTime) : dateTime, options);
     };
     IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);

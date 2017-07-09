@@ -15,11 +15,15 @@ var Country = (function () {
     Country.codes = function () {
         return Country._codes.slice();
     };
-    Country.countries = function () {
+    Country.countries = function (intl) {
         var cntrs = [];
         for (var _i = 0, _a = Country._codes; _i < _a.length; _i++) {
             var c = _a[_i];
-            cntrs.push(new Country(c));
+            var i = new Country(c);
+            if (intl) {
+                i._intl = intl;
+            }
+            cntrs.push(i);
         }
         return cntrs;
     };
@@ -31,7 +35,8 @@ var Country = (function () {
         configurable: true
     });
     Country.prototype.name = function (intl) {
-        return intl.message("country-list." + this.code);
+        var i = intl || this._intl;
+        return i ? i.message("countries-list." + this.code) : this.code;
     };
     Country.prototype.toString = function () {
         return this._code;
