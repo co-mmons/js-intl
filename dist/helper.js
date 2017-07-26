@@ -11,6 +11,7 @@ if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
 if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
     global["INTL_MESSAGES"] = {};
 }
+var defaultMessageFormat = new IntlMessageFormat("", "en");
 var IntlHelper = (function () {
     function IntlHelper(defaultLocale, defaultNamespace) {
         this.defaultNamespace = defaultNamespace;
@@ -62,7 +63,7 @@ var IntlHelper = (function () {
         var formatter = this.formatters[cacheKey];
         if (!formatter && constructorArguments) {
             if (formatterConstructor === IntlMessageFormat && !this.isMessageNeedsFormatter(constructorArguments[0])) {
-                formatter = IntlMessageFormat.default;
+                formatter = defaultMessageFormat;
             }
             else if (formatterConstructor === IntlRelativeFormat) {
                 formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
@@ -142,10 +143,10 @@ var IntlHelper = (function () {
         }
         var message = this.findMessage(namespaceAndKey.namespace, namespaceAndKey.key);
         formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
-        if (formats && formatter !== IntlMessageFormat.default) {
+        if (formats && formatter !== defaultMessageFormat) {
             formatter = new IntlMessageFormat(message, this._locale, formats);
         }
-        if (formatter && formatter !== IntlMessageFormat.default) {
+        if (formatter && formatter !== defaultMessageFormat) {
             return formatter.format(values);
         }
         else {

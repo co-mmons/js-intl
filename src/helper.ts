@@ -24,6 +24,8 @@ type IntlFormatter = Intl.DateTimeFormat | Intl.NumberFormat | IntlMessageFormat
 
 export type CurrencyAndNumber = [string | Currency, number | BigNumber];
 
+const defaultMessageFormat = new IntlMessageFormat("", "en");
+
 export class IntlHelper {
 
     constructor(defaultLocale: string, private defaultNamespace?: string) {
@@ -96,7 +98,7 @@ export class IntlHelper {
         if (!formatter && constructorArguments) {
 
             if (formatterConstructor === <any>IntlMessageFormat && !this.isMessageNeedsFormatter(constructorArguments[0])) {
-                formatter = IntlMessageFormat.default;
+                formatter = defaultMessageFormat;
             } else if (formatterConstructor === IntlRelativeFormat) {
                 formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
             } else if (formatterConstructor === <any>Intl.DateTimeFormat) {
@@ -191,7 +193,7 @@ export class IntlHelper {
 
         let formatter: IntlMessageFormat = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
 
-        if (formatter && formatter !== IntlMessageFormat.default && !formats) {
+        if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
         }
 
@@ -199,11 +201,11 @@ export class IntlHelper {
 
         formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
 
-        if (formats && formatter !== IntlMessageFormat.default) {
+        if (formatter !== defaultMessageFormat) {
             formatter = new IntlMessageFormat(message, this._locale, formats);
         }
 
-        if (formatter && formatter !== IntlMessageFormat.default) {
+        if (formatter && formatter !== defaultMessageFormat) {
             return formatter.format(values);
         } else {
             return message;
