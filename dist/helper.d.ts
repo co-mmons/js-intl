@@ -28,9 +28,6 @@ export declare class IntlHelper {
     private addFormatterPredefinedOptions<T>(formatter, key, options);
     addDateTimePredefinedOptions(key: string, options: Intl.DateTimeFormatOptions): void;
     findFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string): any;
-    private findMessage(namespace, key);
-    private isMessageNeedsFormatter(message);
-    private extractMessageNamespaceAndKey(namespaceAndKey, useDefaultNamespace?);
     message(key: string, values?: any, formats?: any): any;
     relativeFormat(dateTime: number | Date, options: any): string;
     dateFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;

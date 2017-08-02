@@ -5,12 +5,7 @@ var IntlMessageFormat = require("intl-messageformat");
 var IntlRelativeFormat = require("intl-relativeformat");
 var money_1 = require("./money");
 var currency_1 = require("./currency");
-if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
-    window["INTL_MESSAGES"] = {};
-}
-if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
-    global["INTL_MESSAGES"] = {};
-}
+var messages_1 = require("./messages");
 var defaultMessageFormat = new IntlMessageFormat("", "en");
 var IntlHelper = (function () {
     function IntlHelper(defaultLocale, defaultNamespace) {
@@ -62,7 +57,7 @@ var IntlHelper = (function () {
         var cacheKey = id ? formatterConstructor.name + "_" + id : getCacheId([formatterConstructor.name].concat(constructorArguments));
         var formatter = this.formatters[cacheKey];
         if (!formatter && constructorArguments) {
-            if (formatterConstructor === IntlMessageFormat && !this.isMessageNeedsFormatter(constructorArguments[0])) {
+            if (formatterConstructor === IntlMessageFormat && !messages_1.isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
             }
             else if (formatterConstructor === IntlRelativeFormat) {
@@ -100,40 +95,8 @@ var IntlHelper = (function () {
         }
         return undefined;
     };
-    IntlHelper.prototype.findMessage = function (namespace, key) {
-        for (var _i = 0, _a = this._locales; _i < _a.length; _i++) {
-            var locale = _a[_i];
-            if (INTL_MESSAGES && INTL_MESSAGES[namespace] && INTL_MESSAGES[namespace][locale] && INTL_MESSAGES[namespace][locale][key]) {
-                return INTL_MESSAGES[namespace][locale][key];
-            }
-        }
-        return key;
-    };
-    IntlHelper.prototype.isMessageNeedsFormatter = function (message) {
-        return message.indexOf("{") > -1 || message.indexOf("}") > -1;
-    };
-    IntlHelper.prototype.extractMessageNamespaceAndKey = function (namespaceAndKey, useDefaultNamespace) {
-        if (useDefaultNamespace === void 0) { useDefaultNamespace = true; }
-        var result = { namespace: undefined, key: undefined };
-        if (namespaceAndKey[0] == "#") {
-            result.namespace = useDefaultNamespace ? this.defaultNamespace : undefined;
-            result.key = namespaceAndKey.substring(1);
-        }
-        else {
-            var dot = namespaceAndKey.indexOf("#");
-            if (dot > -1) {
-                result.namespace = namespaceAndKey.substring(0, dot);
-                result.key = namespaceAndKey.substring(dot + 1);
-            }
-            else {
-                result.namespace = useDefaultNamespace ? this.defaultNamespace : undefined;
-                result.key = namespaceAndKey;
-            }
-        }
-        return result;
-    };
     IntlHelper.prototype.message = function (key, values, formats) {
-        var namespaceAndKey = this.extractMessageNamespaceAndKey(key);
+        var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key);
         if (!namespaceAndKey.namespace) {
             throw new Error("Undefined i18n messages namespace");
         }
@@ -141,7 +104,7 @@ var IntlHelper = (function () {
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
         }
-        var message = this.findMessage(namespaceAndKey.namespace, namespaceAndKey.key);
+        var message = messages_1.findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
         formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
         if (formatter !== defaultMessageFormat) {
             formatter = new IntlMessageFormat(message, this._locale, formats);
