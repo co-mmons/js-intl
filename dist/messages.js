@@ -30,11 +30,10 @@ function isMessageNeedsFormatter(message) {
     return message.indexOf("{") > -1 || message.indexOf("}") > -1;
 }
 exports.isMessageNeedsFormatter = isMessageNeedsFormatter;
-function extractMessageNamespaceAndKey(namespaceAndKey, useDefaultNamespace) {
-    if (useDefaultNamespace === void 0) { useDefaultNamespace = true; }
+function extractMessageNamespaceAndKey(namespaceAndKey, defaultNamespace) {
     var result = { namespace: undefined, key: undefined };
     if (namespaceAndKey[0] == "#") {
-        result.namespace = useDefaultNamespace ? this.defaultNamespace : undefined;
+        result.namespace = defaultNamespace;
         result.key = namespaceAndKey.substring(1);
     }
     else {
@@ -44,7 +43,7 @@ function extractMessageNamespaceAndKey(namespaceAndKey, useDefaultNamespace) {
             result.key = namespaceAndKey.substring(dot + 1);
         }
         else {
-            result.namespace = useDefaultNamespace ? this.defaultNamespace : undefined;
+            result.namespace = defaultNamespace;
             result.key = namespaceAndKey;
         }
     }

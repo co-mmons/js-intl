@@ -96,7 +96,7 @@ var IntlHelper = (function () {
         return undefined;
     };
     IntlHelper.prototype.message = function (key, values, formats) {
-        var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key);
+        var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
             throw new Error("Undefined i18n messages namespace");
         }

@@ -36,12 +36,12 @@ export function isMessageNeedsFormatter(message: string) {
     return message.indexOf("{") > -1 || message.indexOf("}") > -1;
 }
 
-export function extractMessageNamespaceAndKey(namespaceAndKey: string, useDefaultNamespace: boolean = true): {namespace: string, key: string} {
+export function extractMessageNamespaceAndKey(namespaceAndKey: string, defaultNamespace?: string): {namespace: string, key: string} {
 
     let result = {namespace: undefined, key: undefined};
 
     if (namespaceAndKey[0] == "#") {
-        result.namespace = useDefaultNamespace ? this.defaultNamespace : undefined;
+        result.namespace = defaultNamespace;
         result.key = namespaceAndKey.substring(1);
     } else {
         let dot = namespaceAndKey.indexOf("#");
@@ -49,7 +49,7 @@ export function extractMessageNamespaceAndKey(namespaceAndKey: string, useDefaul
             result.namespace = namespaceAndKey.substring(0, dot);
             result.key = namespaceAndKey.substring(dot + 1);
         } else {
-            result.namespace = useDefaultNamespace ? this.defaultNamespace : undefined;
+            result.namespace = defaultNamespace;
             result.key = namespaceAndKey;
         }
     }

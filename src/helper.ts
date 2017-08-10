@@ -136,7 +136,7 @@ export class IntlHelper {
 
     public message(key: string, values?: any, formats?: any) {
 
-        let namespaceAndKey = extractMessageNamespaceAndKey(key);
+        let namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
             throw new Error("Undefined i18n messages namespace");
         }
