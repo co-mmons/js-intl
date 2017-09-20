@@ -6,6 +6,12 @@ var IntlRelativeFormat = require("intl-relativeformat");
 var money_1 = require("./money");
 var currency_1 = require("./currency");
 var messages_1 = require("./messages");
+if (typeof window !== "undefined" && !window["INTL_LOCALE"]) {
+    window["INTL_LOCALE"] = undefined;
+}
+if (typeof global !== "undefined" && !global["INTL_LOCALE"]) {
+    global["INTL_LOCALE"] = undefined;
+}
 var defaultMessageFormat = new IntlMessageFormat("", "en");
 var IntlHelper = (function () {
     function IntlHelper(defaultLocale, defaultNamespace) {
@@ -28,7 +34,7 @@ var IntlHelper = (function () {
             return this._locale;
         },
         set: function (locale) {
-            this._locale = locale;
+            this._locale = locale || INTL_LOCALE;
             this._locales = [];
             var segments = locale.split("-");
             for (var i = 0; i < segments.length; i++) {

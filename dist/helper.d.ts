@@ -1,4 +1,3 @@
-/// <reference types="bignumber.js" />
 import { Type, BigNumber } from "@co.mmons/js-utils/core";
 import { Money } from "./money";
 import { Currency } from "./currency";

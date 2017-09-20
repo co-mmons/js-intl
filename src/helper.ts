@@ -7,6 +7,16 @@ import {Money} from "./money";
 import {Currency} from "./currency";
 import {extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter} from "./messages";
 
+declare var INTL_LOCALE: any;
+
+if (typeof window !== "undefined" && !window["INTL_LOCALE"]) {
+    window["INTL_LOCALE"] = undefined;
+}
+
+if (typeof global !== "undefined" && !global["INTL_LOCALE"]) {
+    global["INTL_LOCALE"] = undefined;
+}
+
 type IntlFormatter = Intl.DateTimeFormat | Intl.NumberFormat | IntlMessageFormat | IntlRelativeFormat;
 
 export type CurrencyAndNumber = [string | Currency, number | BigNumber];
@@ -42,7 +52,7 @@ export class IntlHelper {
     }
 
     public set locale(locale: string) {
-        this._locale = locale;
+        this._locale = locale || INTL_LOCALE;
 
         this._locales = [];
 

@@ -1,4 +1,4 @@
-import {Type} from "@co.mmons/js-utils/core";
+import {Type, Enumerable} from "@co.mmons/js-utils/core";
 import {Serializer, ObjectAsMapSerializer} from "@co.mmons/js-utils/json";
 
 export interface IntlValue<V> {
