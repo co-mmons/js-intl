@@ -52,11 +52,11 @@ export class IntlHelper {
     }
 
     public set locale(locale: string) {
-        this._locale = locale || INTL_LOCALE;
+        this._locale = locale || INTL_LOCALE || "en-US";
 
         this._locales = [];
 
-        let segments = locale.split("-");
+        let segments = this._locale.split("-");
 
         for (let i = 0; i < segments.length; i++) {
             this._locales.push(segments.slice(0, i + 1).join("-"));

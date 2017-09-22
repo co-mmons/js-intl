@@ -34,9 +34,9 @@ var IntlHelper = (function () {
             return this._locale;
         },
         set: function (locale) {
-            this._locale = locale || INTL_LOCALE;
+            this._locale = locale || INTL_LOCALE || "en-US";
             this._locales = [];
-            var segments = locale.split("-");
+            var segments = this._locale.split("-");
             for (var i = 0; i < segments.length; i++) {
                 this._locales.push(segments.slice(0, i + 1).join("-"));
             }
