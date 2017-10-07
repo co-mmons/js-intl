@@ -35,7 +35,7 @@ export declare class IntlHelper {
     private dateTimeFormatImpl(mode, dateTime, predefinedOptionsOrOptions?, options?);
     currencyFormat(value: Money | CurrencyAndNumber, predefinedOptions: string, additionalOptions?: Intl.NumberFormatOptions): any;
     currencyFormat(value: Money | CurrencyAndNumber, options?: Intl.NumberFormatOptions): any;
-    decimalFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): void;
-    percentFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): void;
+    decimalFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string;
+    percentFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string;
     private numberFormatImpl(mode, value, predefinedOptionsOrOptions?, additionalOptions?);
 }

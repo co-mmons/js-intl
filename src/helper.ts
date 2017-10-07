@@ -246,11 +246,11 @@ export class IntlHelper {
     }
 
     public decimalFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions) {
-        this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
+        return this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
     }
 
     public percentFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions) {
-        this.numberFormatImpl("percent", value, predefinedOptionsOrOptions, additionalOptions);
+        return this.numberFormatImpl("percent", value, predefinedOptionsOrOptions, additionalOptions);
     }
 
     private numberFormatImpl(mode: string, value: number | Money | BigNumber | CurrencyAndNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string {
