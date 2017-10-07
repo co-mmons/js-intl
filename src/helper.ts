@@ -245,6 +245,14 @@ export class IntlHelper {
         return this.numberFormatImpl("currency", value, predefinedOptionsOrOptions, additionalOptions);
     }
 
+    public decimalFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions) {
+        this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
+    }
+
+    public percentFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions) {
+        this.numberFormatImpl("percent", value, predefinedOptionsOrOptions, additionalOptions);
+    }
+
     private numberFormatImpl(mode: string, value: number | Money | BigNumber | CurrencyAndNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string {
 
         let options: Intl.NumberFormatOptions = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.NumberFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions, additionalOptions);

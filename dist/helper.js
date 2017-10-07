@@ -169,6 +169,12 @@ var IntlHelper = (function () {
     IntlHelper.prototype.currencyFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {
         return this.numberFormatImpl("currency", value, predefinedOptionsOrOptions, additionalOptions);
     };
+    IntlHelper.prototype.decimalFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {
+        this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
+    };
+    IntlHelper.prototype.percentFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {
+        this.numberFormatImpl("percent", value, predefinedOptionsOrOptions, additionalOptions);
+    };
     IntlHelper.prototype.numberFormatImpl = function (mode, value, predefinedOptionsOrOptions, additionalOptions) {
         var options = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.NumberFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions, additionalOptions);
         if (mode == "currency") {
