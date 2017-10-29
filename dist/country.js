@@ -59,7 +59,7 @@ var Country = (function () {
     });
     Country.prototype.name = function (intl) {
         var i = intl || this._intl;
-        return i ? i.message("countries-list#" + this.code) : this.code;
+        return i ? i.message("@co.mmons/country-list#" + this.code) : this.code;
     };
     Country.prototype.toString = function () {
         return this._code;

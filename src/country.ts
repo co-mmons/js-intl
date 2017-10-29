@@ -67,7 +67,7 @@ export class Country {
 
 	name(intl?: IntlHelper): string {
 		let i = intl || this._intl;
-		return i ? i.message(`countries-list#${this.code}`) : this.code;
+		return i ? i.message(`@co.mmons/country-list#${this.code}`) : this.code;
 	}
 
 	toString(): string {
