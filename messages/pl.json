@@ -13,5 +13,7 @@
     "No data to be displayed": "Brak danych do wyświetlenia",
     "Loading the data...": "Ładowanie danych...",
     "Processing the data...": "Przetwarzanie danych...",
-    "Sending the data...": "Wysyłanie danych..."
+    "Sending the data...": "Wysyłanie danych...",
+    "Yes": "Tak",
+    "No": "Nie"
 }
