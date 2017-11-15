@@ -1,7 +1,6 @@
 import * as fileSystem from "fs-extra";
 import * as https from "https";
 import * as path from "path";
-import * as csvParser from "papaparse";
 
 export class GoogleSheetImporter {
     
@@ -54,7 +53,7 @@ export class GoogleSheetImporter {
                     fileSystem.unlinkSync(filePath);
                 } catch (e) {
                 }
-                
+
                 continue;
             }
             

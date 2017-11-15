@@ -7,10 +7,8 @@ const argv = yargs
     .option("outputType", {description: "Output type", choices: ["json", "ts"]})
     .option("document", {description: "Google document identifier"})
     .option("worksheet", {description: "Document's worksheet index (1 based) or worksheet name"})
-    // .option("appId", {description: "Identyfikator aplikacji"})
-    // .option("deployment", {description: "Z którego środowiska backendowego korzystamy", choices: ["development", "production"]})
-    // .option("deploymentStorage", {description: "Z którego środowiska storage korzystamy", choices: ["development", "production"]})
-    .demandOption(["outputPath", "outputType"]).argv;
+    .option("filterTags", {description: "Comma separated tags, that must be present for keys from worksheet. Key will be taken from worksheet if at least one tag is matched."})
+    .demandOption(["outputPath", "outputType", "document"]).argv;
 
 async function main() {
 

@@ -8,6 +8,9 @@
     "build": "tsc",
     "install": "node-utils-npm-install-dist"
   },
+  "bin": {
+    "js-intl-google-sheet-importer": "google-sheet-importer.js"
+  },
   "dependencies": {
     "@co.mmons/js-utils": "git+https://github.com/co-mmons/js-utils.git",
     "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
@@ -22,6 +25,6 @@
     "@types/fs-extra": "^4.0.0",
     "@types/node": "^8.0.0",
     "@types/yargs": "^8.0.2",
-    "typescript": "~2.4.0"
+    "typescript": "^2.6.1"
   }
 }
