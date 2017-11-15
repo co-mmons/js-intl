@@ -9,7 +9,7 @@
     "install": "node-utils-npm-install-dist"
   },
   "bin": {
-    "js-intl-google-sheet-importer": "dist/google-sheet-importer.js"
+    "js-intl-google-sheet-importer": "dist/google-sheet-importer-cli.js"
   },
   "dependencies": {
     "@co.mmons/js-utils": "git+https://github.com/co-mmons/js-utils.git",

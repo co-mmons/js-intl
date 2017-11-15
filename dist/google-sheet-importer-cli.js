@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,7 +47,7 @@ var argv = yargs
     .demandOption(["outputPath", "outputType", "document"]).argv;
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var importer, documents, sheets, tags, i;
+        var importer, documents, sheets, tags, i, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -59,10 +60,18 @@ function main() {
                     for (i = 0; i < documents.length; i++) {
                         importer.addDocument(documents[i], sheets.length > i ? sheets[i] : undefined, tags.length > i ? (tags[i] ? tags[i].split(",") : undefined) : undefined);
                     }
-                    return [4 /*yield*/, importer.generate()];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, importer.generate()];
+                case 2:
                     _a.sent();
-                    return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error(error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as yargs from "yargs";
 
 import {GoogleSheetImporter} from "./google-sheet-importer";
@@ -23,8 +25,11 @@ async function main() {
     for (let i = 0; i < documents.length; i++) {
         importer.addDocument(documents[i], sheets.length > i ? sheets[i] : undefined, tags.length > i ? (tags[i] ? tags[i].split(",") : undefined) : undefined);
     }
-
-    await importer.generate();
+    try {
+        await importer.generate();
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 main();
