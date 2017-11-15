@@ -13,7 +13,7 @@ export class IntlBundleGenerator {
     }
 
     public generate() {
-
+        
         for (let baseLocale of this.locales) {
 
             let contents: string[] = [];
