@@ -56,9 +56,15 @@ export class GoogleSheetImporter {
 
                 continue;
             }
+
+            let sorted = {};
+
+            for (let key of Object.keys(data[locale]).sort((a, b) => a.localeCompare(b))) {
+                sorted[key] = data[locale][key];
+            }
             
             if (this.outputType == "json") {
-                fileSystem.writeJsonSync(filePath, data[locale], {spaces: 4, encoding: "UTF-8"});
+                fileSystem.writeJsonSync(filePath, sorted, {spaces: 4, encoding: "UTF-8"});
             }
         }
     }

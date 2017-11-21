@@ -48,20 +48,20 @@ var GoogleSheetImporter = (function () {
     };
     GoogleSheetImporter.prototype.generate = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var output, data, _i, _a, resource, result, locale, key, locale, filePath;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var output, data, _i, _a, resource, result, locale, key, locale, filePath, sorted, _b, _c, key;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         output = {};
                         data = {};
                         _i = 0, _a = this.documents;
-                        _b.label = 1;
+                        _d.label = 1;
                     case 1:
                         if (!(_i < _a.length)) return [3 /*break*/, 4];
                         resource = _a[_i];
                         return [4 /*yield*/, this.readDocument(resource)];
                     case 2:
-                        result = (_b.sent());
+                        result = (_d.sent());
                         for (locale in result) {
                             if (!data[locale]) {
                                 data[locale] = {};
@@ -72,7 +72,7 @@ var GoogleSheetImporter = (function () {
                                 }
                             }
                         }
-                        _b.label = 3;
+                        _d.label = 3;
                     case 3:
                         _i++;
                         return [3 /*break*/, 1];
@@ -88,8 +88,13 @@ var GoogleSheetImporter = (function () {
                                 }
                                 continue;
                             }
+                            sorted = {};
+                            for (_b = 0, _c = Object.keys(data[locale]).sort(function (a, b) { return a.localeCompare(b); }); _b < _c.length; _b++) {
+                                key = _c[_b];
+                                sorted[key] = data[locale][key];
+                            }
                             if (this.outputType == "json") {
-                                fileSystem.writeJsonSync(filePath, data[locale], { spaces: 4, encoding: "UTF-8" });
+                                fileSystem.writeJsonSync(filePath, sorted, { spaces: 4, encoding: "UTF-8" });
                             }
                         }
                         return [2 /*return*/];
