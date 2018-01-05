@@ -104,7 +104,7 @@ var IntlHelper = (function () {
     IntlHelper.prototype.message = function (key, values, formats) {
         var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
-            throw new Error("Undefined i18n messages namespace");
+            return key;
         }
         var formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
