@@ -18,4 +18,5 @@ export declare class Money {
         amount: string;
     };
     protected fromJSON(json: any): void;
+    toString(): string;
 }

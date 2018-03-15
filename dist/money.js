@@ -73,6 +73,9 @@ var Money = (function () {
         this._currency = new currency_1.Currency(json.currency);
         this._amount = new core_1.BigNumber(json.amount);
     };
+    Money.prototype.toString = function () {
+        return this._currency.code + this._amount.toString();
+    };
     return Money;
 }());
 exports.Money = Money;

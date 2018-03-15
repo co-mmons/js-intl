@@ -79,4 +79,8 @@ export class Money {
         this._currency = new Currency(json.currency);
         this._amount = new BigNumber(json.amount);
     }
+
+    toString() {
+        return this._currency.code + this._amount.toString();
+    }
 }
