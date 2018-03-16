@@ -79,7 +79,7 @@ export class CurrencyCalculator {
         let amountTo = this.calculateToBase(new BigNumber(1), toCurrency);
 
         let amountCalculated = amountFrom.dividedBy(amountTo).times(amountValue);
-        if (amountCalculated instanceof Money) {
+        if (amount instanceof Money) {
             return new Money(toCurrency, amountCalculated);
         } else {
             return amountCalculated;

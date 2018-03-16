@@ -52,7 +52,7 @@ var CurrencyCalculator = (function () {
         var amountFrom = this.calculateToBase(new core_1.BigNumber(1), fromCurrency);
         var amountTo = this.calculateToBase(new core_1.BigNumber(1), toCurrency);
         var amountCalculated = amountFrom.dividedBy(amountTo).times(amountValue);
-        if (amountCalculated instanceof money_1.Money) {
+        if (amount instanceof money_1.Money) {
             return new money_1.Money(toCurrency, amountCalculated);
         }
         else {
