@@ -11,6 +11,7 @@ export declare class Money {
     minus(amount: BigNumber | number | string): Money;
     times(amount: BigNumber | number | string): Money;
     dividedBy(amount: BigNumber | number | string): Money;
+    decimalPlaces(dp: number, roundingMode: BigNumber.RoundingMode): Money;
     comparedTo(money: Money | BigNumber | number): number;
     compareTo(money: Money | BigNumber | number): number;
     toJSON(): {

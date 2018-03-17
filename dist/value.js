@@ -32,7 +32,7 @@ var IntlValue;
     }
     IntlValue.clone = clone;
 })(IntlValue = exports.IntlValue || (exports.IntlValue = {}));
-var IntlValueSerializer = (function (_super) {
+var IntlValueSerializer = /** @class */ (function (_super) {
     __extends(IntlValueSerializer, _super);
     function IntlValueSerializer(valueType) {
         return _super.call(this, valueType) || this;

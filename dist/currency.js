@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Currency = (function () {
+var Currency = /** @class */ (function () {
     function Currency(codeOrPrototype) {
         if (typeof codeOrPrototype === "string") {
             this._code = codeOrPrototype;

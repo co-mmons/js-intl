@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fileSystem = require("fs-extra");
 var https = require("https");
 var path = require("path");
-var GoogleSheetImporter = (function () {
+var GoogleSheetImporter = /** @class */ (function () {
     function GoogleSheetImporter() {
         this.documents = [];
         this.outputType = "json";

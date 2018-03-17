@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@co.mmons/js-utils/core");
 var currency_1 = require("./currency");
 var money_1 = require("./money");
-var CurrencyCalculator = (function () {
+var CurrencyCalculator = /** @class */ (function () {
     function CurrencyCalculator(baseCurrency) {
         this.baseCurrency = baseCurrency;
         this.rates = [];

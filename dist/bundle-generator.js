@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var fsextra = require("fs-extra");
 var path = require("path");
-var IntlBundleGenerator = (function () {
+var IntlBundleGenerator = /** @class */ (function () {
     function IntlBundleGenerator(locales, input, outputFile) {
         this.locales = locales;
         this.input = input;

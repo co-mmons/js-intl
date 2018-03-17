@@ -16,7 +16,7 @@ function toBigNumber(value) {
         throw "Given value: " + value + " cannot be converted to BigNumber.";
     }
 }
-var Money = (function () {
+var Money = /** @class */ (function () {
     function Money(currencyOrPrototype, amount) {
         if (currencyOrPrototype instanceof currency_1.Currency || typeof currencyOrPrototype === "string") {
             this._currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
@@ -52,6 +52,9 @@ var Money = (function () {
     };
     Money.prototype.dividedBy = function (amount) {
         return new Money(this._currency, this._amount.dividedBy(amount));
+    };
+    Money.prototype.decimalPlaces = function (dp, roundingMode) {
+        return new Money(this._currency, this._amount.decimalPlaces(dp, roundingMode));
     };
     Money.prototype.comparedTo = function (money) {
         return this.compareTo(money);

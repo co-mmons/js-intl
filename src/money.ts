@@ -60,6 +60,10 @@ export class Money {
         return new Money(this._currency, this._amount.dividedBy(amount));
     }
 
+    decimalPlaces(dp: number, roundingMode: BigNumber.RoundingMode): Money {
+        return new Money(this._currency, this._amount.decimalPlaces(dp, roundingMode));
+    }
+
     comparedTo(money: Money | BigNumber | number): number {
         return this.compareTo(money);
     }

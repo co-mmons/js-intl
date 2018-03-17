@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Country = (function () {
+var Country = /** @class */ (function () {
     function Country(codeOrPrototype) {
         if (typeof codeOrPrototype === "string") {
             this._code = codeOrPrototype;

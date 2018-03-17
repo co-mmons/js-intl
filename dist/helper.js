@@ -13,7 +13,7 @@ if (typeof global !== "undefined" && !global["INTL_LOCALE"]) {
     global["INTL_LOCALE"] = undefined;
 }
 var defaultMessageFormat = new IntlMessageFormat("", "en");
-var IntlHelper = (function () {
+var IntlHelper = /** @class */ (function () {
     function IntlHelper(defaultLocale, defaultNamespace) {
         this.defaultNamespace = defaultNamespace;
         this.useCache = true;
