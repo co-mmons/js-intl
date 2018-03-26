@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "scripts": {
-    "build": "gcp -rf -t dist package.json messages && tsc",
+    "build": "tsc && gcp -rf -t dist package.json messages",
     "install": "node-utils-npm-install-dist"
   },
   "bin": {

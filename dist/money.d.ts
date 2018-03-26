@@ -1,4 +1,3 @@
-import { BigNumber } from "@co.mmons/js-utils/core";
 import { Currency } from "./currency";
 export declare class Money {
     constructor(currency: Currency, amount: BigNumber | number);
