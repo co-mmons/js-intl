@@ -1,6 +1,7 @@
 import { Type, BigNumber } from "@co.mmons/js-utils/core";
 import { Money } from "./money";
 import { Currency } from "./currency";
+import { MessageRef } from ".";
 export declare type CurrencyAndNumber = [string | Currency, number | BigNumber];
 export declare class IntlHelper {
     private defaultNamespace;
@@ -27,7 +28,7 @@ export declare class IntlHelper {
     private addFormatterPredefinedOptions<T>(formatter, key, options);
     addDateTimePredefinedOptions(key: string, options: Intl.DateTimeFormatOptions): void;
     findFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string): any;
-    message(key: string, values?: any, formats?: any): any;
+    message(key: string | MessageRef, values?: any, formats?: any): any;
     relativeFormat(dateTime: number | Date, options: any): string;
     dateFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
     timeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;

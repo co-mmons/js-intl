@@ -6,6 +6,7 @@ import IntlRelativeFormat = require("intl-relativeformat");
 import {Money} from "./money";
 import {Currency} from "./currency";
 import {extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter} from "./messages";
+import {MessageRef} from ".";
 
 declare var INTL_LOCALE: any;
 
@@ -144,7 +145,7 @@ export class IntlHelper {
         return undefined;
     }
 
-    public message(key: string, values?: any, formats?: any) {
+    public message(key: string | MessageRef, values?: any, formats?: any) {
 
         let namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {

@@ -1,3 +1,5 @@
+import {MessageRef} from ".";
+
 declare var INTL_MESSAGES: any;
 
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
@@ -36,13 +38,18 @@ export function isMessageNeedsFormatter(message: string) {
     return message.indexOf("{") > -1 || message.indexOf("}") > -1;
 }
 
-export function extractMessageNamespaceAndKey(namespaceAndKey: string, defaultNamespace?: string): {namespace: string, key: string} {
+export function extractMessageNamespaceAndKey(namespaceAndKey: string | MessageRef, defaultNamespace?: string): {namespace: string, key: string} {
 
     let result = {namespace: undefined, key: undefined};
 
-    if (namespaceAndKey[0] == "#") {
+    if (namespaceAndKey instanceof MessageRef) {
+        result.namespace = namespaceAndKey.namespace || defaultNamespace;
+        result.key = namespaceAndKey.key;
+
+    } else if (namespaceAndKey[0] == "#") {
         result.namespace = defaultNamespace;
         result.key = namespaceAndKey.substring(1);
+        
     } else {
         let dot = namespaceAndKey.indexOf("#");
         if (dot > -1) {

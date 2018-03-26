@@ -12,4 +12,6 @@ var currency_calculator_1 = require("./currency-calculator");
 exports.CurrencyCalculator = currency_calculator_1.CurrencyCalculator;
 var messages_1 = require("./messages");
 exports.importMessages = messages_1.importMessages;
+var message_ref_1 = require("./message-ref");
+exports.MessageRef = message_ref_1.MessageRef;
 //# sourceMappingURL=index.js.map

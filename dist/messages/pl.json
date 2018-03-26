@@ -1,0 +1,20 @@
+{
+    "Ok": "OK",
+    "Cancel": "Anuluj",
+    "Done": "Gotowe",
+    "Search": "Szukaj",
+    "Search|command": "Usuń",
+    "Search for...": "Wyszukaj...",
+    "Edit|command": "Edytuj",
+    "Delete?": "Usunąć?",
+    "Delete|command": "Usuń",
+    "Save|command": "Zapisz",
+    "No data that matches specified search criteria": "Brak danych spełniających kryteria wyszukiwania",
+    "No data to be displayed": "Brak danych do wyświetlenia",
+    "Loading the data...": "Ładowanie danych...",
+    "Processing the data...": "Przetwarzanie danych...",
+    "Sending the data...": "Wysyłanie danych...",
+    "Yes": "Tak",
+    "No": "Nie",
+    "Error": "Błąd"
+}
