@@ -1,3 +1,4 @@
+import {BigNumber} from "@co.mmons/js-utils/core";
 import {Currency} from "./currency";
 
 function toBigNumber(value: number | BigNumber | string | any): BigNumber {

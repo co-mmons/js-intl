@@ -1,15 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@co.mmons/js-utils/core");
 var currency_1 = require("./currency");
 function toBigNumber(value) {
-    if (value instanceof BigNumber) {
+    if (value instanceof core_1.BigNumber) {
         return value;
     }
     else if (typeof value === "number") {
-        return new BigNumber(value);
+        return new core_1.BigNumber(value);
     }
     else if (typeof value === "string") {
-        return new BigNumber(value);
+        return new core_1.BigNumber(value);
     }
     else {
         throw "Given value: " + value + " cannot be converted to BigNumber.";
@@ -61,7 +62,7 @@ var Money = /** @class */ (function () {
     Money.prototype.compareTo = function (money) {
         if (typeof money === "number")
             return this._amount.comparedTo(money);
-        else if (money instanceof BigNumber)
+        else if (money instanceof core_1.BigNumber)
             return this._amount.comparedTo(money);
         else if (money)
             return this._amount.comparedTo(money.amount);
@@ -73,7 +74,7 @@ var Money = /** @class */ (function () {
     };
     Money.prototype.fromJSON = function (json) {
         this._currency = new currency_1.Currency(json.currency);
-        this._amount = new BigNumber(json.amount);
+        this._amount = new core_1.BigNumber(json.amount);
     };
     Money.prototype.toString = function () {
         return this._currency.code + this._amount.toString();
