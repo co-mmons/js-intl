@@ -1,5 +1,5 @@
 import {Type, Enumerable} from "@co.mmons/js-utils/core";
-import {Serializer, ObjectAsMapSerializer} from "@co.mmons/js-utils/json";
+import {Serializer, ObjectAsMapSerializer, SerializationOptions, serialize, unserialize} from "@co.mmons/js-utils/json";
 
 export interface IntlValue<V> {
     [locale: string]: V;
@@ -38,4 +38,29 @@ export class IntlValueSerializer extends ObjectAsMapSerializer {
         super(valueType);
     }
 
+}
+
+export class IntlStringValueSerializer extends ObjectAsMapSerializer {
+
+    constructor(private readonly allowPlainValue?: boolean) {
+        super(String);
+    }
+
+    serialize(value: any, options?: SerializationOptions): any {
+        if (this.allowPlainValue && typeof value == "string") {
+            return serialize(value, options);
+        } else {
+            return super.serialize(value, options);
+        }
+    }
+    
+    unserialize(value: any, options?: SerializationOptions): any {
+
+        if (this.allowPlainValue && typeof value == "string") {
+            return unserialize(value, String, options);
+        } else {
+            return super.serialize(value, options);
+        }
+    }
+    
 }

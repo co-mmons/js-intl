@@ -40,4 +40,30 @@ var IntlValueSerializer = /** @class */ (function (_super) {
     return IntlValueSerializer;
 }(json_1.ObjectAsMapSerializer));
 exports.IntlValueSerializer = IntlValueSerializer;
+var IntlStringValueSerializer = /** @class */ (function (_super) {
+    __extends(IntlStringValueSerializer, _super);
+    function IntlStringValueSerializer(allowPlainValue) {
+        var _this = _super.call(this, String) || this;
+        _this.allowPlainValue = allowPlainValue;
+        return _this;
+    }
+    IntlStringValueSerializer.prototype.serialize = function (value, options) {
+        if (this.allowPlainValue && typeof value == "string") {
+            return json_1.serialize(value, options);
+        }
+        else {
+            return _super.prototype.serialize.call(this, value, options);
+        }
+    };
+    IntlStringValueSerializer.prototype.unserialize = function (value, options) {
+        if (this.allowPlainValue && typeof value == "string") {
+            return json_1.unserialize(value, String, options);
+        }
+        else {
+            return _super.prototype.serialize.call(this, value, options);
+        }
+    };
+    return IntlStringValueSerializer;
+}(json_1.ObjectAsMapSerializer));
+exports.IntlStringValueSerializer = IntlStringValueSerializer;
 //# sourceMappingURL=value.js.map
