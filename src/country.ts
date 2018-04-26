@@ -1,4 +1,5 @@
 import {IntlHelper} from "./helper";
+import {MessageRef} from "./message-ref";
 
 export class Country {
 
@@ -10,16 +11,12 @@ export class Country {
 		return Country._codes.slice();
 	}
 
-	static countries(intl?: IntlHelper): Country[] {
+	static countries(): Country[] {
 
 		let cntrs: Country[] = [];
 
 		for (let c of Country._codes) {
 			let i = new Country(c);
-			if (intl) {
-				i._intl = intl;
-			}
-
 			cntrs.push(i);
 		}
 
@@ -31,71 +28,55 @@ export class Country {
 	constructor(codeOrPrototype: string | any) {
 
 		if (typeof codeOrPrototype === "string") {
-			this._code = codeOrPrototype;
+			this.code = codeOrPrototype;
 		} else if (codeOrPrototype["code"] && typeof codeOrPrototype["code"] === "string") {
-			this._code = codeOrPrototype["code"];
+			this.code = codeOrPrototype["code"];
 		} else {
 			throw "Country code must be given in order to create Country instance";
 		}
 
-		if (this._code.length == 3) {
+		if (this.code.length == 3) {
 			for (let a in Country._iso) {
 				let c = Country._iso[a];
-				if (c == this._code) {
-					this._code = a;
+				if (c == this.code) {
+					this.code = a;
 					break;
 				}
 			}
 		}
+		
+		this.name = new MessageRef("@co.mmons/country-list", this.code);
 	}
 
-	private _intl: IntlHelper;
+	equals(country: Country): boolean {
+		return this.code == (country && country.code);
+	} 
 
-	private _code: string;
+	readonly code: string;
 
-	get code(): string {
-		return this._code;
-	}
+	readonly name: MessageRef;
 
 	get alpha2(): string {
-		return this._code;
+		return this.code;
 	}
 
 	get alpha3(): string {
-		return Country._iso[this._code];
-	}
-
-	name(intl?: IntlHelper): string {
-		let i = intl || this._intl;
-		return i ? i.message(`@co.mmons/country-list#${this.code}`) : this.code;
+		return Country._iso[this.code];
 	}
 
 	toString(): string {
-		return this._code;
+		return this.code;
 	}
 
 	toJSON(): any {
-		return this._code;
+		return this.code;
 	}
 
 	protected fromJSON(json: any) {
-
-		if (typeof json === "string") {
-			this._code = json;
-		} else if (json && typeof json["code"] === "string") {
-			this._code = json["code"];
+		if (typeof json === "string" || (json && typeof json["code"] == "string")) {
+			this.constructor.call(this, json);
 		} else {
-			throw new Error("Cannot unserialize  '" + json + "' to Country instance");
-		}
-		
-		if (this._code.length == 3) {
-			for (let a in Country._iso) {
-				let c = Country._iso[a];
-				if (c == this._code) {
-					this._code = a;
-					break;
-				}
-			}
+			throw new Error("Cannot unserialize  '" + json + "' to Country");
 		}
 	}
 }
