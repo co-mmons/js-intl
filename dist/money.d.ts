@@ -3,9 +3,7 @@ import { Currency } from "./currency";
 export declare class Money {
     constructor(currency: Currency, amount: BigNumber | number);
     constructor(currency: string, amount: BigNumber | number);
-    private _currency;
     readonly currency: Currency;
-    private _amount;
     readonly amount: BigNumber;
     plus(amount: BigNumber | number | string): Money;
     minus(amount: BigNumber | number | string): Money;
@@ -14,10 +12,7 @@ export declare class Money {
     decimalPlaces(dp: number, roundingMode: BigNumber.RoundingMode): Money;
     comparedTo(money: Money | BigNumber | number): number;
     compareTo(money: Money | BigNumber | number): number;
-    toJSON(): {
-        currency: any;
-        amount: string;
-    };
+    toJSON(): string;
     protected fromJSON(json: any): void;
     toString(): string;
 }

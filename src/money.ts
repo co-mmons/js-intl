@@ -23,45 +23,37 @@ export class Money {
     constructor(currencyOrPrototype: Currency | string | any, amount?: number | BigNumber | string | number) {
 
         if (currencyOrPrototype instanceof Currency || typeof currencyOrPrototype === "string") {
-            this._currency = currencyOrPrototype instanceof Currency ? currencyOrPrototype : new Currency(currencyOrPrototype);
-            this._amount = toBigNumber(amount);
+            this.currency = currencyOrPrototype instanceof Currency ? currencyOrPrototype : new Currency(currencyOrPrototype);
+            this.amount = toBigNumber(amount);
 
         } else if (currencyOrPrototype) {
-            this._amount = toBigNumber(currencyOrPrototype["amount"]);
-            this._currency = currencyOrPrototype["currency"] instanceof Currency ? currencyOrPrototype["amount"] : new Currency(currencyOrPrototype["currency"]);
+            this.amount = toBigNumber(currencyOrPrototype["amount"]);
+            this.currency = currencyOrPrototype["currency"] instanceof Currency ? currencyOrPrototype["amount"] : new Currency(currencyOrPrototype["currency"]);
         }
     }
 
-    private _currency: Currency;
+    readonly currency: Currency;
 
-    get currency(): Currency {
-        return this._currency;
-    }
-
-    private _amount: BigNumber;
-
-    get amount(): BigNumber {
-        return this._amount;
-    }
+    readonly amount: BigNumber;
 
     plus(amount: BigNumber | number | string): Money {
-        return new Money(this._currency, this._amount.plus(amount));
+        return new Money(this.currency, this.amount.plus(amount));
     }
 
     minus(amount: BigNumber | number | string): Money {
-        return new Money(this._currency, this._amount.minus(amount));
+        return new Money(this.currency, this.amount.minus(amount));
     }
 
     times(amount: BigNumber | number | string): Money {
-        return new Money(this._currency, this._amount.times(amount));
+        return new Money(this.currency, this.amount.times(amount));
     }
 
     dividedBy(amount: BigNumber | number | string): Money {
-        return new Money(this._currency, this._amount.dividedBy(amount));
+        return new Money(this.currency, this.amount.dividedBy(amount));
     }
 
     decimalPlaces(dp: number, roundingMode: BigNumber.RoundingMode): Money {
-        return new Money(this._currency, this._amount.decimalPlaces(dp, roundingMode));
+        return new Money(this.currency, this.amount.decimalPlaces(dp, roundingMode));
     }
 
     comparedTo(money: Money | BigNumber | number): number {
@@ -69,22 +61,30 @@ export class Money {
     }
 
     compareTo(money: Money | BigNumber | number): number {
-        if (typeof money === "number") return this._amount.comparedTo(money);
-        else if (money instanceof BigNumber) return this._amount.comparedTo(money);
-        else if (money) return this._amount.comparedTo(money.amount);
+        if (typeof money === "number") return this.amount.comparedTo(money);
+        else if (money instanceof BigNumber) return this.amount.comparedTo(money);
+        else if (money) return this.amount.comparedTo(money.amount);
         else throw new Error("Cannot compare empty value");
     }
 
     toJSON() {
-        return {currency: this._currency.toJSON(), amount: this._amount.toJSON()};
+        return this.toString();
     }
 
     protected fromJSON(json: any) {
-        this._currency = new Currency(json.currency);
-        this._amount = new BigNumber(json.amount);
+
+        if (typeof json == "string") {
+            let currency = json.substr(0, 3);
+            let amount = json.substr(3);
+            this.constructor.call(this, currency, amount);
+        } else if (json.currency && json.amount) {
+            this.constructor.call(this, json);
+        } else {
+            throw new Error("Cannot unserialize  '" + json + "' to Money");
+        }
     }
 
     toString() {
-        return this._currency.code + this._amount.toString();
+        return this.currency.code + this.amount.toString();
     }
 }

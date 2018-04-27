@@ -19,65 +19,60 @@ function toBigNumber(value) {
 var Money = /** @class */ (function () {
     function Money(currencyOrPrototype, amount) {
         if (currencyOrPrototype instanceof currency_1.Currency || typeof currencyOrPrototype === "string") {
-            this._currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
-            this._amount = toBigNumber(amount);
+            this.currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
+            this.amount = toBigNumber(amount);
         }
         else if (currencyOrPrototype) {
-            this._amount = toBigNumber(currencyOrPrototype["amount"]);
-            this._currency = currencyOrPrototype["currency"] instanceof currency_1.Currency ? currencyOrPrototype["amount"] : new currency_1.Currency(currencyOrPrototype["currency"]);
+            this.amount = toBigNumber(currencyOrPrototype["amount"]);
+            this.currency = currencyOrPrototype["currency"] instanceof currency_1.Currency ? currencyOrPrototype["amount"] : new currency_1.Currency(currencyOrPrototype["currency"]);
         }
     }
-    Object.defineProperty(Money.prototype, "currency", {
-        get: function () {
-            return this._currency;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Money.prototype, "amount", {
-        get: function () {
-            return this._amount;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Money.prototype.plus = function (amount) {
-        return new Money(this._currency, this._amount.plus(amount));
+        return new Money(this.currency, this.amount.plus(amount));
     };
     Money.prototype.minus = function (amount) {
-        return new Money(this._currency, this._amount.minus(amount));
+        return new Money(this.currency, this.amount.minus(amount));
     };
     Money.prototype.times = function (amount) {
-        return new Money(this._currency, this._amount.times(amount));
+        return new Money(this.currency, this.amount.times(amount));
     };
     Money.prototype.dividedBy = function (amount) {
-        return new Money(this._currency, this._amount.dividedBy(amount));
+        return new Money(this.currency, this.amount.dividedBy(amount));
     };
     Money.prototype.decimalPlaces = function (dp, roundingMode) {
-        return new Money(this._currency, this._amount.decimalPlaces(dp, roundingMode));
+        return new Money(this.currency, this.amount.decimalPlaces(dp, roundingMode));
     };
     Money.prototype.comparedTo = function (money) {
         return this.compareTo(money);
     };
     Money.prototype.compareTo = function (money) {
         if (typeof money === "number")
-            return this._amount.comparedTo(money);
+            return this.amount.comparedTo(money);
         else if (money instanceof core_1.BigNumber)
-            return this._amount.comparedTo(money);
+            return this.amount.comparedTo(money);
         else if (money)
-            return this._amount.comparedTo(money.amount);
+            return this.amount.comparedTo(money.amount);
         else
             throw new Error("Cannot compare empty value");
     };
     Money.prototype.toJSON = function () {
-        return { currency: this._currency.toJSON(), amount: this._amount.toJSON() };
+        return this.toString();
     };
     Money.prototype.fromJSON = function (json) {
-        this._currency = new currency_1.Currency(json.currency);
-        this._amount = new core_1.BigNumber(json.amount);
+        if (typeof json == "string") {
+            var currency = json.substr(0, 3);
+            var amount = json.substr(3);
+            this.constructor.call(this, currency, amount);
+        }
+        else if (json.currency && json.amount) {
+            this.constructor.call(this, json);
+        }
+        else {
+            throw new Error("Cannot unserialize  '" + json + "' to Money");
+        }
     };
     Money.prototype.toString = function () {
-        return this._currency.code + this._amount.toString();
+        return this.currency.code + this.amount.toString();
     };
     return Money;
 }());
