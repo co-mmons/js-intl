@@ -12,7 +12,7 @@ export declare class Money {
     decimalPlaces(dp: number, roundingMode: BigNumber.RoundingMode): Money;
     comparedTo(money: Money | BigNumber | number): number;
     compareTo(money: Money | BigNumber | number): number;
-    toJSON(): string;
+    toJSON(): string[];
     protected fromJSON(json: any): void;
     toString(): string;
 }

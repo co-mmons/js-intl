@@ -56,20 +56,28 @@ var Money = /** @class */ (function () {
             throw new Error("Cannot compare empty value");
     };
     Money.prototype.toJSON = function () {
-        return this.toString();
+        return [this.currency.code, this.amount.toString()];
     };
     Money.prototype.fromJSON = function (json) {
         if (typeof json == "string") {
             var currency = json.substr(0, 3);
             var amount = json.substr(3);
             this.constructor.call(this, currency, amount);
+            return;
+        }
+        else if (Array.isArray(json)) {
+            if (json.length == 2 && typeof json[0] == "string" && (typeof json[1] == "string" || typeof json[1] == "number")) {
+                var currency = json[0];
+                var amount = json[1];
+                this.constructor.call(this, currency, amount);
+                return;
+            }
         }
         else if (json.currency && json.amount) {
             this.constructor.call(this, json);
+            return;
         }
-        else {
-            throw new Error("Cannot unserialize  '" + json + "' to Money");
-        }
+        throw new Error("Cannot unserialize  '" + json + "' to Money");
     };
     Money.prototype.toString = function () {
         return this.currency.code + this.amount.toString();

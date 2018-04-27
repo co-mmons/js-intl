@@ -68,7 +68,7 @@ export class Money {
     }
 
     toJSON() {
-        return this.toString();
+        return [this.currency.code, this.amount.toString()];
     }
 
     protected fromJSON(json: any) {
@@ -77,11 +77,22 @@ export class Money {
             let currency = json.substr(0, 3);
             let amount = json.substr(3);
             this.constructor.call(this, currency, amount);
+            return;
+
+        } else if (Array.isArray(json)) {
+            if (json.length == 2 && typeof json[0] == "string" && (typeof json[1] == "string" || typeof json[1] == "number")) {
+                let currency = json[0];
+                let amount = json[1];
+                this.constructor.call(this, currency, amount);
+                return;
+            }
+            
         } else if (json.currency && json.amount) {
             this.constructor.call(this, json);
-        } else {
-            throw new Error("Cannot unserialize  '" + json + "' to Money");
+            return;
         }
+
+        throw new Error("Cannot unserialize  '" + json + "' to Money");
     }
 
     toString() {
