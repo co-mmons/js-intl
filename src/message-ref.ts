@@ -1,31 +1,36 @@
 export class MessageRef {
 
-    constructor(private _namespace: string, private _key: string) {
-    }
-
-    get namespace(): string {
-        return this._namespace;
-    }
-
-    get key(): string {
-        return this._key;
+    constructor(public readonly namespace: string, public readonly key: string, public readonly values?: {[key: string]: any}, public readonly formats?: any) {
     }
 
     toJSON() {
-        return `${this.namespace}#${this.key}`;
+        return [this.namespace, this.key, this.values];
+    }
+
+    toString() {
+        return this.key;
     }
 
     protected fromJSON(json: any) {
 
-        if (typeof json == "string" && json) {
+        if (typeof json == "string") {
             let namespaceKey = json.trim().split("#");
             if (namespaceKey.length == 2) {
-                this._namespace = namespaceKey[0];
-                this._key = namespaceKey[1];
+                this.constructor.call(this, namespaceKey[0], namespaceKey[1]);
                 return;
             } else {
-                this._key = namespaceKey[0];
+                this.constructor.call(this, namespaceKey[0], namespaceKey[1]);
                 return;
+            }
+
+        } else if (Array.isArray(json) && json.length > 0) {
+            let namespace = json.length > 1 ? json[0] : undefined;
+            let key = (json.length == 1 && json[0]) || (json.length > 1 && json[1]);
+            let values = json.length == 3 && json[2];
+            let formats = json.length == 4 && json[3];
+
+            if ((namespace === null || namespace === undefined || typeof namespace == "string") && typeof key == "string") {
+                this.constructor.call(this, namespace, key, values, formats);
             }
         }
 

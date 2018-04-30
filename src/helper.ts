@@ -152,6 +152,16 @@ export class IntlHelper {
             return key;
         }
 
+        if (key instanceof MessageRef) {
+            if (!values) {
+                values = key.values;
+            }
+
+            if (!formats) {
+                formats = key.formats;
+            }
+        }
+
         let formatter: IntlMessageFormat = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
 
         if (formatter && formatter !== defaultMessageFormat && !formats) {

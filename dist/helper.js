@@ -6,6 +6,7 @@ var IntlRelativeFormat = require("intl-relativeformat");
 var money_1 = require("./money");
 var currency_1 = require("./currency");
 var messages_1 = require("./messages");
+var _1 = require(".");
 if (typeof window !== "undefined" && !window["INTL_LOCALE"]) {
     window["INTL_LOCALE"] = undefined;
 }
@@ -105,6 +106,14 @@ var IntlHelper = /** @class */ (function () {
         var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
             return key;
+        }
+        if (key instanceof _1.MessageRef) {
+            if (!values) {
+                values = key.values;
+            }
+            if (!formats) {
+                formats = key.formats;
+            }
         }
         var formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
