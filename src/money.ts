@@ -27,6 +27,7 @@ export class Money {
             this.amount = toBigNumber(amount);
 
         } else if (currencyOrPrototype) {
+    
             this.amount = toBigNumber(currencyOrPrototype["amount"]);
             this.currency = currencyOrPrototype["currency"] instanceof Currency ? currencyOrPrototype["amount"] : new Currency(currencyOrPrototype["currency"]);
         }

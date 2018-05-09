@@ -143,6 +143,7 @@ var GoogleSheetImporter = /** @class */ (function () {
                                     data[entry.gs$cell.$t.substring(1)] = {};
                                 }
                             }
+                            // keys row
                             else {
                                 while (rowIndex >= rows.length) {
                                     rows.push([]);
@@ -182,9 +183,11 @@ var GoogleSheetImporter = /** @class */ (function () {
                                 if (alias && alias.startsWith("\"")) {
                                     alias = [JSON.parse(alias)];
                                 }
+                                // alias column contain JSON array
                                 else if (alias && alias.startsWith("[")) {
                                     alias = JSON.parse(alias);
                                 }
+                                // comma separated keys
                                 else if (alias) {
                                     alias = alias.split(",");
                                 }
@@ -197,9 +200,11 @@ var GoogleSheetImporter = /** @class */ (function () {
                                         if (alias_1 && alias_1.startsWith("\"")) {
                                             alias_1 = [JSON.parse(alias_1)];
                                         }
+                                        // alias column contain JSON array
                                         else if (alias_1 && alias_1.startsWith("[")) {
                                             alias_1 = JSON.parse(alias_1);
                                         }
+                                        // comma separated keys
                                         else if (alias_1) {
                                             alias_1 = alias_1.split(",");
                                         }
