@@ -109,6 +109,7 @@ var GoogleSheetImporter = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             var contents = "";
             https.get(url, function (response) {
+                response.setEncoding("utf8");
                 response.on("data", function (chunk) { return contents += chunk; });
                 response.on("end", function () { return resolve(contents); });
             }).on("error", function (error) { return reject(error); });

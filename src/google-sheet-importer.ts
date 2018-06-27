@@ -76,6 +76,7 @@ export class GoogleSheetImporter {
         return new Promise((resolve, reject) => {
             let contents = "";
             https.get(url, (response) => {
+                response.setEncoding("utf8");
                 response.on("data", chunk => contents += chunk);
                 response.on("end", () => resolve(contents));
             }).on("error", error => reject(error));
