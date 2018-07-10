@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fileSystem = require("fs-extra");
 var https = require("https");
 var path = require("path");
+var htmlparser2_1 = require("htmlparser2");
 var GoogleSheetImporter = /** @class */ (function () {
     function GoogleSheetImporter() {
         this.documents = [];
@@ -48,20 +49,20 @@ var GoogleSheetImporter = /** @class */ (function () {
     };
     GoogleSheetImporter.prototype.generate = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var output, data, _i, _a, resource, result, locale, key, locale, filePath, sorted, _b, _c, key;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var output, data, _i, _a, resource, result, locale, key, _b, _c, _d, locale, filePath, sorted, externals, _loop_1, this_1, _e, _f, key;
+            return __generator(this, function (_g) {
+                switch (_g.label) {
                     case 0:
                         output = {};
                         data = {};
                         _i = 0, _a = this.documents;
-                        _d.label = 1;
+                        _g.label = 1;
                     case 1:
                         if (!(_i < _a.length)) return [3 /*break*/, 4];
                         resource = _a[_i];
-                        return [4 /*yield*/, this.readDocument(resource)];
+                        return [4 /*yield*/, this.readSheet(resource)];
                     case 2:
-                        result = (_d.sent());
+                        result = (_g.sent());
                         for (locale in result) {
                             if (!data[locale]) {
                                 data[locale] = {};
@@ -72,35 +73,108 @@ var GoogleSheetImporter = /** @class */ (function () {
                                 }
                             }
                         }
-                        _d.label = 3;
+                        _g.label = 3;
                     case 3:
                         _i++;
                         return [3 /*break*/, 1];
                     case 4:
                         fileSystem.ensureDirSync(this.outputPath);
-                        for (locale in data) {
-                            filePath = path.resolve(this.outputPath, locale + "." + this.outputType);
-                            if (!Object.keys(data[locale]).length) {
-                                try {
-                                    fileSystem.unlinkSync(filePath);
-                                }
-                                catch (e) {
-                                }
-                                continue;
+                        _b = [];
+                        for (_c in data)
+                            _b.push(_c);
+                        _d = 0;
+                        _g.label = 5;
+                    case 5:
+                        if (!(_d < _b.length)) return [3 /*break*/, 11];
+                        locale = _b[_d];
+                        filePath = path.resolve(this.outputPath, locale + "." + this.outputType);
+                        if (!Object.keys(data[locale]).length) {
+                            try {
+                                fileSystem.unlinkSync(filePath);
                             }
-                            sorted = {};
-                            for (_b = 0, _c = Object.keys(data[locale]).sort(function (a, b) { return a.localeCompare(b); }); _b < _c.length; _b++) {
-                                key = _c[_b];
-                                sorted[key] = data[locale][key];
+                            catch (e) {
                             }
-                            if (this.outputType == "json") {
-                                fileSystem.writeJsonSync(filePath, sorted, { spaces: 4, encoding: "UTF-8" });
-                            }
-                            else if (this.outputType == "ts") {
-                                fileSystem.writeFileSync(filePath, "export = " + JSON.stringify(sorted, undefined, 4));
-                            }
+                            return [3 /*break*/, 10];
                         }
-                        return [2 /*return*/];
+                        sorted = {};
+                        externals = {};
+                        _loop_1 = function (key) {
+                            var keyFile, contents, _a, _b, html_1, cssClass_1, escape_1, currentElementName_1, parser;
+                            return __generator(this, function (_c) {
+                                switch (_c.label) {
+                                    case 0:
+                                        sorted[key] = data[locale][key];
+                                        if (!(typeof sorted[key] != "string")) return [3 /*break*/, 3];
+                                        keyFile = locale + "-" + key.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-") + ".txt";
+                                        if (!(sorted[key]["type"] == "GoogleDocument")) return [3 /*break*/, 2];
+                                        _b = (_a = (/(<div id="contents">)(.*)(<\/div><div id="footer">)/g)).exec;
+                                        return [4 /*yield*/, this_1.fetchHttps(sorted[key]["url"])];
+                                    case 1:
+                                        contents = _b.apply(_a, [_c.sent()]);
+                                        if (contents.length > 1 && contents[2]) {
+                                            html_1 = "";
+                                            cssClass_1 = "_intl" + Math.round(Math.random() * 1000);
+                                            escape_1 = function (text) {
+                                                return text.replace(/\{|\}|\#|\\/g, "\\$&");
+                                            };
+                                            parser = new htmlparser2_1.Parser({
+                                                onopentag: function (name, attrs) {
+                                                    currentElementName_1 = name;
+                                                    html_1 += "<" + name;
+                                                    for (var a in attrs) {
+                                                        html_1 += " " + a + "=\"" + escape_1(attrs[a]) + "\"";
+                                                    }
+                                                    html_1 += ">";
+                                                },
+                                                onclosetag: function (name) {
+                                                    if (["br", "img"].indexOf(name) < 0) {
+                                                        html_1 += "</" + name + ">";
+                                                    }
+                                                },
+                                                ontext: function (text) {
+                                                    if (currentElementName_1 == "style") {
+                                                        text = text.replace(/(font-size|font-family)\:.*?(\;|\})/g, "$2").replace(/color:#000000(\;|\})/g, "$1");
+                                                        text = "." + cssClass_1 + " " + escape_1(text).replace(/\}/g, "}." + cssClass_1 + " ");
+                                                    }
+                                                    html_1 += text;
+                                                }
+                                            }, { decodeEntities: false });
+                                            parser.write(contents[2]);
+                                            fileSystem.writeFileSync(path.resolve(this_1.outputPath, keyFile), "<div class=\"" + cssClass_1 + "\">" + html_1 + "</div>");
+                                        }
+                                        _c.label = 2;
+                                    case 2:
+                                        sorted[key] = { file: keyFile };
+                                        _c.label = 3;
+                                    case 3: return [2 /*return*/];
+                                }
+                            });
+                        };
+                        this_1 = this;
+                        _e = 0, _f = Object.keys(data[locale]).sort(function (a, b) { return a.localeCompare(b); });
+                        _g.label = 6;
+                    case 6:
+                        if (!(_e < _f.length)) return [3 /*break*/, 9];
+                        key = _f[_e];
+                        return [5 /*yield**/, _loop_1(key)];
+                    case 7:
+                        _g.sent();
+                        _g.label = 8;
+                    case 8:
+                        _e++;
+                        return [3 /*break*/, 6];
+                    case 9:
+                        if (this.outputType == "json") {
+                            fileSystem.writeJsonSync(filePath, sorted, { spaces: 4, encoding: "UTF-8" });
+                        }
+                        else if (this.outputType == "ts") {
+                            fileSystem.writeFileSync(filePath, "export = " + JSON.stringify(sorted, undefined, 4));
+                        }
+                        _g.label = 10;
+                    case 10:
+                        _d++;
+                        return [3 /*break*/, 5];
+                    case 11: return [2 /*return*/];
                 }
             });
         });
@@ -115,7 +189,7 @@ var GoogleSheetImporter = /** @class */ (function () {
             }).on("error", function (error) { return reject(error); });
         });
     };
-    GoogleSheetImporter.prototype.readDocument = function (document) {
+    GoogleSheetImporter.prototype.readSheet = function (document) {
         return __awaiter(this, void 0, void 0, function () {
             var json, _a, _b, rows, columns, data, _i, _c, entry, rowIndex, colIndex, row, _d, rows_1, row, tags, _e, _f, tag, _g, tags_1, t, alias, keys, locale, value, alias_1, _h, keys_1, key, error_1;
             return __generator(this, function (_j) {
@@ -213,7 +287,14 @@ var GoogleSheetImporter = /** @class */ (function () {
                                             key = keys_1[_h];
                                             key = key.trim();
                                             if (key) {
-                                                data[locale][key] = value;
+                                                // value is a reference to external google document
+                                                if (columns.type && row[columns.type] == "GoogleDocument") {
+                                                    data[locale][key] = { type: "GoogleDocument", url: value };
+                                                }
+                                                // simple text
+                                                else {
+                                                    data[locale][key] = value;
+                                                }
                                             }
                                         }
                                     }

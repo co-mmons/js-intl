@@ -1,13 +1,14 @@
 import * as fileSystem from "fs-extra";
 import * as https from "https";
 import * as path from "path";
+import {Parser, Handler} from "htmlparser2";
 
 export class GoogleSheetImporter {
     
     constructor() {
     }
 
-    private documents: GoogleDocument[] = [];
+    private documents: GoogleSheet[] = [];
 
     public addDocument(id: string, worksheet?: string, filterTags?: string[]) {
         this.documents.push({id: id, worksheet: worksheet, filterTags: filterTags});
@@ -24,7 +25,7 @@ export class GoogleSheetImporter {
 
         for (let resource of this.documents) {
 
-            let result = (await this.readDocument(resource));
+            let result = (await this.readSheet(resource));
 
             for (let locale in result) {
 
@@ -57,10 +58,78 @@ export class GoogleSheetImporter {
                 continue;
             }
 
-            let sorted = {};
+            let sorted: LocaleDictionary = {};
+
+            // keys, whose values are external resources, e.g. Google Document
+            let externals = {};
 
             for (let key of Object.keys(data[locale]).sort((a, b) => a.localeCompare(b))) {
                 sorted[key] = data[locale][key];
+
+                // complex value
+                if (typeof sorted[key] != "string") {
+
+                    // name of a file, that will contain value of this key
+                    // no suffix yet, must be added later, depends on resource type
+                    let keyFile = `${locale}-${key.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")}.txt`;
+                    
+                    // Google Document
+                    if (sorted[key]["type"] == "GoogleDocument") {
+
+                        let contents = (/(<div id="contents">)(.*)(<\/div><div id="footer">)/g).exec(await this.fetchHttps(sorted[key]["url"]));
+                        if (contents.length > 1 && contents[2]) {
+
+                            let html = "";
+
+                            let cssClass = "_intl" + Math.round(Math.random() * 1000);
+
+                            let escape = (text: string) => {
+                                return text.replace(/\{|\}|\#|\\/g, "\\$&");
+                            }
+
+                            let currentElementName: string;
+
+                            let parser = new Parser({
+
+                                onopentag: (name, attrs) => {
+
+                                    currentElementName = name;
+
+                                    html += `<${name}`
+
+                                    for (let a in attrs) {
+                                        html += ` ${a}="${escape(attrs[a])}"`;
+                                    }
+
+                                    html += ">";
+                                },
+
+                                onclosetag: (name) => {
+                                    if (["br", "img"].indexOf(name) < 0) {
+                                        html += `</${name}>`;
+                                    }
+                                },
+
+                                ontext: (text) => {
+
+                                    if (currentElementName == "style") {
+                                        text = text.replace(/(font-size|font-family)\:.*?(\;|\})/g, "$2").replace(/color:#000000(\;|\})/g, "$1")
+                                        text = "." + cssClass + " " + escape(text).replace(/\}/g, "}." + cssClass + " ");
+                                    }
+
+                                    html += text;
+                                }
+
+                            }, {decodeEntities: false});
+
+                            parser.write(contents[2]);
+
+                            fileSystem.writeFileSync(path.resolve(this.outputPath, keyFile), `<div class="${cssClass}">${html}</div>`);
+                        }
+                    }
+
+                    sorted[key] = {file: keyFile} as any;
+                }
             }
             
             if (this.outputType == "json") {
@@ -83,7 +152,7 @@ export class GoogleSheetImporter {
         });
     }
 
-    private async readDocument(document: GoogleDocument): Promise<{[locale: string]: LocaleDictionary}> {
+    private async readSheet(document: GoogleSheet): Promise<{[locale: string]: LocaleDictionary}> {
         try {
 
             let json = JSON.parse((await this.fetchHttps(`https://spreadsheets.google.com/feeds/cells/${document.id}/${document.worksheet || 'default'}/public/values?alt=json`)));
@@ -198,7 +267,16 @@ export class GoogleSheetImporter {
                                 key = key.trim();
 
                                 if (key) {
-                                    data[locale][key] = value;
+
+                                    // value is a reference to external google document
+                                    if (columns.type && row[columns.type] == "GoogleDocument") {
+                                        data[locale][key] = {type: "GoogleDocument", url: value};
+                                    } 
+                                    
+                                    // simple text
+                                    else {
+                                        data[locale][key] = value;
+                                    }
                                 }
                             }
                         }
@@ -214,12 +292,17 @@ export class GoogleSheetImporter {
     }
 }
 
-interface GoogleDocument {
+interface GoogleSheet {
     id: string; 
     worksheet: string;
     filterTags: string[];
 }
 
 interface LocaleDictionary {
-    [key: string]: string;
+    [key: string]: DictionaryValue;
 }
+
+type DictionaryValue = string | {
+    type?: string;
+    url?: string;
+};

@@ -19,6 +19,9 @@ export class IntlBundleGenerator {
             let contents: string[] = [];
             let messages: any;
 
+            let outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
+            fsextra.ensureFileSync(outputFile);
+
             for (let locale of this.extractLocales(baseLocale)) {
 
                 for (let item of this.input) {
@@ -39,8 +42,17 @@ export class IntlBundleGenerator {
                             if (!messages[item.namespace][baseLocale]) {
                                 messages[item.namespace][baseLocale] = {};
                             }
+
+                            let json = fsextra.readJsonSync(itemPath);
+
+                            // we must look for resources and copy resources into output directory
+                            for (let key in json) {
+                                if (typeof json[key] != "string" && json[key]["file"]) {
+                                    fsextra.copyFileSync(path.resolve(path.dirname(itemPath), json[key]["file"]), path.resolve(path.dirname(outputFile), json[key]["file"] = `${item.namespace}-${json[key]["file"]}`.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")));
+                                }
+                            }
                             
-                            Object.assign(messages[item.namespace][baseLocale], fsextra.readJsonSync(itemPath));
+                            Object.assign(messages[item.namespace][baseLocale], json);
                             
                         } else {
                             let c = fsextra.readFileSync(itemPath).toString();
@@ -51,9 +63,6 @@ export class IntlBundleGenerator {
                     }
                 }
             }
-
-            let outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
-            fsextra.ensureFileSync(outputFile);
 
             if (messages) {
                 contents.push("{var INTL_MESSAGES;");

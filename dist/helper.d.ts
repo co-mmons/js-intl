@@ -3,9 +3,14 @@ import { Money } from "./money";
 import { Currency } from "./currency";
 import { MessageRef } from ".";
 export declare type CurrencyAndNumber = [string | Currency, number | BigNumber];
+export declare type MessageResult = string | Promise<string>;
 export declare class IntlHelper {
     private defaultNamespace;
     constructor(defaultLocale: string, defaultNamespace?: string);
+    /**
+     * Path or url to a directory, where intl resources are stored.
+     */
+    resourcesLocation: string;
     private useCache;
     setDefaultNamespace(namespace: string): void;
     private namespaceAliases;
@@ -28,7 +33,8 @@ export declare class IntlHelper {
     private addFormatterPredefinedOptions<T>(formatter, key, options);
     addDateTimePredefinedOptions(key: string, options: Intl.DateTimeFormatOptions): void;
     findFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string): any;
-    message(key: string | MessageRef, values?: any, formats?: any): any;
+    message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T;
+    private readFile(file);
     relativeFormat(dateTime: number | Date, options: any): string;
     dateFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
     timeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;

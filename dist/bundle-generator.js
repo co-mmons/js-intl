@@ -13,6 +13,8 @@ var IntlBundleGenerator = /** @class */ (function () {
             var baseLocale = _a[_i];
             var contents = [];
             var messages = void 0;
+            var outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
+            fsextra.ensureFileSync(outputFile);
             for (var _b = 0, _c = this.extractLocales(baseLocale); _b < _c.length; _b++) {
                 var locale = _c[_b];
                 for (var _d = 0, _e = this.input; _d < _e.length; _d++) {
@@ -29,7 +31,14 @@ var IntlBundleGenerator = /** @class */ (function () {
                             if (!messages[item.namespace][baseLocale]) {
                                 messages[item.namespace][baseLocale] = {};
                             }
-                            Object.assign(messages[item.namespace][baseLocale], fsextra.readJsonSync(itemPath));
+                            var json = fsextra.readJsonSync(itemPath);
+                            // we must look for resources and copy resources into output directory
+                            for (var key in json) {
+                                if (typeof json[key] != "string" && json[key]["file"]) {
+                                    fsextra.copyFileSync(path.resolve(path.dirname(itemPath), json[key]["file"]), path.resolve(path.dirname(outputFile), json[key]["file"] = (item.namespace + "-" + json[key]["file"]).replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")));
+                                }
+                            }
+                            Object.assign(messages[item.namespace][baseLocale], json);
                         }
                         else {
                             var c = fsextra.readFileSync(itemPath).toString();
@@ -40,8 +49,6 @@ var IntlBundleGenerator = /** @class */ (function () {
                     }
                 }
             }
-            var outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
-            fsextra.ensureFileSync(outputFile);
             if (messages) {
                 contents.push("{var INTL_MESSAGES;");
                 contents.push("if(typeof window !== 'undefined'){INTL_MESSAGES=window['INTL_MESSAGES']=(window['INTL_MESSAGES']||{});}");

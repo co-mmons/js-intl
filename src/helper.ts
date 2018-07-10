@@ -22,6 +22,8 @@ type IntlFormatter = Intl.DateTimeFormat | Intl.NumberFormat | IntlMessageFormat
 
 export type CurrencyAndNumber = [string | Currency, number | BigNumber];
 
+export type MessageResult = string | Promise<string>;
+
 const defaultMessageFormat = new IntlMessageFormat("", "en");
 
 export class IntlHelper {
@@ -30,6 +32,11 @@ export class IntlHelper {
         this.locale = defaultLocale;
         this.defaultNamespace = defaultNamespace;
     }
+
+    /**
+     * Path or url to a directory, where intl resources are stored.
+     */
+    public resourcesLocation: string;
 
     private useCache: boolean = true;
 
@@ -145,11 +152,11 @@ export class IntlHelper {
         return undefined;
     }
 
-    public message(key: string | MessageRef, values?: any, formats?: any) {
+    public message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T {
 
         let namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
-            return key;
+            return namespaceAndKey.key as T;
         }
 
         if (key instanceof MessageRef) {
@@ -165,22 +172,80 @@ export class IntlHelper {
         let formatter: IntlMessageFormat = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
 
         if (formatter && formatter !== defaultMessageFormat && !formats) {
-            return formatter.format(values);
+            return formatter.format(values) as T;
         }
 
         let message = findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
 
-        formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
+        if (typeof message == "string") {
+            formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
 
-        if (formatter !== defaultMessageFormat) {
-            formatter = new IntlMessageFormat(message, this._locale, formats);
-        }
+            if (formatter !== defaultMessageFormat) {
+                formatter = new IntlMessageFormat(message, this._locale, formats);
+            }
 
-        if (formatter && formatter !== defaultMessageFormat) {
-            return formatter.format(values);
-        } else {
-            return message;
+            if (formatter && formatter !== defaultMessageFormat) {
+                return formatter.format(values) as T;
+            } else {
+                return message as T;
+            }
+
+        } 
+        
+        // value is stored in a file
+        else if (message && message.file) {
+            return new Promise<string>(async (resolve, reject) => {
+
+                let contents: string;
+
+                try {
+                    contents = await this.readFile(message.file);
+                } catch (error) {
+                    reject(error);
+                    return;
+                }
+
+                formatter = new IntlMessageFormat(contents, this._locale, formats);
+                resolve(formatter.format(values));
+                
+            }) as T;
         }
+    }
+
+    private readFile(file: string) {
+
+        return new Promise<string>((resolve, reject) => {
+
+            if (this.resourcesLocation) {
+
+                let url = `${this.resourcesLocation}/${file}`;
+
+                let xhr = new XMLHttpRequest();
+
+                xhr.onerror = (error) => {
+                    reject(error);
+                }
+
+                xhr.ontimeout = () => {
+                    reject(new Error(`Timeout when fetching intl resource ${url}`));
+                }
+
+                xhr.onload = () => {
+                    resolve(xhr.responseText);
+                }
+
+                xhr.open("GET", url, true);
+                xhr.send();
+            }
+        
+            else if (this.resourcesLocation && this.resourcesLocation.startsWith("./") || this.resourcesLocation.startsWith("/")) {
+
+            }
+
+            else {
+                reject(new Error(`Not able to read intl resource file ${file}`));
+            }
+        });
     }
 
 
