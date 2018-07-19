@@ -1,5 +1,5 @@
 import { ObjectAsMapSerializer, SerializationOptions, Serializer } from "@co.mmons/js-utils/json";
-export interface IntlValue<V = string> {
+export interface IntlValue<V> {
     [locale: string]: V;
 }
 export declare namespace IntlValue {
