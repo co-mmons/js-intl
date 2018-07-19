@@ -2,6 +2,7 @@ import { Type, BigNumber } from "@co.mmons/js-utils/core";
 import { Money } from "./money";
 import { Currency } from "./currency";
 import { MessageRef } from ".";
+import { IntlValue } from "./value";
 export declare type CurrencyAndNumber = [string | Currency, number | BigNumber];
 export declare type MessageResult = string | Promise<string>;
 export declare class IntlHelper {
@@ -33,6 +34,7 @@ export declare class IntlHelper {
     private addFormatterPredefinedOptions<T>(formatter, key, options);
     addDateTimePredefinedOptions(key: string, options: Intl.DateTimeFormatOptions): void;
     findFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string): any;
+    value<T = string>(value: IntlValue<T>): T;
     message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T;
     private readFile(file);
     relativeFormat(dateTime: number | Date, options: any): string;

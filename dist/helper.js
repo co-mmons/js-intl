@@ -137,6 +137,17 @@ var IntlHelper = /** @class */ (function () {
         }
         return undefined;
     };
+    IntlHelper.prototype.value = function (value) {
+        if (!value) {
+            return;
+        }
+        for (var _i = 0, _a = this._locales; _i < _a.length; _i++) {
+            var locale = _a[_i];
+            if (value[locale]) {
+                return value[locale];
+            }
+        }
+    };
     IntlHelper.prototype.message = function (key, values, formats) {
         var _this = this;
         var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);

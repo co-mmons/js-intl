@@ -7,6 +7,7 @@ import {Money} from "./money";
 import {Currency} from "./currency";
 import {extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter} from "./messages";
 import {MessageRef} from ".";
+import {IntlValue} from "./value";
 
 declare var INTL_LOCALE: any;
 
@@ -150,6 +151,19 @@ export class IntlHelper {
         }
 
         return undefined;
+    }
+
+    public value<T = string>(value: IntlValue<T>): T {
+
+        if (!value) {
+            return;
+        }
+
+        for (let locale of this._locales) {
+            if (value[locale]) {
+                return value[locale];
+            }
+        }
     }
 
     public message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T {
