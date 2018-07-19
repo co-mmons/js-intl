@@ -1,7 +1,8 @@
-export {CurrencyAndNumber, IntlHelper} from "./helper";
 export {Country} from "./country";
-export {Money} from "./money";
 export {Currency} from "./currency";
 export {CurrencyCalculator} from "./currency-calculator";
-export {importMessages} from "./messages";
+export {CurrencyAndNumber, IntlHelper} from "./helper";
 export {MessageRef} from "./message-ref";
+export {importMessages} from "./messages";
+export {Money} from "./money";
+export {IntlStringValueSerializer, IntlValue, IntlValueSerializer} from "./value";
