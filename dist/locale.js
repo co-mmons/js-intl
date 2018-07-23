@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var message_ref_1 = require("./message-ref");
-exports.localeIntlBundleItem = { path: "node_modules/@umpirsky/locale-list/data/{{LOCALE}}/locales.json", type: "message", namespace: "@umpirsky/country-list" };
+exports.localeIntlBundleItem = { path: "node_modules/@umpirsky/locale-list/data/{{LOCALE}}/locales.json", type: "message", namespace: "@umpirsky/locale-list" };
 /**
  * https://en.wikipedia.org/wiki/IETF-language-tag
  */

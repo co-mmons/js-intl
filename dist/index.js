@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var country_1 = require("./country");
 exports.Country = country_1.Country;
-exports.countryIntlBundleItem = country_1.countryIntlBundleItem;
 var currency_1 = require("./currency");
 exports.Currency = currency_1.Currency;
 var currency_calculator_1 = require("./currency-calculator");
@@ -11,7 +10,6 @@ var helper_1 = require("./helper");
 exports.IntlHelper = helper_1.IntlHelper;
 var locale_1 = require("./locale");
 exports.Locale = locale_1.Locale;
-exports.localeIntlBundleItem = locale_1.localeIntlBundleItem;
 var message_ref_1 = require("./message-ref");
 exports.MessageRef = message_ref_1.MessageRef;
 var messages_1 = require("./messages");
