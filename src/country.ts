@@ -1,5 +1,7 @@
-import {IntlHelper} from "./helper";
+import {IntlBundleItem} from "./bundle-generator";
 import {MessageRef} from "./message-ref";
+
+export const countryIntlBundleItem: IntlBundleItem = {path: "node_modules/@umpirsky/country-list/data/{{LOCALE}}/country.json", type: "message", namespace: "@umpirsky/country-list"};
 
 export class Country {
 
@@ -32,7 +34,7 @@ export class Country {
 		} else if (codeOrPrototype["code"] && typeof codeOrPrototype["code"] === "string") {
 			this.code = codeOrPrototype["code"];
 		} else {
-			throw "Country code must be given in order to create Country instance";
+			throw new Error("Country code must be given in order to create Country instance");
 		}
 
 		if (this.code.length == 3) {
@@ -45,7 +47,7 @@ export class Country {
 			}
 		}
 		
-		this.name = new MessageRef("@co.mmons/country-list", this.code);
+		this.name = new MessageRef("@umpirsky/country-list", this.code);
 	}
 
 	equals(country: Country): boolean {

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var message_ref_1 = require("./message-ref");
+exports.countryIntlBundleItem = { path: "node_modules/@umpirsky/country-list/data/{{LOCALE}}/country.json", type: "message", namespace: "@umpirsky/country-list" };
 var Country = /** @class */ (function () {
     function Country(codeOrPrototype) {
         if (typeof codeOrPrototype === "string") {
@@ -10,7 +11,7 @@ var Country = /** @class */ (function () {
             this.code = codeOrPrototype["code"];
         }
         else {
-            throw "Country code must be given in order to create Country instance";
+            throw new Error("Country code must be given in order to create Country instance");
         }
         if (this.code.length == 3) {
             for (var a in Country._iso) {
@@ -21,7 +22,7 @@ var Country = /** @class */ (function () {
                 }
             }
         }
-        this.name = new message_ref_1.MessageRef("@co.mmons/country-list", this.code);
+        this.name = new message_ref_1.MessageRef("@umpirsky/country-list", this.code);
     }
     Country.codes = function () {
         return Country._codes.slice();

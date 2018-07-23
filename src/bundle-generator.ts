@@ -24,9 +24,17 @@ export class IntlBundleGenerator {
 
             for (let locale of this.extractLocales(baseLocale)) {
 
+                let segments = locale.split(/(\-|\_)/g);
+                let dashed = segments.join("-");
+                let underscored = segments.join("_");
+
                 for (let item of this.input) {
 
-                    let itemPath = path.resolve(item.path.replace("{{LOCALE}}", locale));
+                    let itemPath = path.resolve(item.path.replace("{{LOCALE}}", dashed));
+                    
+                    if (!fsextra.existsSync(itemPath)) {
+                        itemPath = path.resolve(item.path.replace("{{LOCALE}}", underscored));
+                    }
 
                     if (fsextra.existsSync(itemPath)) {
                         if (item.type == "message") {
@@ -83,11 +91,11 @@ export class IntlBundleGenerator {
         let segments = locale.split("-");
 
         for (let i = 0; i < segments.length; i++) {
-            let hyphen = segments.slice(0, i + 1).join("-");
+            let dash = segments.slice(0, i + 1).join("-");
             let underscore = segments.slice(0, i + 1).join("_");
             
-            if (locales.indexOf(hyphen) < 0) {
-                locales.push(hyphen);
+            if (locales.indexOf(dash) < 0) {
+                locales.push(dash);
             }
 
             if (locales.indexOf(underscore) < 0) {

@@ -17,9 +17,15 @@ var IntlBundleGenerator = /** @class */ (function () {
             fsextra.ensureFileSync(outputFile);
             for (var _b = 0, _c = this.extractLocales(baseLocale); _b < _c.length; _b++) {
                 var locale = _c[_b];
+                var segments = locale.split(/(\-|\_)/g);
+                var dashed = segments.join("-");
+                var underscored = segments.join("_");
                 for (var _d = 0, _e = this.input; _d < _e.length; _d++) {
                     var item = _e[_d];
-                    var itemPath = path.resolve(item.path.replace("{{LOCALE}}", locale));
+                    var itemPath = path.resolve(item.path.replace("{{LOCALE}}", dashed));
+                    if (!fsextra.existsSync(itemPath)) {
+                        itemPath = path.resolve(item.path.replace("{{LOCALE}}", underscored));
+                    }
                     if (fsextra.existsSync(itemPath)) {
                         if (item.type == "message") {
                             if (!messages) {
@@ -63,10 +69,10 @@ var IntlBundleGenerator = /** @class */ (function () {
         var locales = [];
         var segments = locale.split("-");
         for (var i = 0; i < segments.length; i++) {
-            var hyphen = segments.slice(0, i + 1).join("-");
+            var dash = segments.slice(0, i + 1).join("-");
             var underscore = segments.slice(0, i + 1).join("_");
-            if (locales.indexOf(hyphen) < 0) {
-                locales.push(hyphen);
+            if (locales.indexOf(dash) < 0) {
+                locales.push(dash);
             }
             if (locales.indexOf(underscore) < 0) {
                 locales.push(underscore);

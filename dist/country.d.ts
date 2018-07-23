@@ -1,4 +1,6 @@
+import { IntlBundleItem } from "./bundle-generator";
 import { MessageRef } from "./message-ref";
+export declare const countryIntlBundleItem: IntlBundleItem;
 export declare class Country {
     private static readonly _iso;
     private static readonly _codes;
