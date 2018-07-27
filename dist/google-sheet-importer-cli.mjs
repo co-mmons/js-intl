@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -35,9 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var yargs = require("yargs");
-var google_sheet_importer_1 = require("./google-sheet-importer");
+import * as yargs from "yargs";
+import { GoogleSheetImporter } from "./google-sheet-importer";
 var argv = yargs
     .option("outputPath", { description: "Output directory path" })
     .option("outputType", { description: "Output type", choices: ["json", "ts"] })
@@ -51,7 +49,7 @@ function main() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    importer = new google_sheet_importer_1.GoogleSheetImporter();
+                    importer = new GoogleSheetImporter();
                     importer.outputPath = argv["outputPath"];
                     importer.outputType = argv["outputType"];
                     documents = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];

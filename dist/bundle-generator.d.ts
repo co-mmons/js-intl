@@ -9,5 +9,5 @@ export declare class IntlBundleGenerator {
     private outputFile;
     constructor(locales: string[], input: IntlBundleItem[], outputFile: string);
     generate(): void;
-    private extractLocales(locale);
+    private extractLocales;
 }

@@ -11,7 +11,7 @@ export declare class CurrencyCalculator {
     static main(): void;
     constructor(baseCurrency: Currency);
     protected rates: ExchangeRate[];
-    private getRate(currency);
+    private getRate;
     addRate(currency: Currency, amount: BigNumber, rate: BigNumber): void;
     calculate(amount: BigNumber, from: Currency, to: Currency): BigNumber;
     calculate(money: Money, to: Currency): Money;

@@ -5,6 +5,6 @@ export declare class GoogleSheetImporter {
     outputPath: string;
     outputType: "json" | "ts";
     generate(): Promise<void>;
-    private fetchHttps(url);
-    private readSheet(document);
+    private fetchHttps;
+    private readSheet;
 }

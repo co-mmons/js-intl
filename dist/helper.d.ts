@@ -6,7 +6,7 @@ import { IntlValue } from "./value";
 export declare type CurrencyAndNumber = [string | Currency, number | BigNumber];
 export declare type MessageResult = string | Promise<string>;
 export declare class IntlHelper {
-    private defaultNamespace;
+    private defaultNamespace?;
     constructor(defaultLocale: string, defaultNamespace?: string);
     /**
      * Path or url to a directory, where intl resources are stored.
@@ -28,23 +28,23 @@ export declare class IntlHelper {
     private _locales;
     readonly locales: string[];
     private formatters;
-    private formatterInstance<T>(formatterConstructor, id, constructorArguments?);
-    private formatterInstanceExists<T>(formatter, id);
+    private formatterInstance;
+    private formatterInstanceExists;
     private formattersOptions;
-    private addFormatterPredefinedOptions<T>(formatter, key, options);
+    private addFormatterPredefinedOptions;
     addDateTimePredefinedOptions(key: string, options: Intl.DateTimeFormatOptions): void;
     findFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string): any;
     value<T = string>(value: IntlValue<T>): T;
     message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T;
-    private readFile(file);
+    private readFile;
     relativeFormat(dateTime: number | Date, options: any): string;
     dateFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
     timeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
     dateTimeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
-    private dateTimeFormatImpl(mode, dateTime, predefinedOptionsOrOptions?, options?);
+    private dateTimeFormatImpl;
     currencyFormat(value: Money | CurrencyAndNumber, predefinedOptions: string, additionalOptions?: Intl.NumberFormatOptions): any;
     currencyFormat(value: Money | CurrencyAndNumber, options?: Intl.NumberFormatOptions): any;
     decimalFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string;
     percentFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string;
-    private numberFormatImpl(mode, value, predefinedOptionsOrOptions?, additionalOptions?);
+    private numberFormatImpl;
 }

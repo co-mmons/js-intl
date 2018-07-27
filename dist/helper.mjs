@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34,21 +33,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@co.mmons/js-utils/core");
-var intl_messageformat_1 = require("intl-messageformat");
-var intl_relativeformat_1 = require("intl-relativeformat");
-var money_1 = require("./money");
-var currency_1 = require("./currency");
-var messages_1 = require("./messages");
-var _1 = require(".");
+import { BigNumber } from "@co.mmons/js-utils/core";
+import IntlMessageFormat from "intl-messageformat";
+import IntlRelativeFormat from "intl-relativeformat";
+import { Money } from "./money";
+import { Currency } from "./currency";
+import { extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter } from "./messages";
+import { MessageRef } from ".";
 if (typeof window !== "undefined" && !window["INTL_LOCALE"]) {
     window["INTL_LOCALE"] = undefined;
 }
 if (typeof global !== "undefined" && !global["INTL_LOCALE"]) {
     global["INTL_LOCALE"] = undefined;
 }
-var defaultMessageFormat = new intl_messageformat_1.default("", "en");
+var defaultMessageFormat = new IntlMessageFormat("", "en");
 var IntlHelper = /** @class */ (function () {
     function IntlHelper(defaultLocale, defaultNamespace) {
         this.defaultNamespace = defaultNamespace;
@@ -99,11 +97,11 @@ var IntlHelper = /** @class */ (function () {
         var cacheKey = id ? formatterConstructor.name + "_" + id : getCacheId([formatterConstructor.name].concat(constructorArguments));
         var formatter = this.formatters[cacheKey];
         if (!formatter && constructorArguments) {
-            if (formatterConstructor === intl_messageformat_1.default && !messages_1.isMessageNeedsFormatter(constructorArguments[0])) {
+            if (formatterConstructor === IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
             }
-            else if (formatterConstructor === intl_relativeformat_1.default) {
-                formatter = new intl_relativeformat_1.default(this._locales, constructorArguments[0]);
+            else if (formatterConstructor === IntlRelativeFormat) {
+                formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
             }
             else if (formatterConstructor === Intl.DateTimeFormat) {
                 formatter = new Intl.DateTimeFormat(this._locales, constructorArguments[0]);
@@ -150,11 +148,11 @@ var IntlHelper = /** @class */ (function () {
     };
     IntlHelper.prototype.message = function (key, values, formats) {
         var _this = this;
-        var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
+        var namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
             return namespaceAndKey.key;
         }
-        if (key instanceof _1.MessageRef) {
+        if (key instanceof MessageRef) {
             if (!values) {
                 values = key.values;
             }
@@ -162,15 +160,15 @@ var IntlHelper = /** @class */ (function () {
                 formats = key.formats;
             }
         }
-        var formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key);
+        var formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
         }
-        var message = messages_1.findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
+        var message = findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
         if (typeof message == "string") {
-            formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
+            formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
             if (formatter !== defaultMessageFormat) {
-                formatter = new intl_messageformat_1.default(message, this._locale, formats);
+                formatter = new IntlMessageFormat(message, this._locale, formats);
             }
             if (formatter && formatter !== defaultMessageFormat) {
                 return formatter.format(values);
@@ -196,7 +194,7 @@ var IntlHelper = /** @class */ (function () {
                             reject(error_1);
                             return [2 /*return*/];
                         case 3:
-                            formatter = new intl_messageformat_1.default(contents, this._locale, formats);
+                            formatter = new IntlMessageFormat(contents, this._locale, formats);
                             resolve(formatter.format(values));
                             return [2 /*return*/];
                     }
@@ -230,7 +228,7 @@ var IntlHelper = /** @class */ (function () {
         });
     };
     IntlHelper.prototype.relativeFormat = function (dateTime, options) {
-        return this.formatterInstance(intl_relativeformat_1.default, undefined, [options]).format(typeof dateTime == "number" ? new Date(dateTime) : dateTime, options);
+        return this.formatterInstance(IntlRelativeFormat, undefined, [options]).format(typeof dateTime == "number" ? new Date(dateTime) : dateTime, options);
     };
     IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);
@@ -293,25 +291,25 @@ var IntlHelper = /** @class */ (function () {
         else {
             options.style = "decimal";
         }
-        if (value instanceof money_1.Money) {
+        if (value instanceof Money) {
             if (mode == "currency") {
                 options.currency = value.currency.code;
             }
             value = value.amount.toNumber();
         }
-        else if (value instanceof core_1.BigNumber) {
+        else if (value instanceof BigNumber) {
             value = value.toNumber();
         }
         else if (Array.isArray(value) && value) {
             if (mode == "currency") {
-                if (value[0] instanceof currency_1.Currency) {
+                if (value[0] instanceof Currency) {
                     options.currency = value[0].code;
                 }
                 else if (value[0]) {
                     options.currency = value[0];
                 }
             }
-            if (value[1] instanceof core_1.BigNumber) {
+            if (value[1] instanceof BigNumber) {
                 value = value[1].toNumber();
             }
             else {
@@ -323,7 +321,7 @@ var IntlHelper = /** @class */ (function () {
     };
     return IntlHelper;
 }());
-exports.IntlHelper = IntlHelper;
+export { IntlHelper };
 function getCacheId(inputs) {
     var cacheId = [];
     var i, len, input;

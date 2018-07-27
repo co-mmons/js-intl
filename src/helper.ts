@@ -1,7 +1,7 @@
 import {Type, BigNumber} from "@co.mmons/js-utils/core";
 
-import IntlMessageFormat = require("intl-messageformat");
-import IntlRelativeFormat = require("intl-relativeformat");
+import IntlMessageFormat from "intl-messageformat";
+import IntlRelativeFormat from "intl-relativeformat";
 
 import {Money} from "./money";
 import {Currency} from "./currency";

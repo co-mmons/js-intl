@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34,11 +33,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var fileSystem = require("fs-extra");
-var https = require("https");
-var path = require("path");
-var htmlparser2_1 = require("htmlparser2");
+import * as fileSystem from "fs-extra";
+import * as https from "https";
+import * as path from "path";
+import { Parser } from "htmlparser2";
 var GoogleSheetImporter = /** @class */ (function () {
     function GoogleSheetImporter() {
         this.documents = [];
@@ -117,7 +115,7 @@ var GoogleSheetImporter = /** @class */ (function () {
                                             escape_1 = function (text) {
                                                 return text.replace(/\{|\}|\#|\\/g, "\\$&");
                                             };
-                                            parser = new htmlparser2_1.Parser({
+                                            parser = new Parser({
                                                 onopentag: function (name, attrs) {
                                                     currentElementName_1 = name;
                                                     html_1 += "<" + name;
@@ -312,5 +310,5 @@ var GoogleSheetImporter = /** @class */ (function () {
     };
     return GoogleSheetImporter;
 }());
-exports.GoogleSheetImporter = GoogleSheetImporter;
+export { GoogleSheetImporter };
 //# sourceMappingURL=google-sheet-importer.js.map
