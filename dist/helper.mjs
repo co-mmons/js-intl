@@ -40,11 +40,14 @@ import { Money } from "./money";
 import { Currency } from "./currency";
 import { extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter } from "./messages";
 import { MessageRef } from ".";
-if (typeof window !== "undefined" && !window["INTL_LOCALE"]) {
-    window["INTL_LOCALE"] = undefined;
-}
-if (typeof global !== "undefined" && !global["INTL_LOCALE"]) {
-    global["INTL_LOCALE"] = undefined;
+for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE"]; _i < _a.length; _i++) {
+    var v = _a[_i];
+    if (typeof window !== "undefined" && !window[v]) {
+        window[v] = undefined;
+    }
+    if (typeof global !== "undefined" && !global[v]) {
+        global[v] = undefined;
+    }
 }
 var defaultMessageFormat = new IntlMessageFormat("", "en");
 var IntlHelper = /** @class */ (function () {

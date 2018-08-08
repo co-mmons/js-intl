@@ -9,14 +9,18 @@ import {extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter} fro
 import {MessageRef} from ".";
 import {IntlValue} from "./value";
 
-declare var INTL_LOCALE: any;
+declare var INTL_LOCALE: string;
+declare var INTL_SUPPORTED_LOCALE: string;
+declare var INTL_DEFAULT_LOCALE: string;
 
-if (typeof window !== "undefined" && !window["INTL_LOCALE"]) {
-    window["INTL_LOCALE"] = undefined;
-}
+for (let v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE"]) {
+    if (typeof window !== "undefined" && !window[v]) {
+        window[v] = undefined;
+    }
 
-if (typeof global !== "undefined" && !global["INTL_LOCALE"]) {
-    global["INTL_LOCALE"] = undefined;
+    if (typeof global !== "undefined" && !global[v]) {
+        global[v] = undefined;
+    }
 }
 
 type IntlFormatter = Intl.DateTimeFormat | Intl.NumberFormat | IntlMessageFormat | IntlRelativeFormat;
@@ -61,7 +65,7 @@ export class IntlHelper {
     }
 
     public set locale(locale: string) {
-        this._locale = locale || INTL_LOCALE || "en-US";
+        this._locale = locale || INTL_LOCALE || INTL_DEFAULT_LOCALE || "en-US";
 
         this._locales = [];
 

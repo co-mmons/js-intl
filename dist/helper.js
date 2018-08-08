@@ -42,11 +42,14 @@ var money_1 = require("./money");
 var currency_1 = require("./currency");
 var messages_1 = require("./messages");
 var _1 = require(".");
-if (typeof window !== "undefined" && !window["INTL_LOCALE"]) {
-    window["INTL_LOCALE"] = undefined;
-}
-if (typeof global !== "undefined" && !global["INTL_LOCALE"]) {
-    global["INTL_LOCALE"] = undefined;
+for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE"]; _i < _a.length; _i++) {
+    var v = _a[_i];
+    if (typeof window !== "undefined" && !window[v]) {
+        window[v] = undefined;
+    }
+    if (typeof global !== "undefined" && !global[v]) {
+        global[v] = undefined;
+    }
 }
 var defaultMessageFormat = new intl_messageformat_1.default("", "en");
 var IntlHelper = /** @class */ (function () {
