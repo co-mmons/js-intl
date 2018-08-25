@@ -30,6 +30,7 @@ var MessageRef = /** @class */ (function () {
             var formats = json.length == 4 && json[3];
             if ((namespace === null || namespace === undefined || typeof namespace == "string") && typeof key == "string") {
                 this.constructor.call(this, namespace, key, values, formats);
+                return;
             }
         }
         throw new Error("Cannot unserialize \"" + json + "\" as @co.mmons/js-intl/MessageRef");

@@ -31,6 +31,7 @@ export class MessageRef {
 
             if ((namespace === null || namespace === undefined || typeof namespace == "string") && typeof key == "string") {
                 this.constructor.call(this, namespace, key, values, formats);
+                return;
             }
         }
 

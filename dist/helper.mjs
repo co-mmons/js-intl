@@ -71,7 +71,7 @@ var IntlHelper = /** @class */ (function () {
             return this._locale;
         },
         set: function (locale) {
-            this._locale = locale || INTL_LOCALE || "en-US";
+            this._locale = locale || INTL_LOCALE || INTL_DEFAULT_LOCALE || "en-US";
             this._locales = [];
             var segments = this._locale.split("-");
             for (var i = 0; i < segments.length; i++) {
