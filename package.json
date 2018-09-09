@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "scripts": {
-    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && tsc && tsc -p tsconfig.esm.json && node-utils-file-system-glob-rename .js .mjs \"dist/esm/**/*\" && node-utils-file-system-glob-copy dist/esm dist \"**/*\" && node-utils-file-system-glob-delete dist/esm && node-utils-file-system-glob-copy ./ dist messages/**/* && node-utils-file-system-glob-copy ./ dist package.json",
+    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && tsc && tsc -p tsconfig.esm.json && node-utils-file-system-glob-copy ./ dist package.json && node-utils-file-system-glob-copy src dist \"**/package.json\" && node-utils-file-system-glob-copy ./ dist \"messages/**/*\"",
     "install": "node-utils-npm-install-dist"
   },
   "bin": {
@@ -29,5 +29,7 @@
     "@types/yargs": "^11.0.0",
     "typescript": "^2.9.0"
   },
+  "main": "index.js",
+  "module": "esm/index.js",
   "sideEffects": false
 }
