@@ -76,7 +76,8 @@ export class IntlBundleGenerator {
                 contents.push("{var INTL_MESSAGES;");
                 contents.push("if(typeof window !== 'undefined'){INTL_MESSAGES=window['INTL_MESSAGES']=(window['INTL_MESSAGES']||{});}");
                 contents.push("if(typeof global !== 'undefined'){INTL_MESSAGES=global['INTL_MESSAGES']=(global['INTL_MESSAGES']||{});}");
-                contents.push("Object.assign(INTL_MESSAGES, " + JSON.stringify(messages) + ");");
+                contents.push("var messages = " + JSON.stringify(messages) + ";");
+                contents.push("for (var key0 in messages) { INTL_MESSAGES[key0] = {}; for (var key1 in (messages[key0] || {})) { INTL_MESSAGES[key0][key1] = messages[key0][key1]; }}");
                 contents.push("}");
             }
 
