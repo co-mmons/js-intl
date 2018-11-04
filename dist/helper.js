@@ -151,6 +151,9 @@ var IntlHelper = /** @class */ (function () {
             }
         }
     };
+    IntlHelper.prototype.messageFormat = function (message, values, formats) {
+        return new intl_messageformat_1.default(message, this._locale, formats).format(values);
+    };
     IntlHelper.prototype.message = function (key, values, formats) {
         var _this = this;
         var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);

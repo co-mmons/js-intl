@@ -170,6 +170,10 @@ export class IntlHelper {
         }
     }
 
+    public messageFormat(message: string, values: {[key: string]: any}, formats?: any): string {
+        return new IntlMessageFormat(message, this._locale, formats).format(values);
+    }
+
     public message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T {
 
         let namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);

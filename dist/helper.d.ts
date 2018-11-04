@@ -35,6 +35,9 @@ export declare class IntlHelper {
     addDateTimePredefinedOptions(key: string, options: Intl.DateTimeFormatOptions): void;
     findFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string): any;
     value<T = string>(value: IntlValue<T>): T;
+    messageFormat(message: string, values: {
+        [key: string]: any;
+    }, formats?: any): string;
     message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T;
     private readFile;
     relativeFormat(dateTime: number | Date, options: any): string;
