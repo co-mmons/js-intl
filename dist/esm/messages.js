@@ -41,6 +41,7 @@ export function importMessages(url) {
                 reject(new Error(request.statusText));
             }
         };
+        request.open("GET", url);
     });
 }
 export function pushMessages(locale, namespace, messages) {

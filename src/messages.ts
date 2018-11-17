@@ -57,7 +57,9 @@ export function importMessages(url: string) {
             } else {
                 reject(new Error(request.statusText));
             }
-        }
+        };
+
+        request.open("GET", url);
 
     });
 }
