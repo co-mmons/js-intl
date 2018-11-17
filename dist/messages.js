@@ -44,6 +44,7 @@ function importMessages(url) {
             }
         };
         request.open("GET", url);
+        request.send();
     });
 }
 exports.importMessages = importMessages;

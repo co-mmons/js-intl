@@ -42,6 +42,7 @@ export function importMessages(url) {
             }
         };
         request.open("GET", url);
+        request.send();
     });
 }
 export function pushMessages(locale, namespace, messages) {

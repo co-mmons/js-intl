@@ -60,6 +60,7 @@ export function importMessages(url: string) {
         };
 
         request.open("GET", url);
+        request.send();
 
     });
 }
