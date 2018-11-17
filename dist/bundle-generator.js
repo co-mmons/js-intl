@@ -9,6 +9,9 @@ var IntlBundleGenerator = /** @class */ (function () {
         this.outputFile = outputFile;
     }
     IntlBundleGenerator.prototype.generate = function () {
+        var jsType = this.outputFile.endsWith(".js");
+        var jsonType = this.outputFile.endsWith(".json");
+        //let tsType = this.outputFile.endsWith(".ts");
         for (var _i = 0, _a = this.locales; _i < _a.length; _i++) {
             var baseLocale = _a[_i];
             var contents = [];
@@ -56,12 +59,17 @@ var IntlBundleGenerator = /** @class */ (function () {
                 }
             }
             if (messages) {
-                contents.push("{var INTL_MESSAGES;");
-                contents.push("if(typeof window !== 'undefined'){INTL_MESSAGES=window['INTL_MESSAGES']=(window['INTL_MESSAGES']||{});}");
-                contents.push("if(typeof global !== 'undefined'){INTL_MESSAGES=global['INTL_MESSAGES']=(global['INTL_MESSAGES']||{});}");
-                contents.push("var messages = " + JSON.stringify(messages) + ";");
-                contents.push("for (var key0 in messages) { INTL_MESSAGES[key0] = {}; for (var key1 in (messages[key0] || {})) { INTL_MESSAGES[key0][key1] = messages[key0][key1]; }}");
-                contents.push("}");
+                if (jsType) {
+                    contents.push("{var INTL_MESSAGES;");
+                    contents.push("if(typeof window !== 'undefined'){INTL_MESSAGES=window['INTL_MESSAGES']=(window['INTL_MESSAGES']||{});}");
+                    contents.push("if(typeof global !== 'undefined'){INTL_MESSAGES=global['INTL_MESSAGES']=(global['INTL_MESSAGES']||{});}");
+                    contents.push("var messages = " + JSON.stringify(messages) + ";");
+                    contents.push("for (var key0 in messages) { INTL_MESSAGES[key0] = {}; for (var key1 in (messages[key0] || {})) { INTL_MESSAGES[key0][key1] = messages[key0][key1]; }}");
+                    contents.push("}");
+                }
+                else if (jsonType) {
+                    contents.push(JSON.stringify(messages));
+                }
             }
             fsextra.writeFileSync(outputFile, contents.join("\n"));
         }
