@@ -1,11 +1,49 @@
-import { MessageRef } from ".";
+import { MessageRef } from "./message-ref";
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
 if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
     global["INTL_MESSAGES"] = {};
 }
-export function importMessages(locale, namespace, messages) {
+var importedResources = [];
+export function importMessages(url) {
+    if (importedResources.indexOf(url) > -1) {
+        return Promise.resolve();
+    }
+    return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.onerror = function () {
+            reject(new Error(request.statusText));
+        };
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 300) {
+                importedResources.push(url);
+                try {
+                    var json = JSON.parse(request.responseText);
+                    if (json) {
+                        for (var namespace in json) {
+                            INTL_MESSAGES[namespace] = INTL_MESSAGES[namespace] || {};
+                            for (var locale in json[namespace] || {}) {
+                                INTL_MESSAGES[namespace][locale] = INTL_MESSAGES[namespace][locale] || {};
+                                for (var key in json[namespace][locale] || {}) {
+                                    INTL_MESSAGES[namespace][locale][key] = json[namespace][locale][key];
+                                }
+                            }
+                        }
+                    }
+                    resolve();
+                }
+                catch (error) {
+                    reject(new Error(error));
+                }
+            }
+            else {
+                reject(new Error(request.statusText));
+            }
+        };
+    });
+}
+export function pushMessages(locale, namespace, messages) {
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }

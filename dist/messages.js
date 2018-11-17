@@ -1,13 +1,52 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var _1 = require(".");
+var message_ref_1 = require("./message-ref");
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
 if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
     global["INTL_MESSAGES"] = {};
 }
-function importMessages(locale, namespace, messages) {
+var importedResources = [];
+function importMessages(url) {
+    if (importedResources.indexOf(url) > -1) {
+        return Promise.resolve();
+    }
+    return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.onerror = function () {
+            reject(new Error(request.statusText));
+        };
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 300) {
+                importedResources.push(url);
+                try {
+                    var json = JSON.parse(request.responseText);
+                    if (json) {
+                        for (var namespace in json) {
+                            INTL_MESSAGES[namespace] = INTL_MESSAGES[namespace] || {};
+                            for (var locale in json[namespace] || {}) {
+                                INTL_MESSAGES[namespace][locale] = INTL_MESSAGES[namespace][locale] || {};
+                                for (var key in json[namespace][locale] || {}) {
+                                    INTL_MESSAGES[namespace][locale][key] = json[namespace][locale][key];
+                                }
+                            }
+                        }
+                    }
+                    resolve();
+                }
+                catch (error) {
+                    reject(new Error(error));
+                }
+            }
+            else {
+                reject(new Error(request.statusText));
+            }
+        };
+    });
+}
+exports.importMessages = importMessages;
+function pushMessages(locale, namespace, messages) {
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }
@@ -16,7 +55,7 @@ function importMessages(locale, namespace, messages) {
     }
     Object.assign(INTL_MESSAGES[namespace][locale], messages);
 }
-exports.importMessages = importMessages;
+exports.pushMessages = pushMessages;
 function findMessage(locales, namespace, key) {
     for (var _i = 0, locales_1 = locales; _i < locales_1.length; _i++) {
         var locale = locales_1[_i];
@@ -33,7 +72,7 @@ function isMessageNeedsFormatter(message) {
 exports.isMessageNeedsFormatter = isMessageNeedsFormatter;
 function extractMessageNamespaceAndKey(namespaceAndKey, defaultNamespace) {
     var result = { namespace: undefined, key: undefined };
-    if (namespaceAndKey instanceof _1.MessageRef) {
+    if (namespaceAndKey instanceof message_ref_1.MessageRef) {
         result.namespace = namespaceAndKey.namespace || defaultNamespace;
         result.key = namespaceAndKey.key;
     }

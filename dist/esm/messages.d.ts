@@ -1,5 +1,6 @@
-import { MessageRef } from ".";
-export declare function importMessages(locale: string, namespace: string, messages: {
+import { MessageRef } from "./message-ref";
+export declare function importMessages(url: string): Promise<void> | Promise<{}>;
+export declare function pushMessages(locale: string, namespace: string, messages: {
     [key: string]: string;
 }): void;
 export declare function findMessage(locales: string[], namespace: string, key: string): any;
