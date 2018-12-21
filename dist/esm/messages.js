@@ -61,7 +61,7 @@ export function findMessage(locales, namespace, key) {
             return INTL_MESSAGES[namespace][locale][key];
         }
     }
-    return key;
+    return key.replace(/.+\//g, "").replace(/\|.*/g, "").trim();
 }
 export function isMessageNeedsFormatter(message) {
     return message.indexOf("{") > -1 || message.indexOf("}") > -1;

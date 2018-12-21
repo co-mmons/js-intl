@@ -86,7 +86,7 @@ export function findMessage(locales: string[], namespace: string, key: string) {
         }
     }
 
-    return key;
+    return key.replace(/.+\//g, "").replace(/\|.*/g, "").trim();
 }
 
 export function isMessageNeedsFormatter(message: string) {
