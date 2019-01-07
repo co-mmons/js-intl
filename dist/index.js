@@ -14,6 +14,7 @@ var message_ref_1 = require("./message-ref");
 exports.MessageRef = message_ref_1.MessageRef;
 var messages_1 = require("./messages");
 exports.importMessages = messages_1.importMessages;
+exports.pushMessages = messages_1.pushMessages;
 var money_1 = require("./money");
 exports.Money = money_1.Money;
 var value_1 = require("./value");
