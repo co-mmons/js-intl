@@ -175,7 +175,7 @@ export class IntlHelper {
     }
 
     public async messagesImport(resourcePath: string) {
-        await importMessages(`${this.resourcesLocation}/${resourcePath}`);
+        await importMessages(`${this.resourcesLocation}/${resourcePath}/${this.locale}.json`);
     }
 
     public messageFormat(message: string, values: {[key: string]: any}, formats?: any): string {
