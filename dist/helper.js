@@ -62,6 +62,9 @@ var IntlHelper = /** @class */ (function () {
         this.locale = defaultLocale;
         this.defaultNamespace = defaultNamespace;
     }
+    IntlHelper.prototype.setResourcesLocation = function (location) {
+        this.resourcesLocation = location;
+    };
     IntlHelper.prototype.setDefaultNamespace = function (namespace) {
         this.defaultNamespace = namespace;
     };
@@ -150,6 +153,18 @@ var IntlHelper = /** @class */ (function () {
                 return value[locale];
             }
         }
+    };
+    IntlHelper.prototype.messagesImport = function (resourcePath) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, messages_1.importMessages(this.resourcesLocation + "/" + resourcePath)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     IntlHelper.prototype.messageFormat = function (message, values, formats) {
         return new intl_messageformat_1.default(message, this._locale, formats).format(values);

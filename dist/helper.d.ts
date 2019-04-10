@@ -12,6 +12,7 @@ export declare class IntlHelper {
      * Path or url to a directory, where intl resources are stored.
      */
     resourcesLocation: string;
+    setResourcesLocation(location: string): void;
     private useCache;
     setDefaultNamespace(namespace: string): void;
     private namespaceAliases;
@@ -35,6 +36,7 @@ export declare class IntlHelper {
     addDateTimePredefinedOptions(key: string, options: Intl.DateTimeFormatOptions): void;
     findFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string): any;
     value<T = string>(value: IntlValue<T>): T;
+    messagesImport(resourcePath: string): Promise<void>;
     messageFormat(message: string, values: {
         [key: string]: any;
     }, formats?: any): string;

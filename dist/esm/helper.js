@@ -38,7 +38,7 @@ import IntlMessageFormat from "intl-messageformat";
 import IntlRelativeFormat from "intl-relativeformat";
 import { Money } from "./money";
 import { Currency } from "./currency";
-import { extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter } from "./messages";
+import { extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter } from "./messages";
 import { MessageRef } from ".";
 for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE"]; _i < _a.length; _i++) {
     var v = _a[_i];
@@ -60,6 +60,9 @@ var IntlHelper = /** @class */ (function () {
         this.locale = defaultLocale;
         this.defaultNamespace = defaultNamespace;
     }
+    IntlHelper.prototype.setResourcesLocation = function (location) {
+        this.resourcesLocation = location;
+    };
     IntlHelper.prototype.setDefaultNamespace = function (namespace) {
         this.defaultNamespace = namespace;
     };
@@ -148,6 +151,18 @@ var IntlHelper = /** @class */ (function () {
                 return value[locale];
             }
         }
+    };
+    IntlHelper.prototype.messagesImport = function (resourcePath) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, importMessages(this.resourcesLocation + "/" + resourcePath)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     IntlHelper.prototype.messageFormat = function (message, values, formats) {
         return new IntlMessageFormat(message, this._locale, formats).format(values);

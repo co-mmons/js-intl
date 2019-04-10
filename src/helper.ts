@@ -5,7 +5,7 @@ import IntlRelativeFormat from "intl-relativeformat";
 
 import {Money} from "./money";
 import {Currency} from "./currency";
-import {extractMessageNamespaceAndKey, findMessage, isMessageNeedsFormatter} from "./messages";
+import {extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter} from "./messages";
 import {MessageRef} from ".";
 import {IntlValue} from "./value";
 
@@ -42,6 +42,10 @@ export class IntlHelper {
      * Path or url to a directory, where intl resources are stored.
      */
     public resourcesLocation: string;
+
+    public setResourcesLocation(location: string) {
+        this.resourcesLocation = location;
+    }
 
     private useCache: boolean = true;
 
@@ -168,6 +172,10 @@ export class IntlHelper {
                 return value[locale];
             }
         }
+    }
+
+    public async messagesImport(resourcePath: string) {
+        await importMessages(`${this.resourcesLocation}/${resourcePath}`);
     }
 
     public messageFormat(message: string, values: {[key: string]: any}, formats?: any): string {
