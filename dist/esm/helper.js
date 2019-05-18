@@ -285,8 +285,7 @@ var IntlHelper = /** @class */ (function () {
             predefinedOptions.hour = undefined;
             predefinedOptions.minute = undefined;
             predefinedOptions.second = undefined;
-            predefinedOptions.timeZoneName = undefined;
-            if (!predefinedOptions.year && !predefinedOptions.month && !predefinedOptions.day && !predefinedOptions.weekday && !predefinedOptions.era) {
+            if (!predefinedOptions.year && !predefinedOptions.month && !predefinedOptions.day && !predefinedOptions.weekday && !predefinedOptions.era && !predefinedOptions.timeZoneName) {
                 predefinedOptions.year = "numeric";
                 predefinedOptions.month = "numeric";
                 predefinedOptions.day = "numeric";
@@ -295,10 +294,14 @@ var IntlHelper = /** @class */ (function () {
         else {
             predefinedOptions = Object.assign({ year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }, predefinedOptions);
         }
-        if (mode !== "date" && dateTime instanceof DateTimezone && dateTime.timezone && !predefinedOptions.timeZone) {
-            predefinedOptions.timeZone = dateTime.timezone;
-        }
         if (dateTime instanceof DateTimezone) {
+            if (!dateTime.timezone) {
+                predefinedOptions.timeZone = undefined;
+                predefinedOptions.timeZoneName = undefined;
+            }
+            else {
+                predefinedOptions.timeZone = dateTime.timezone;
+            }
             dateTime = dateTime.date;
         }
         var formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
