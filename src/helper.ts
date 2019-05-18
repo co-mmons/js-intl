@@ -1,4 +1,4 @@
-import {Type, BigNumber} from "@co.mmons/js-utils/core";
+import {Type, BigNumber, DateTimezone} from "@co.mmons/js-utils/core";
 
 import IntlMessageFormat from "intl-messageformat";
 import IntlRelativeFormat from "intl-relativeformat";
@@ -113,7 +113,7 @@ export class IntlHelper {
 
             if (formatterConstructor === <any>IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
-            } else if (formatterConstructor === IntlRelativeFormat) {
+            } else if (formatterConstructor === <any>IntlRelativeFormat) {
                 formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
             } else if (formatterConstructor === <any>Intl.DateTimeFormat) {
                 formatter = new Intl.DateTimeFormat(this._locales, constructorArguments[0]);
@@ -279,30 +279,37 @@ export class IntlHelper {
     }
 
 
-    public relativeFormat(dateTime: number | Date, options: any): string {
-        return this.formatterInstance(IntlRelativeFormat, undefined, [options]).format(typeof dateTime == "number" ? new Date(dateTime) : dateTime, options);
+    public relativeFormat(dateTime: number | Date | DateTimezone, options: any): string {
+
+        if (typeof dateTime === "number") {
+            dateTime = new Date(dateTime);
+        } else if (dateTime instanceof DateTimezone) {
+            dateTime = dateTime.date;
+        }
+
+        return this.formatterInstance(IntlRelativeFormat, undefined, [options]).format(dateTime, options);
     }
 
 
-    public dateFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
+    public dateFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
 
-    public dateFormat(dateTime: number | Date, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    public dateFormat(dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);
     }
 
-    public timeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
+    public timeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
 
-    public timeFormat(dateTime: number | Date, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    public timeFormat(dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
         return this.dateTimeFormatImpl("time", dateTime, predefinedOptionsOrOptions, options);
     }
 
-    public dateTimeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
+    public dateTimeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
 
-    public dateTimeFormat(dateTime: number | Date, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    public dateTimeFormat(dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
         return this.dateTimeFormatImpl("dateTime", dateTime, predefinedOptionsOrOptions, options);
     }
 
-    private dateTimeFormatImpl(mode: string, dateTime: number | Date, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    private dateTimeFormatImpl(mode: string, dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
 
         let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.DateTimeFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions;
         predefinedOptions = Object.assign({}, predefinedOptions, options);
@@ -339,7 +346,15 @@ export class IntlHelper {
 
         }
 
-        let formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
+        if (mode !== "date" && dateTime instanceof DateTimezone && dateTime.timezone && !predefinedOptions.timeZone) {
+            predefinedOptions.timeZone = dateTime.timezone;
+        }
+
+        if (dateTime instanceof DateTimezone) {
+            dateTime = dateTime.date;
+        }
+
+        const formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
         return formatter.format(dateTime);
     }
 

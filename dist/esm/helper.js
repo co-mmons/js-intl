@@ -33,7 +33,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { BigNumber } from "@co.mmons/js-utils/core";
+import { BigNumber, DateTimezone } from "@co.mmons/js-utils/core";
 import IntlMessageFormat from "intl-messageformat";
 import IntlRelativeFormat from "intl-relativeformat";
 import { Money } from "./money";
@@ -249,7 +249,13 @@ var IntlHelper = /** @class */ (function () {
         });
     };
     IntlHelper.prototype.relativeFormat = function (dateTime, options) {
-        return this.formatterInstance(IntlRelativeFormat, undefined, [options]).format(typeof dateTime == "number" ? new Date(dateTime) : dateTime, options);
+        if (typeof dateTime === "number") {
+            dateTime = new Date(dateTime);
+        }
+        else if (dateTime instanceof DateTimezone) {
+            dateTime = dateTime.date;
+        }
+        return this.formatterInstance(IntlRelativeFormat, undefined, [options]).format(dateTime, options);
     };
     IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);
@@ -288,6 +294,12 @@ var IntlHelper = /** @class */ (function () {
         }
         else {
             predefinedOptions = Object.assign({ year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }, predefinedOptions);
+        }
+        if (mode !== "date" && dateTime instanceof DateTimezone && dateTime.timezone && !predefinedOptions.timeZone) {
+            predefinedOptions.timeZone = dateTime.timezone;
+        }
+        if (dateTime instanceof DateTimezone) {
+            dateTime = dateTime.date;
         }
         var formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
         return formatter.format(dateTime);

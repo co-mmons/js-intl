@@ -1,4 +1,4 @@
-import { Type, BigNumber } from "@co.mmons/js-utils/core";
+import { Type, BigNumber, DateTimezone } from "@co.mmons/js-utils/core";
 import { Money } from "./money";
 import { Currency } from "./currency";
 import { MessageRef } from ".";
@@ -42,10 +42,10 @@ export declare class IntlHelper {
     }, formats?: any): string;
     message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T;
     private readFile;
-    relativeFormat(dateTime: number | Date, options: any): string;
-    dateFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
-    timeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
-    dateTimeFormat(dateTime: number | Date, options?: Intl.DateTimeFormatOptions): string;
+    relativeFormat(dateTime: number | Date | DateTimezone, options: any): string;
+    dateFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
+    timeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
+    dateTimeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
     private dateTimeFormatImpl;
     currencyFormat(value: Money | CurrencyAndNumber, predefinedOptions: string, additionalOptions?: Intl.NumberFormatOptions): any;
     currencyFormat(value: Money | CurrencyAndNumber, options?: Intl.NumberFormatOptions): any;

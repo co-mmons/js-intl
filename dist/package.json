@@ -27,7 +27,7 @@
     "@types/htmlparser2": "^3.7.31",
     "@types/node": "^9.6.0",
     "@types/yargs": "^11.0.0",
-    "typescript": "^2.9.0"
+    "typescript": "~3.2.1"
   },
   "main": "index.js",
   "module": "esm/index.js",

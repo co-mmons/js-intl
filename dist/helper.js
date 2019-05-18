@@ -251,7 +251,13 @@ var IntlHelper = /** @class */ (function () {
         });
     };
     IntlHelper.prototype.relativeFormat = function (dateTime, options) {
-        return this.formatterInstance(intl_relativeformat_1.default, undefined, [options]).format(typeof dateTime == "number" ? new Date(dateTime) : dateTime, options);
+        if (typeof dateTime === "number") {
+            dateTime = new Date(dateTime);
+        }
+        else if (dateTime instanceof core_1.DateTimezone) {
+            dateTime = dateTime.date;
+        }
+        return this.formatterInstance(intl_relativeformat_1.default, undefined, [options]).format(dateTime, options);
     };
     IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);
@@ -290,6 +296,12 @@ var IntlHelper = /** @class */ (function () {
         }
         else {
             predefinedOptions = Object.assign({ year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }, predefinedOptions);
+        }
+        if (mode !== "date" && dateTime instanceof core_1.DateTimezone && dateTime.timezone && !predefinedOptions.timeZone) {
+            predefinedOptions.timeZone = dateTime.timezone;
+        }
+        if (dateTime instanceof core_1.DateTimezone) {
+            dateTime = dateTime.date;
         }
         var formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
         return formatter.format(dateTime);
