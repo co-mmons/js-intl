@@ -348,9 +348,9 @@ export class IntlHelper {
         if (dateTime instanceof DateTimezone) {
 
             if (!dateTime.timezone) {
-                predefinedOptions.timeZone = undefined;
+                predefinedOptions.timeZone = "UTC";
                 predefinedOptions.timeZoneName = undefined;
-            } else {
+            } else if (dateTime.timezone !== "current") {
                 predefinedOptions.timeZone = dateTime.timezone;
             }
 

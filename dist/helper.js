@@ -298,10 +298,10 @@ var IntlHelper = /** @class */ (function () {
         }
         if (dateTime instanceof core_1.DateTimezone) {
             if (!dateTime.timezone) {
-                predefinedOptions.timeZone = undefined;
+                predefinedOptions.timeZone = "UTC";
                 predefinedOptions.timeZoneName = undefined;
             }
-            else {
+            else if (dateTime.timezone !== "current") {
                 predefinedOptions.timeZone = dateTime.timezone;
             }
             dateTime = dateTime.date;
