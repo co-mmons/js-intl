@@ -1,7 +1,7 @@
 import * as fileSystem from "fs-extra";
 import * as https from "https";
 import * as path from "path";
-import {Parser, Handler} from "htmlparser2";
+import {Parser} from "htmlparser2";
 
 export class GoogleSheetImporter {
     
@@ -104,7 +104,7 @@ export class GoogleSheetImporter {
                                     html += ">";
                                 },
 
-                                onclosetag: (name) => {
+                                onclosetag: (name?: string) => {
                                     if (["br", "img"].indexOf(name) < 0) {
                                         html += `</${name}>`;
                                     }

@@ -23,8 +23,6 @@ for (let v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE"]) {
     }
 }
 
-type IntlFormatter = Intl.DateTimeFormat | Intl.NumberFormat | IntlMessageFormat | IntlRelativeFormat;
-
 export type CurrencyAndNumber = [string | Currency, number | BigNumber];
 
 export type MessageResult = string | Promise<string>;
@@ -104,14 +102,14 @@ export class IntlHelper {
 
     private formatters: any = {};
 
-    private formatterInstance<T extends IntlFormatter>(formatterConstructor: Type<T>, id: string, constructorArguments?: any[]): T {
+    private formatterInstance<T>(formatterConstructor: Type<T>, id: string, constructorArguments?: any[]): T {
 
         let cacheKey = id ? `${formatterConstructor.name}_${id}` : getCacheId([formatterConstructor.name].concat(constructorArguments));
         let formatter = this.formatters[cacheKey];
 
         if (!formatter && constructorArguments) {
 
-            if (formatterConstructor === <any>IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
+            if (formatterConstructor === IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
             } else if (formatterConstructor === <any>IntlRelativeFormat) {
                 formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
@@ -127,7 +125,7 @@ export class IntlHelper {
         return formatter;
     }
 
-    private formatterInstanceExists<T extends IntlFormatter>(formatter: string | Type<T>, id: string): boolean {
+    private formatterInstanceExists<T>(formatter: string | Type<T>, id: string): boolean {
         let formatterName = typeof formatter === "string" ? formatter : formatter.name;
         id = `${formatterName}_${id}`;
         return id in this.formatters[id];
@@ -135,7 +133,7 @@ export class IntlHelper {
 
     private formattersOptions: any = {};
 
-    private addFormatterPredefinedOptions<T extends IntlFormatter>(formatter: string | Type<T>, key: string, options: any) {
+    private addFormatterPredefinedOptions<T>(formatter: string | Type<T>, key: string, options: any) {
 
         let formatterName = typeof formatter === "string" ? formatter : formatter.name;
 
@@ -199,7 +197,7 @@ export class IntlHelper {
             }
         }
 
-        let formatter: IntlMessageFormat = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
+        let formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
 
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values) as T;
