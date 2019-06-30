@@ -7,6 +7,14 @@ export interface IntlBundleItem {
     path: string
 }
 
+export namespace IntlBundleItem {
+
+    export const intlPolyfill: IntlBundleItem = {path: "node_modules/intl/locale-data/jsonp/{{LOCALE}}.js"};
+
+    export const intlRelativeTimePolyfill: IntlBundleItem = {path: "node_modules/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js"};
+
+}
+
 export class IntlBundleGenerator {
 
     constructor(private locales: string[], private input: IntlBundleItem[], private outputFile: string) {
@@ -22,6 +30,11 @@ export class IntlBundleGenerator {
 
             let contents: string[] = [];
             let messages: any;
+
+            // whether intl polyfill locale data is in the bundle
+            let intlPolyfill: boolean = false;
+
+            let intlRelativeTimePolyfill: boolean = false;
 
             let outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
             fsextra.ensureFileSync(outputFile);
@@ -68,6 +81,17 @@ export class IntlBundleGenerator {
                             
                         } else {
                             let c = fsextra.readFileSync(itemPath).toString();
+
+                            if (item === IntlBundleItem.intlPolyfill) {
+                                intlPolyfill = true;
+                                c = c.replace("IntlPolyfill.__addLocaleData", "INTL_POLYFILL.push");
+                            }
+
+                            if (item === IntlBundleItem.intlRelativeTimePolyfill) {
+                                intlRelativeTimePolyfill = true;
+                                c = c.substring(c.indexOf("IntlRelativeTimeFormat.__addLocaleData")).replace("IntlRelativeTimeFormat.__addLocaleData", "INTL_RELATIVE_POLYFILL.push");
+                            }
+
                             if (contents.indexOf(c) < 0) {
                                 contents.push(c);
                             }
@@ -88,6 +112,24 @@ export class IntlBundleGenerator {
                 } else if (jsonType) {
                     contents.push(JSON.stringify(messages));
                 }
+            }
+
+            if (intlPolyfill) {
+                contents.unshift(
+                    "{var INTL_POLYFILL=[];",
+                    "if(typeof window !== 'undefined'){INTL_POLYFILL=window['INTL_POLYFILL']=(window['INTL_POLYFILL']||{});}",
+                    "if(typeof global !== 'undefined'){INTL_POLYFILL=global['INTL_POLYFILL']=(global['INTL_POLYFILL']||{});}",
+                    "}"
+                );
+            }
+
+            if (intlRelativeTimePolyfill) {
+                contents.unshift(
+                    "{var INTL_RELATIVE_POLYFILL=[];",
+                    "if(typeof window !== 'undefined'){INTL_RELATIVE_POLYFILL=window['INTL_RELATIVE_POLYFILL']=(window['INTL_RELATIVE_POLYFILL']||{});}",
+                    "if(typeof global !== 'undefined'){INTL_RELATIVE_POLYFILL=global['INTL_RELATIVE_POLYFILL']=(global['INTL_RELATIVE_POLYFILL']||{});}",
+                    "}"
+                );
             }
 
             fsextra.writeFileSync(outputFile, contents.join("\n"));

@@ -1,7 +1,7 @@
 import {Type, BigNumber, DateTimezone} from "@co.mmons/js-utils/core";
+import {selectUnit} from "@formatjs/intl-utils";
 
 import IntlMessageFormat from "intl-messageformat";
-import IntlRelativeFormat from "intl-relativeformat";
 
 import {Money} from "./money";
 import {Currency} from "./currency";
@@ -12,14 +12,29 @@ import {IntlValue} from "./value";
 declare var INTL_LOCALE: string;
 declare var INTL_SUPPORTED_LOCALE: string;
 declare var INTL_DEFAULT_LOCALE: string;
+declare var INTL_POLYFILL: any[];
+declare var INTL_RELATIVE_POLYFILL: any[];
+declare var IntlPolyfill: any;
 
-for (let v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE"]) {
+for (const v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
     if (typeof window !== "undefined" && !window[v]) {
         window[v] = undefined;
     }
 
     if (typeof global !== "undefined" && !global[v]) {
         global[v] = undefined;
+    }
+}
+
+if (INTL_POLYFILL && INTL_POLYFILL.length && IntlPolyfill) {
+    for (const a of INTL_POLYFILL) {
+        IntlPolyfill.__addLocaleData(a);
+    }
+}
+
+if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
+    for (const a of INTL_RELATIVE_POLYFILL) {
+        Intl["RelativeTimeFormat"].__addLocaleData(a);
     }
 }
 
@@ -111,11 +126,11 @@ export class IntlHelper {
 
             if (formatterConstructor === IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
-            } else if (formatterConstructor === <any>IntlRelativeFormat) {
-                formatter = new IntlRelativeFormat(this._locales, constructorArguments[0]);
-            } else if (formatterConstructor === <any>Intl.DateTimeFormat) {
+            } else if (formatterConstructor === Intl["RelativeTimeFormat"]) {
+                formatter = new Intl["RelativeTimeFormat"](this._locales, constructorArguments[0]);
+            } else if (formatterConstructor === Intl.DateTimeFormat) {
                 formatter = new Intl.DateTimeFormat(this._locales, constructorArguments[0]);
-            } else if (formatterConstructor === <any>Intl.NumberFormat) {
+            } else if (formatterConstructor === Intl.NumberFormat) {
                 formatter = new Intl.NumberFormat(this._locales, constructorArguments[0]);
             }
 
@@ -277,7 +292,7 @@ export class IntlHelper {
     }
 
 
-    public relativeFormat(dateTime: number | Date | DateTimezone, options: any): string {
+    public relativeFormat(dateTime: number | Date | DateTimezone, options?: any): string {
 
         if (typeof dateTime === "number") {
             dateTime = new Date(dateTime);
@@ -285,7 +300,9 @@ export class IntlHelper {
             dateTime = dateTime.date;
         }
 
-        return this.formatterInstance(IntlRelativeFormat, undefined, [options]).format(dateTime, options);
+        const diff = selectUnit(dateTime)
+
+        return this.formatterInstance<any>(Intl["RelativeTimeFormat"], undefined, [{numeric: "auto"}]).format(diff.value, diff.unit);
     }
 
 

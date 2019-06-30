@@ -15,12 +15,12 @@
     "@co.mmons/js-utils": "git+https://github.com/co-mmons/js-utils.git",
     "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
     "@formatjs/intl-relativetimeformat": "^2.1.0",
+    "@formatjs/intl-utils": "^0.2.0",
     "@types/intl-relativeformat": "git+https://github.com/co-mmons/types-intl-relativeformat.git",
     "fs-extra": "^8.0.0",
     "htmlparser2": "^3.10.0",
     "intl-format-cache": "^3.2.0",
     "intl-messageformat": "^4.1.2",
-    "intl-relativeformat": "^6.3.0",
     "yargs": "^11.0.0"
   },
   "devDependencies": {

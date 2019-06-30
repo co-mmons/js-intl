@@ -42,7 +42,7 @@ export declare class IntlHelper {
     }, formats?: any): string;
     message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T;
     private readFile;
-    relativeFormat(dateTime: number | Date | DateTimezone, options: any): string;
+    relativeFormat(dateTime: number | Date | DateTimezone, options?: any): string;
     dateFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
     timeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
     dateTimeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;

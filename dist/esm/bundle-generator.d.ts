@@ -3,6 +3,10 @@ export interface IntlBundleItem {
     namespace?: string;
     path: string;
 }
+export declare namespace IntlBundleItem {
+    const intlPolyfill: IntlBundleItem;
+    const intlRelativeTimePolyfill: IntlBundleItem;
+}
 export declare class IntlBundleGenerator {
     private locales;
     private input;
