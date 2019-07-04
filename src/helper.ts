@@ -1,5 +1,4 @@
 import {Type, BigNumber, DateTimezone} from "@co.mmons/js-utils/core";
-import {selectUnit} from "@formatjs/intl-utils";
 
 import IntlMessageFormat from "intl-messageformat";
 
@@ -7,6 +6,7 @@ import {Money} from "./money";
 import {Currency} from "./currency";
 import {extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter} from "./messages";
 import {MessageRef} from ".";
+import {selectUnit} from "./relative-unit-selector";
 import {IntlValue} from "./value";
 
 declare var INTL_LOCALE: string;
@@ -300,7 +300,7 @@ export class IntlHelper {
             dateTime = dateTime.date;
         }
 
-        const diff = selectUnit(dateTime)
+        const diff = selectUnit(dateTime);
 
         return this.formatterInstance<any>(Intl["RelativeTimeFormat"], undefined, [{numeric: "auto"}]).format(diff.value, diff.unit);
     }

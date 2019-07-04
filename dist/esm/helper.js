@@ -34,12 +34,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { BigNumber, DateTimezone } from "@co.mmons/js-utils/core";
-import { selectUnit } from "@formatjs/intl-utils";
 import IntlMessageFormat from "intl-messageformat";
 import { Money } from "./money";
 import { Currency } from "./currency";
 import { extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter } from "./messages";
 import { MessageRef } from ".";
+import { selectUnit } from "./relative-unit-selector";
 for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]; _i < _a.length; _i++) {
     var v = _a[_i];
     if (typeof window !== "undefined" && !window[v]) {

@@ -36,12 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@co.mmons/js-utils/core");
-var intl_utils_1 = require("@formatjs/intl-utils");
 var intl_messageformat_1 = require("intl-messageformat");
 var money_1 = require("./money");
 var currency_1 = require("./currency");
 var messages_1 = require("./messages");
 var _1 = require(".");
+var relative_unit_selector_1 = require("./relative-unit-selector");
 for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]; _i < _a.length; _i++) {
     var v = _a[_i];
     if (typeof window !== "undefined" && !window[v]) {
@@ -269,7 +269,7 @@ var IntlHelper = /** @class */ (function () {
         else if (dateTime instanceof core_1.DateTimezone) {
             dateTime = dateTime.date;
         }
-        var diff = intl_utils_1.selectUnit(dateTime);
+        var diff = relative_unit_selector_1.selectUnit(dateTime);
         return this.formatterInstance(Intl["RelativeTimeFormat"], undefined, [{ numeric: "auto" }]).format(diff.value, diff.unit);
     };
     IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
