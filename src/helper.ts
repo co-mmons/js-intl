@@ -26,17 +26,26 @@ for (const v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "
     }
 }
 
-if (INTL_POLYFILL && INTL_POLYFILL.length && IntlPolyfill) {
-    for (const a of INTL_POLYFILL) {
-        IntlPolyfill.__addLocaleData(a);
+function loadPolyfillsLocale() {
+
+    if (INTL_POLYFILL && INTL_POLYFILL.length && IntlPolyfill) {
+        for (const a of INTL_POLYFILL) {
+            IntlPolyfill.__addLocaleData(a);
+        }
+
+        INTL_POLYFILL = [];
+    }
+
+    if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
+        for (const a of INTL_RELATIVE_POLYFILL) {
+            Intl["RelativeTimeFormat"].__addLocaleData(a);
+        }
+
+        INTL_RELATIVE_POLYFILL = [];
     }
 }
 
-if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
-    for (const a of INTL_RELATIVE_POLYFILL) {
-        Intl["RelativeTimeFormat"].__addLocaleData(a);
-    }
-}
+loadPolyfillsLocale();
 
 export type CurrencyAndNumber = [string | Currency, number | BigNumber];
 
@@ -49,6 +58,8 @@ export class IntlHelper {
     constructor(defaultLocale: string, private defaultNamespace?: string) {
         this.locale = defaultLocale;
         this.defaultNamespace = defaultNamespace;
+
+        loadPolyfillsLocale();
     }
 
     /**

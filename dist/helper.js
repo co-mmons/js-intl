@@ -51,18 +51,23 @@ for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCA
         global[v] = undefined;
     }
 }
-if (INTL_POLYFILL && INTL_POLYFILL.length && IntlPolyfill) {
-    for (var _b = 0, INTL_POLYFILL_1 = INTL_POLYFILL; _b < INTL_POLYFILL_1.length; _b++) {
-        var a = INTL_POLYFILL_1[_b];
-        IntlPolyfill.__addLocaleData(a);
+function loadPolyfillsLocale() {
+    if (INTL_POLYFILL && INTL_POLYFILL.length && IntlPolyfill) {
+        for (var _i = 0, INTL_POLYFILL_1 = INTL_POLYFILL; _i < INTL_POLYFILL_1.length; _i++) {
+            var a = INTL_POLYFILL_1[_i];
+            IntlPolyfill.__addLocaleData(a);
+        }
+        INTL_POLYFILL = [];
+    }
+    if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
+        for (var _a = 0, INTL_RELATIVE_POLYFILL_1 = INTL_RELATIVE_POLYFILL; _a < INTL_RELATIVE_POLYFILL_1.length; _a++) {
+            var a = INTL_RELATIVE_POLYFILL_1[_a];
+            Intl["RelativeTimeFormat"].__addLocaleData(a);
+        }
+        INTL_RELATIVE_POLYFILL = [];
     }
 }
-if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
-    for (var _c = 0, INTL_RELATIVE_POLYFILL_1 = INTL_RELATIVE_POLYFILL; _c < INTL_RELATIVE_POLYFILL_1.length; _c++) {
-        var a = INTL_RELATIVE_POLYFILL_1[_c];
-        Intl["RelativeTimeFormat"].__addLocaleData(a);
-    }
-}
+loadPolyfillsLocale();
 var defaultMessageFormat = new intl_messageformat_1.default("", "en");
 var IntlHelper = /** @class */ (function () {
     function IntlHelper(defaultLocale, defaultNamespace) {
@@ -73,6 +78,7 @@ var IntlHelper = /** @class */ (function () {
         this.formattersOptions = {};
         this.locale = defaultLocale;
         this.defaultNamespace = defaultNamespace;
+        loadPolyfillsLocale();
     }
     IntlHelper.prototype.setResourcesLocation = function (location) {
         this.resourcesLocation = location;
