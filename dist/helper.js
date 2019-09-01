@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@co.mmons/js-utils/core");
+var bignumber_js_1 = require("bignumber.js");
 var intl_messageformat_1 = require("intl-messageformat");
 var money_1 = require("./money");
 var currency_1 = require("./currency");
@@ -354,7 +355,7 @@ var IntlHelper = /** @class */ (function () {
             }
             value = value.amount.toNumber();
         }
-        else if (value instanceof core_1.BigNumber) {
+        else if (value instanceof bignumber_js_1.BigNumber) {
             value = value.toNumber();
         }
         else if (Array.isArray(value) && value) {
@@ -366,7 +367,7 @@ var IntlHelper = /** @class */ (function () {
                     options.currency = value[0];
                 }
             }
-            if (value[1] instanceof core_1.BigNumber) {
+            if (value[1] instanceof bignumber_js_1.BigNumber) {
                 value = value[1].toNumber();
             }
             else {

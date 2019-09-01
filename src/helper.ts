@@ -1,4 +1,5 @@
-import {Type, BigNumber, DateTimezone} from "@co.mmons/js-utils/core";
+import {Type, DateTimezone} from "@co.mmons/js-utils/core";
+import {BigNumber} from "bignumber.js";
 
 import IntlMessageFormat from "intl-messageformat";
 
@@ -135,7 +136,7 @@ export class IntlHelper {
 
         if (!formatter && constructorArguments) {
 
-            if (formatterConstructor === IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
+            if (formatterConstructor === <any>IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
             } else if (formatterConstructor === Intl["RelativeTimeFormat"]) {
                 formatter = new Intl["RelativeTimeFormat"](this._locales, constructorArguments[0]);

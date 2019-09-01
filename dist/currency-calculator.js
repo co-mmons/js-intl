@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@co.mmons/js-utils/core");
+var bignumber_js_1 = require("bignumber.js");
 var currency_1 = require("./currency");
 var money_1 = require("./money");
 var CurrencyCalculator = /** @class */ (function () {
@@ -10,15 +10,15 @@ var CurrencyCalculator = /** @class */ (function () {
     }
     CurrencyCalculator.main = function () {
         var converter = new CurrencyCalculator(new currency_1.Currency("PLN"));
-        converter.addRate(new currency_1.Currency("EUR"), new core_1.BigNumber(1), new core_1.BigNumber(4));
-        converter.addRate(new currency_1.Currency("USD"), new core_1.BigNumber(1), new core_1.BigNumber(2));
-        var eur1 = new money_1.Money(new currency_1.Currency("EUR"), new core_1.BigNumber(1));
+        converter.addRate(new currency_1.Currency("EUR"), new bignumber_js_1.BigNumber(1), new bignumber_js_1.BigNumber(4));
+        converter.addRate(new currency_1.Currency("USD"), new bignumber_js_1.BigNumber(1), new bignumber_js_1.BigNumber(2));
+        var eur1 = new money_1.Money(new currency_1.Currency("EUR"), new bignumber_js_1.BigNumber(1));
         console.log("1 eur to pln:" + converter.calculate(eur1, new currency_1.Currency("PLN")));
-        var usd1 = new money_1.Money(new currency_1.Currency("USD"), new core_1.BigNumber(1));
+        var usd1 = new money_1.Money(new currency_1.Currency("USD"), new bignumber_js_1.BigNumber(1));
         console.log("1 usd to pln:" + converter.calculate(usd1, new currency_1.Currency("PLN")));
         console.log("1 usd to eur:" + converter.calculate(usd1, new currency_1.Currency("EUR")));
         console.log("1 eur to usd:" + converter.calculate(eur1, new currency_1.Currency("USD")));
-        var pln1 = new money_1.Money(new currency_1.Currency("PLN"), new core_1.BigNumber(1));
+        var pln1 = new money_1.Money(new currency_1.Currency("PLN"), new bignumber_js_1.BigNumber(1));
         console.log("1 pln to eur:" + converter.calculate(pln1, new currency_1.Currency("EUR")));
         console.log("1 pln to usd:" + converter.calculate(pln1, new currency_1.Currency("USD")));
     };
@@ -49,8 +49,8 @@ var CurrencyCalculator = /** @class */ (function () {
                 return calculated;
             }
         }
-        var amountFrom = this.calculateToBase(new core_1.BigNumber(1), fromCurrency);
-        var amountTo = this.calculateToBase(new core_1.BigNumber(1), toCurrency);
+        var amountFrom = this.calculateToBase(new bignumber_js_1.BigNumber(1), fromCurrency);
+        var amountTo = this.calculateToBase(new bignumber_js_1.BigNumber(1), toCurrency);
         var amountCalculated = amountFrom.dividedBy(amountTo).times(amountValue);
         if (amount instanceof money_1.Money) {
             return new money_1.Money(toCurrency, amountCalculated);

@@ -17,6 +17,7 @@
     "@formatjs/intl-relativetimeformat": "^2.8.3",
     "@formatjs/intl-utils": "^0.7.0",
     "@types/intl-relativeformat": "git+https://github.com/co-mmons/types-intl-relativeformat.git",
+    "date-fns": "^2.0.1",
     "fs-extra": "^8.0.0",
     "htmlparser2": "^3.10.0",
     "intl-format-cache": "^3.2.0",

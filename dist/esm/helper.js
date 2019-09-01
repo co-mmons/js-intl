@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
-import { BigNumber, DateTimezone } from "@co.mmons/js-utils/core";
+import { DateTimezone } from "@co.mmons/js-utils/core";
+import { BigNumber } from "bignumber.js";
 import IntlMessageFormat from "intl-messageformat";
 import { Money } from "./money";
 import { Currency } from "./currency";

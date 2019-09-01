@@ -1,4 +1,5 @@
-import { Type, BigNumber, DateTimezone } from "@co.mmons/js-utils/core";
+import { Type, DateTimezone } from "@co.mmons/js-utils/core";
+import { BigNumber } from "bignumber.js";
 import { Money } from "./money";
 import { Currency } from "./currency";
 import { MessageRef } from ".";
