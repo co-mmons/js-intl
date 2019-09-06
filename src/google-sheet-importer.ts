@@ -203,17 +203,12 @@ export class GoogleSheetImporter {
 
                     // filter by tags
                     TAGS: if (document.filterTags) {
-                        let tags: any = row[columns.tags];
-
-                        if (!tags) {
-                            continue ROWS;
-                        } else {
-                            tags = tags.split(",");
-                        }
+                        let tags: string[] = row[columns.tags] ? row[columns.tags].split(",") : [];
 
                         for (let tag of document.filterTags) {
                             for (let t of tags) {
-                                if (tag == t) {
+                                t = t.trim();
+                                if (tag === t || t.match(tag)) {
                                     break TAGS;
                                 }
                             }
