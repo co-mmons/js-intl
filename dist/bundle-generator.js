@@ -65,7 +65,8 @@ var IntlBundleGenerator = /** @class */ (function () {
                             }
                             if (item === IntlBundleItem.intlRelativeTimePolyfill) {
                                 intlRelativeTimePolyfill = true;
-                                c = c.substring(c.indexOf("IntlRelativeTimeFormat.__addLocaleData")).replace("IntlRelativeTimeFormat.__addLocaleData", "INTL_RELATIVE_POLYFILL.push");
+                                c = c.replace(/Intl\.RelativeTimeFormat\.__addLocaleData/gm, "INTL_RELATIVE_POLYFILL.push");
+                                c = c.replace(/Intl\.RelativeTimeFormat/gm, "INTL_RELATIVE_POLYFILL");
                             }
                             if (contents.indexOf(c) < 0) {
                                 contents.push(c);
