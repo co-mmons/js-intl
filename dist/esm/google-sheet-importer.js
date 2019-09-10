@@ -199,18 +199,13 @@ var GoogleSheetImporter = /** @class */ (function () {
                             if (row[columns.key]) {
                                 // filter by tags
                                 TAGS: if (document.filterTags) {
-                                    tags = row[columns.tags];
-                                    if (!tags) {
-                                        continue ROWS;
-                                    }
-                                    else {
-                                        tags = tags.split(",");
-                                    }
+                                    tags = row[columns.tags] ? row[columns.tags].split(",") : [];
                                     for (_e = 0, _f = document.filterTags; _e < _f.length; _e++) {
                                         tag = _f[_e];
                                         for (_g = 0, tags_1 = tags; _g < tags_1.length; _g++) {
                                             t = tags_1[_g];
-                                            if (tag == t) {
+                                            t = t.trim();
+                                            if (tag === t || t.match(tag)) {
                                                 break TAGS;
                                             }
                                         }

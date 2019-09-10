@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && tsc && tsc -p tsconfig.esm.json && node-utils-file-system-glob-copy ./ dist package.json && node-utils-file-system-glob-copy src dist \"**/package.json\" && node-utils-file-system-glob-copy ./ dist \"messages/**/*\"",
+    "messages": "npx ts-node src/google-sheet-importer-cli.ts --output-path messages --output-type json --document 1lTpcwU0ubFX7bJFCt8zeHYrwbDaoxNcjzpjUVdmiY_w --worksheet 1 --filterTags intl",
     "install": "node-utils-npm-install-dist"
   },
   "bin": {
@@ -30,6 +31,7 @@
     "@types/node": "^9.6.0",
     "@types/yargs": "^11.0.0",
     "bignumber.js": "^9.0.0",
+    "ts-node": "^8.3.0",
     "tslib": "^1.10.0",
     "typescript": "~3.4.0"
   },
