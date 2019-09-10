@@ -203,7 +203,7 @@ export class GoogleSheetImporter {
 
                     // filter by tags
                     TAGS: if (document.filterTags) {
-                        let tags: string[] = row[columns.tags] ? row[columns.tags].split(",") : [];
+                        let tags: string[] = row[columns.tags] ? row[columns.tags].split(",") : ["--empty--"];
 
                         for (let tag of document.filterTags) {
                             for (let t of tags) {
