@@ -230,14 +230,14 @@ var GoogleSheetImporter = /** @class */ (function () {
                                     value = (row[columns["#" + locale]] || "").trim();
                                     if (value) {
                                         if (value.startsWith("#") && value !== "#default") {
-                                            value = row[columns["#" + value.toLowerCase()] || columns["#default"]];
+                                            value = row[columns[value.toLowerCase()] || columns["#default"]];
                                         }
                                         if (!value || value === "#default") {
                                             value = (row[columns["#default"]] || "").trim();
                                         }
                                     }
-                                    else if (this.defaultLocale && columns[this.defaultLocale]) {
-                                        value = (row[columns[this.defaultLocale]] || "").trim();
+                                    else if (this.defaultLocale && columns["#" + this.defaultLocale]) {
+                                        value = (row[columns["#" + this.defaultLocale]] || "").trim();
                                     }
                                     if (value) {
                                         alias_1 = row[columns.alias];
