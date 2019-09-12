@@ -18,6 +18,7 @@ async function main() {
     let importer = new GoogleSheetImporter();
     importer.outputPath = argv["outputPath"];
     importer.outputType = argv["outputType"];
+    importer.defaultLocale = argv["defaultLocale"];
 
     let documents: string[] = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];
     let sheets = Array.isArray(argv["worksheet"]) ? argv["worksheet"] : [argv["worksheet"]];

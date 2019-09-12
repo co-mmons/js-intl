@@ -55,6 +55,7 @@ function main() {
                     importer = new google_sheet_importer_1.GoogleSheetImporter();
                     importer.outputPath = argv["outputPath"];
                     importer.outputType = argv["outputType"];
+                    importer.defaultLocale = argv["defaultLocale"];
                     documents = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];
                     sheets = Array.isArray(argv["worksheet"]) ? argv["worksheet"] : [argv["worksheet"]];
                     tags = Array.isArray(argv["filterTags"]) ? argv["filterTags"] : [argv["filterTags"]];
