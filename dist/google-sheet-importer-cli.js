@@ -41,6 +41,7 @@ var google_sheet_importer_1 = require("./google-sheet-importer");
 var argv = yargs
     .option("outputPath", { description: "Output directory path" })
     .option("outputType", { description: "Output type", choices: ["json", "ts"] })
+    .option("defaultLocale", { description: "Default locale to use, when no translation for some other locale" })
     .option("document", { description: "Google document identifier" })
     .option("worksheet", { description: "Document's worksheet index (1 based) or worksheet name" })
     .option("filterTags", { description: "Comma separated tags, that must be present for keys from worksheet. Key will be taken from worksheet if at least one tag is matched." })

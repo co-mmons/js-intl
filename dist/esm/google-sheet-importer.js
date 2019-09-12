@@ -228,11 +228,16 @@ var GoogleSheetImporter = /** @class */ (function () {
                                 keys = [row[columns.key]].concat(alias);
                                 for (locale in data) {
                                     value = (row[columns["#" + locale]] || "").trim();
-                                    if (value.startsWith("#") && value !== "#default") {
-                                        value = row[columns["#" + value.toLowerCase()] || columns["#default"]];
+                                    if (value) {
+                                        if (value.startsWith("#") && value !== "#default") {
+                                            value = row[columns["#" + value.toLowerCase()] || columns["#default"]];
+                                        }
+                                        if (!value || value === "#default") {
+                                            value = (row[columns["#default"]] || "").trim();
+                                        }
                                     }
-                                    if (!value || value === "#default") {
-                                        value = row[columns["#default"]].trim();
+                                    else if (this.defaultLocale && columns[this.defaultLocale]) {
+                                        value = (row[columns[this.defaultLocale]] || "").trim();
                                     }
                                     if (value) {
                                         alias_1 = row[columns.alias];

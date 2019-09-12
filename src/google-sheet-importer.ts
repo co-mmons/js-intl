@@ -18,6 +18,8 @@ export class GoogleSheetImporter {
 
     public outputType: "json" | "ts" = "json";
 
+    public defaultLocale: string;
+
     public async generate() {
 
         let output: {[key: string]: string} = {};
@@ -239,12 +241,18 @@ export class GoogleSheetImporter {
                     for (let locale in data) {
                         let value = (row[columns[`#${locale}`]] || "").trim();
 
-                        if (value.startsWith("#") && value !== "#default") {
-                            value = row[columns["#" + value.toLowerCase()] || columns["#default"]];
-                        }
+                        if (value) {
 
-                        if (!value || value === "#default") {
-                            value = row[columns["#default"]].trim();
+                            if (value.startsWith("#") && value !== "#default") {
+                                value = row[columns["#" + value.toLowerCase()] || columns["#default"]];
+                            }
+
+                            if (!value || value === "#default") {
+                                value = (row[columns["#default"]] || "").trim();
+                            }
+
+                        } else if (this.defaultLocale && columns[this.defaultLocale]) {
+                            value = (row[columns[this.defaultLocale]] || "").trim();
                         }
 
                         if (value) {
