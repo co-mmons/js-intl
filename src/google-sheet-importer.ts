@@ -237,7 +237,15 @@ export class GoogleSheetImporter {
                     let keys = [row[columns.key]].concat(alias);
 
                     for (let locale in data) {
-                        let value = (row[columns[`#${locale}`]] || row[columns["#default"]]).trim();
+                        let value = (row[columns[`#${locale}`]]).trim();
+
+                        if (value.startsWith("#") && value !== "#default") {
+                            value = row[columns["#" + value.toLowerCase()] || columns["#default"]];
+                        }
+
+                        if (!value || value === "#default") {
+                            value = row[columns["#default"]].trim();
+                        }
 
                         if (value) {
 
