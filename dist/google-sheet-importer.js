@@ -263,7 +263,7 @@ var GoogleSheetImporter = /** @class */ (function () {
                                 }
                                 keys = [row[columns.key]].concat(alias);
                                 for (locale in data) {
-                                    value = (row[columns["#" + locale]]).trim();
+                                    value = (row[columns["#" + locale]] || "").trim();
                                     if (value.startsWith("#") && value !== "#default") {
                                         value = row[columns["#" + value.toLowerCase()] || columns["#default"]];
                                     }
