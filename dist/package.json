@@ -15,14 +15,13 @@
   "dependencies": {
     "@co.mmons/js-utils": "git+https://github.com/co-mmons/js-utils.git",
     "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
-    "@formatjs/intl-relativetimeformat": "^2.8.3",
-    "@formatjs/intl-utils": "^0.7.0",
-    "@types/intl-relativeformat": "git+https://github.com/co-mmons/types-intl-relativeformat.git",
-    "date-fns": "^2.0.1",
+    "@formatjs/intl-relativetimeformat": "^4.1.0",
+    "@formatjs/intl-utils": "^1.2.0",
+    "date-fns": "^2.3.0",
     "fs-extra": "^8.0.0",
     "htmlparser2": "^3.10.0",
-    "intl-format-cache": "^3.2.0",
-    "intl-messageformat": "^4.1.2",
+    "intl-format-cache": "^4.2.0",
+    "intl-messageformat": "^7.3.0",
     "yargs": "^11.0.0"
   },
   "devDependencies": {

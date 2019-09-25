@@ -16,9 +16,12 @@
     "Processing the data...": "Przetwarzanie danych...",
     "Save|command": "Zapisz",
     "Search": "Szukaj",
-    "Search for...": "Wyszkuj...",
+    "Search for...": "Wyszukaj...",
     "Search|command": "Szukaj",
     "Sending the data...": "Wysyłanie danych...",
     "Skip": "Pomiń",
+    "validation/invalidValueError": "Wartość jest nieprawidłowa.",
+    "validation/minLengthError": "{length, plural, =0 {Wartość ma za mało znaków.} =1 {Wartość musi mieć co najmniej jeden znak.} few {Wartość musi zawierać co najmniej # znaki.} other {Wartość musi zawierać co najmniej # znaków.}}",
+    "validation/requiredError": "Wartość jest wymagana.",
     "Yes": "Tak"
 }
