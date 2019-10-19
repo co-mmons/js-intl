@@ -15,16 +15,20 @@ export class Locale {
     constructor(code: string);
 
     constructor(codeOrPrototype: string | any) {
+        this.$constructor(codeOrPrototype);
+    }
+
+    private $constructor(codeOrPrototype: string | any) {
 
         if (typeof codeOrPrototype === "string") {
-            this.code = codeOrPrototype;
+            this["code" as any] = codeOrPrototype;
         } else if (codeOrPrototype["code"] && typeof codeOrPrototype["code"] === "string") {
-            this.code = codeOrPrototype["code"];
+            this["code" as any] = codeOrPrototype["code"];
         } else {
-            throw new Error("Currency code must be given in order to create Currency instance");
+            throw new Error("Locale code must be given in order to create Locale instance");
         }
 
-        this.name = new MessageRef("@umpirsky/locale-list", this.code.split("-").join("_"));
+        this["name" as any] = new MessageRef("@umpirsky/locale-list", this.code.split("-").join("_"));
     }
 
     readonly code: string;
@@ -42,7 +46,7 @@ export class Locale {
     protected fromJSON(json: any) {
 
         if (typeof json === "string" || (json && typeof json["code"] == "string")) {
-            this.constructor.call(this, json);
+            this.$constructor(json);
         } else {
             throw new Error("Cannot unserialize  '" + json + "' to Locale");
         }

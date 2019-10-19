@@ -3,7 +3,10 @@ import { Currency } from "./currency";
 export declare class Money {
     constructor(currency: Currency, amount: BigNumber | number);
     constructor(currency: string, amount: BigNumber | number);
+    private $constructor;
+    private _currency;
     readonly currency: Currency;
+    private _amount;
     readonly amount: BigNumber;
     plus(amount: BigNumber | number | string): Money;
     minus(amount: BigNumber | number | string): Money;

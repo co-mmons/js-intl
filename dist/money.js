@@ -18,14 +18,23 @@ function toBigNumber(value) {
 }
 class Money {
     constructor(currencyOrPrototype, amount) {
+        this.$constructor(currencyOrPrototype, amount);
+    }
+    $constructor(currencyOrPrototype, amount) {
         if (currencyOrPrototype instanceof currency_1.Currency || typeof currencyOrPrototype === "string") {
-            this.currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
-            this.amount = toBigNumber(amount);
+            this._currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
+            this._amount = toBigNumber(amount);
         }
         else if (currencyOrPrototype) {
-            this.amount = toBigNumber(currencyOrPrototype["amount"]);
-            this.currency = currencyOrPrototype["currency"] instanceof currency_1.Currency ? currencyOrPrototype["amount"] : new currency_1.Currency(currencyOrPrototype["currency"]);
+            this._amount = toBigNumber(currencyOrPrototype["amount"]);
+            this._currency = currencyOrPrototype["currency"] instanceof currency_1.Currency ? currencyOrPrototype["amount"] : new currency_1.Currency(currencyOrPrototype["currency"]);
         }
+    }
+    get currency() {
+        return this._currency;
+    }
+    get amount() {
+        return this._amount;
     }
     plus(amount) {
         return new Money(this.currency, this.amount.plus(amount));
@@ -62,19 +71,19 @@ class Money {
         if (typeof json == "string") {
             let currency = json.substr(0, 3);
             let amount = json.substr(3);
-            this.constructor.call(this, currency, amount);
+            this.$constructor(currency, amount);
             return;
         }
         else if (Array.isArray(json)) {
             if (json.length == 2 && typeof json[0] == "string" && (typeof json[1] == "string" || typeof json[1] == "number")) {
                 let currency = json[0];
                 let amount = json[1];
-                this.constructor.call(this, currency, amount);
+                this.$constructor(currency, amount);
                 return;
             }
         }
         else if (json.currency && json.amount) {
-            this.constructor.call(this, json);
+            this.$constructor(json);
             return;
         }
         throw new Error("Cannot unserialize  '" + json + "' to Money");

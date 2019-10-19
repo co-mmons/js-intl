@@ -9,6 +9,10 @@ export class Currency {
 	constructor(code: string);
 
 	constructor(codeOrPrototype: string | any) {
+		this.$constructor(codeOrPrototype);
+	}
+
+	private $constructor(codeOrPrototype: string | any) {
 
 		if (typeof codeOrPrototype === "string") {
 			this._code = codeOrPrototype;
@@ -36,9 +40,9 @@ export class Currency {
 	protected fromJSON(json: any) {
 
 		if (typeof json === "string") {
-			this._code = json;
+			this.$constructor(json);
 		} else if (json && typeof json["code"] === "string") {
-			this._code = json["code"];
+			this.$constructor(json);
 		} else {
 			throw new Error("Cannot unserialize '" + json + "' to Currency instance");
 		}

@@ -28,11 +28,15 @@ export class Country {
 	constructor(code: string);
 
 	constructor(codeOrPrototype: string | any) {
+		this.$constructor(codeOrPrototype);
+	}
+
+	private $constructor(codeOrPrototype: string | any) {
 
 		if (typeof codeOrPrototype === "string") {
-			this.code = codeOrPrototype;
+			this["code" as any] = codeOrPrototype;
 		} else if (codeOrPrototype["code"] && typeof codeOrPrototype["code"] === "string") {
-			this.code = codeOrPrototype["code"];
+			this["code" as any] = codeOrPrototype["code"];
 		} else {
 			throw new Error("Country code must be given in order to create Country instance");
 		}
@@ -41,13 +45,13 @@ export class Country {
 			for (let a in Country._iso) {
 				let c = Country._iso[a];
 				if (c == this.code) {
-					this.code = a;
+					this["code" as any] = a;
 					break;
 				}
 			}
 		}
-		
-		this.name = new MessageRef("@umpirsky/country-list", this.code);
+
+		this["name" as any] = new MessageRef("@umpirsky/country-list", this.code);
 	}
 
 	equals(country: Country): boolean {
@@ -76,7 +80,7 @@ export class Country {
 
 	protected fromJSON(json: any) {
 		if (typeof json === "string" || (json && typeof json["code"] == "string")) {
-			this.constructor.call(this, json);
+			this.$constructor(json);
 		} else {
 			throw new Error("Cannot unserialize  '" + json + "' to Country");
 		}

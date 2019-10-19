@@ -7,6 +7,7 @@ export declare class Country {
     static codes(): string[];
     static countries(): Country[];
     constructor(code: string);
+    private $constructor;
     equals(country: Country): boolean;
     readonly code: string;
     readonly name: MessageRef;

@@ -15,11 +15,13 @@ export class MessageRef {
 
         if (typeof json == "string") {
             let namespaceKey = json.trim().split("#");
-            if (namespaceKey.length == 2) {
-                this.constructor.call(this, namespaceKey[0], namespaceKey[1]);
+            if (namespaceKey.length >= 2) {
+                this["namespace" as any] = namespaceKey[0];
+                this["key" as any] = namespaceKey[1];
                 return;
             } else {
-                this.constructor.call(this, namespaceKey[0], namespaceKey[1]);
+                this["namespace" as any] = undefined;
+                this["key" as any] = json;
                 return;
             }
 
@@ -30,7 +32,10 @@ export class MessageRef {
             let formats = json.length == 4 && json[3];
 
             if ((namespace === null || namespace === undefined || typeof namespace == "string") && typeof key == "string") {
-                this.constructor.call(this, namespace, key, values, formats);
+                this["namespace" as any] = namespace;
+                this["key" as any] = key;
+                this["values" as any] = values;
+                this["formats" as any] = formats;
                 return;
             }
         }

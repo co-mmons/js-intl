@@ -7,16 +7,19 @@ exports.localeIntlBundleItem = { path: "node_modules/@umpirsky/locale-list/data/
  */
 class Locale {
     constructor(codeOrPrototype) {
+        this.$constructor(codeOrPrototype);
+    }
+    $constructor(codeOrPrototype) {
         if (typeof codeOrPrototype === "string") {
-            this.code = codeOrPrototype;
+            this["code"] = codeOrPrototype;
         }
         else if (codeOrPrototype["code"] && typeof codeOrPrototype["code"] === "string") {
-            this.code = codeOrPrototype["code"];
+            this["code"] = codeOrPrototype["code"];
         }
         else {
-            throw new Error("Currency code must be given in order to create Currency instance");
+            throw new Error("Locale code must be given in order to create Locale instance");
         }
-        this.name = new message_ref_1.MessageRef("@umpirsky/locale-list", this.code.split("-").join("_"));
+        this["name"] = new message_ref_1.MessageRef("@umpirsky/locale-list", this.code.split("-").join("_"));
     }
     toString() {
         return this.code;
@@ -26,7 +29,7 @@ class Locale {
     }
     fromJSON(json) {
         if (typeof json === "string" || (json && typeof json["code"] == "string")) {
-            this.constructor.call(this, json);
+            this.$constructor(json);
         }
         else {
             throw new Error("Cannot unserialize  '" + json + "' to Locale");

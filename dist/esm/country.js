@@ -2,25 +2,7 @@ import { MessageRef } from "./message-ref";
 export const countryIntlBundleItem = { path: "node_modules/@umpirsky/country-list/data/{{LOCALE}}/country.json", type: "message", namespace: "@umpirsky/country-list" };
 export class Country {
     constructor(codeOrPrototype) {
-        if (typeof codeOrPrototype === "string") {
-            this.code = codeOrPrototype;
-        }
-        else if (codeOrPrototype["code"] && typeof codeOrPrototype["code"] === "string") {
-            this.code = codeOrPrototype["code"];
-        }
-        else {
-            throw new Error("Country code must be given in order to create Country instance");
-        }
-        if (this.code.length == 3) {
-            for (let a in Country._iso) {
-                let c = Country._iso[a];
-                if (c == this.code) {
-                    this.code = a;
-                    break;
-                }
-            }
-        }
-        this.name = new MessageRef("@umpirsky/country-list", this.code);
+        this.$constructor(codeOrPrototype);
     }
     static codes() {
         return Country._codes.slice();
@@ -32,6 +14,27 @@ export class Country {
             cntrs.push(i);
         }
         return cntrs;
+    }
+    $constructor(codeOrPrototype) {
+        if (typeof codeOrPrototype === "string") {
+            this["code"] = codeOrPrototype;
+        }
+        else if (codeOrPrototype["code"] && typeof codeOrPrototype["code"] === "string") {
+            this["code"] = codeOrPrototype["code"];
+        }
+        else {
+            throw new Error("Country code must be given in order to create Country instance");
+        }
+        if (this.code.length == 3) {
+            for (let a in Country._iso) {
+                let c = Country._iso[a];
+                if (c == this.code) {
+                    this["code"] = a;
+                    break;
+                }
+            }
+        }
+        this["name"] = new MessageRef("@umpirsky/country-list", this.code);
     }
     equals(country) {
         return this.code == (country && country.code);
@@ -50,7 +53,7 @@ export class Country {
     }
     fromJSON(json) {
         if (typeof json === "string" || (json && typeof json["code"] == "string")) {
-            this.constructor.call(this, json);
+            this.$constructor(json);
         }
         else {
             throw new Error("Cannot unserialize  '" + json + "' to Country");

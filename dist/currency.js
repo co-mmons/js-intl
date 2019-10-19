@@ -2,6 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Currency {
     constructor(codeOrPrototype) {
+        this.$constructor(codeOrPrototype);
+    }
+    static codes() {
+        return Currency._codes.slice();
+    }
+    $constructor(codeOrPrototype) {
         if (typeof codeOrPrototype === "string") {
             this._code = codeOrPrototype;
         }
@@ -11,9 +17,6 @@ class Currency {
         else {
             throw new Error("Currency code must be given in order to create Currency instance");
         }
-    }
-    static codes() {
-        return Currency._codes.slice();
     }
     get code() {
         return this._code;
@@ -26,10 +29,10 @@ class Currency {
     }
     fromJSON(json) {
         if (typeof json === "string") {
-            this._code = json;
+            this.$constructor(json);
         }
         else if (json && typeof json["code"] === "string") {
-            this._code = json["code"];
+            this.$constructor(json);
         }
         else {
             throw new Error("Cannot unserialize '" + json + "' to Currency instance");

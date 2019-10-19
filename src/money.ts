@@ -21,21 +21,33 @@ export class Money {
     constructor(currency: string, amount: BigNumber | number);
 
     constructor(currencyOrPrototype: Currency | string | any, amount?: number | BigNumber | string | number) {
+        this.$constructor(currencyOrPrototype, amount);
+    }
+
+    private $constructor(currencyOrPrototype: Currency | string | any, amount?: number | BigNumber | string | number) {
 
         if (currencyOrPrototype instanceof Currency || typeof currencyOrPrototype === "string") {
-            this.currency = currencyOrPrototype instanceof Currency ? currencyOrPrototype : new Currency(currencyOrPrototype);
-            this.amount = toBigNumber(amount);
+            this._currency = currencyOrPrototype instanceof Currency ? currencyOrPrototype : new Currency(currencyOrPrototype);
+            this._amount = toBigNumber(amount);
 
         } else if (currencyOrPrototype) {
-    
-            this.amount = toBigNumber(currencyOrPrototype["amount"]);
-            this.currency = currencyOrPrototype["currency"] instanceof Currency ? currencyOrPrototype["amount"] : new Currency(currencyOrPrototype["currency"]);
+
+            this._amount = toBigNumber(currencyOrPrototype["amount"]);
+            this._currency = currencyOrPrototype["currency"] instanceof Currency ? currencyOrPrototype["amount"] : new Currency(currencyOrPrototype["currency"]);
         }
     }
 
-    readonly currency: Currency;
+    private _currency: Currency;
 
-    readonly amount: BigNumber;
+    get currency() {
+        return this._currency;
+    }
+
+    private _amount: BigNumber;
+
+    get amount() {
+        return this._amount;
+    }
 
     plus(amount: BigNumber | number | string): Money {
         return new Money(this.currency, this.amount.plus(amount));
@@ -77,19 +89,19 @@ export class Money {
         if (typeof json == "string") {
             let currency = json.substr(0, 3);
             let amount = json.substr(3);
-            this.constructor.call(this, currency, amount);
+            this.$constructor(currency, amount);
             return;
 
         } else if (Array.isArray(json)) {
             if (json.length == 2 && typeof json[0] == "string" && (typeof json[1] == "string" || typeof json[1] == "number")) {
                 let currency = json[0];
                 let amount = json[1];
-                this.constructor.call(this, currency, amount);
+                this.$constructor(currency, amount);
                 return;
             }
             
         } else if (json.currency && json.amount) {
-            this.constructor.call(this, json);
+            this.$constructor(json);
             return;
         }
 

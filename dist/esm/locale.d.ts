@@ -8,6 +8,7 @@ export declare class Locale {
     private static _codes;
     private static _languages;
     constructor(code: string);
+    private $constructor;
     readonly code: string;
     readonly name: MessageRef;
     toString(): string;
