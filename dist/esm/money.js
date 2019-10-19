@@ -14,8 +14,8 @@ function toBigNumber(value) {
         throw "Given value: " + value + " cannot be converted to BigNumber.";
     }
 }
-var Money = /** @class */ (function () {
-    function Money(currencyOrPrototype, amount) {
+export class Money {
+    constructor(currencyOrPrototype, amount) {
         if (currencyOrPrototype instanceof Currency || typeof currencyOrPrototype === "string") {
             this.currency = currencyOrPrototype instanceof Currency ? currencyOrPrototype : new Currency(currencyOrPrototype);
             this.amount = toBigNumber(amount);
@@ -25,25 +25,25 @@ var Money = /** @class */ (function () {
             this.currency = currencyOrPrototype["currency"] instanceof Currency ? currencyOrPrototype["amount"] : new Currency(currencyOrPrototype["currency"]);
         }
     }
-    Money.prototype.plus = function (amount) {
+    plus(amount) {
         return new Money(this.currency, this.amount.plus(amount));
-    };
-    Money.prototype.minus = function (amount) {
+    }
+    minus(amount) {
         return new Money(this.currency, this.amount.minus(amount));
-    };
-    Money.prototype.times = function (amount) {
+    }
+    times(amount) {
         return new Money(this.currency, this.amount.times(amount));
-    };
-    Money.prototype.dividedBy = function (amount) {
+    }
+    dividedBy(amount) {
         return new Money(this.currency, this.amount.dividedBy(amount));
-    };
-    Money.prototype.decimalPlaces = function (dp, roundingMode) {
+    }
+    decimalPlaces(dp, roundingMode) {
         return new Money(this.currency, this.amount.decimalPlaces(dp, roundingMode));
-    };
-    Money.prototype.comparedTo = function (money) {
+    }
+    comparedTo(money) {
         return this.compareTo(money);
-    };
-    Money.prototype.compareTo = function (money) {
+    }
+    compareTo(money) {
         if (typeof money === "number")
             return this.amount.comparedTo(money);
         else if (money instanceof BigNumber)
@@ -52,21 +52,21 @@ var Money = /** @class */ (function () {
             return this.amount.comparedTo(money.amount);
         else
             throw new Error("Cannot compare empty value");
-    };
-    Money.prototype.toJSON = function () {
+    }
+    toJSON() {
         return [this.currency.code, this.amount.toString()];
-    };
-    Money.prototype.fromJSON = function (json) {
+    }
+    fromJSON(json) {
         if (typeof json == "string") {
-            var currency = json.substr(0, 3);
-            var amount = json.substr(3);
+            let currency = json.substr(0, 3);
+            let amount = json.substr(3);
             this.constructor.call(this, currency, amount);
             return;
         }
         else if (Array.isArray(json)) {
             if (json.length == 2 && typeof json[0] == "string" && (typeof json[1] == "string" || typeof json[1] == "number")) {
-                var currency = json[0];
-                var amount = json[1];
+                let currency = json[0];
+                let amount = json[1];
                 this.constructor.call(this, currency, amount);
                 return;
             }
@@ -76,11 +76,9 @@ var Money = /** @class */ (function () {
             return;
         }
         throw new Error("Cannot unserialize  '" + json + "' to Money");
-    };
-    Money.prototype.toString = function () {
+    }
+    toString() {
         return this.currency.code + this.amount.toString();
-    };
-    return Money;
-}());
-export { Money };
+    }
+}
 //# sourceMappingURL=money.js.map

@@ -73,8 +73,7 @@ export function selectUnit(from: Date | number, to: Date | number = Date.now(), 
     };
 }
 
-export const DEFAULT_THRESHOLDS: Record<'second' | 'minute' | 'hour',
-    number> = {
+export const DEFAULT_THRESHOLDS: Record<'second' | 'minute' | 'hour', number> = {
     second: 45, // seconds to minute
     minute: 45, // minutes to hour
     hour: 22 // hour to day

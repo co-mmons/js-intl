@@ -1,50 +1,15 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@co.mmons/js-utils/core");
-var bignumber_js_1 = require("bignumber.js");
-var intl_messageformat_1 = require("intl-messageformat");
-var money_1 = require("./money");
-var currency_1 = require("./currency");
-var messages_1 = require("./messages");
-var _1 = require(".");
-var relative_unit_selector_1 = require("./relative-unit-selector");
-for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]; _i < _a.length; _i++) {
-    var v = _a[_i];
+const tslib_1 = require("tslib");
+const core_1 = require("@co.mmons/js-utils/core");
+const bignumber_js_1 = require("bignumber.js");
+const intl_messageformat_1 = require("intl-messageformat");
+const money_1 = require("./money");
+const currency_1 = require("./currency");
+const messages_1 = require("./messages");
+const _1 = require(".");
+const relative_unit_selector_1 = require("./relative-unit-selector");
+for (const v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
     if (typeof window !== "undefined" && !window[v]) {
         window[v] = undefined;
     }
@@ -54,24 +19,22 @@ for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCA
 }
 function loadPolyfillsLocale() {
     if (INTL_POLYFILL && INTL_POLYFILL.length && IntlPolyfill) {
-        for (var _i = 0, INTL_POLYFILL_1 = INTL_POLYFILL; _i < INTL_POLYFILL_1.length; _i++) {
-            var a = INTL_POLYFILL_1[_i];
+        for (const a of INTL_POLYFILL) {
             IntlPolyfill.__addLocaleData(a);
         }
         INTL_POLYFILL = [];
     }
     if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
-        for (var _a = 0, INTL_RELATIVE_POLYFILL_1 = INTL_RELATIVE_POLYFILL; _a < INTL_RELATIVE_POLYFILL_1.length; _a++) {
-            var a = INTL_RELATIVE_POLYFILL_1[_a];
+        for (const a of INTL_RELATIVE_POLYFILL) {
             Intl["RelativeTimeFormat"].__addLocaleData(a);
         }
         INTL_RELATIVE_POLYFILL = [];
     }
 }
 loadPolyfillsLocale();
-var defaultMessageFormat = new intl_messageformat_1.default("", "en");
-var IntlHelper = /** @class */ (function () {
-    function IntlHelper(defaultLocale, defaultNamespace) {
+const defaultMessageFormat = new intl_messageformat_1.default("", "en");
+class IntlHelper {
+    constructor(defaultLocale, defaultNamespace) {
         this.defaultNamespace = defaultNamespace;
         this.useCache = true;
         this.namespaceAliases = {};
@@ -81,48 +44,40 @@ var IntlHelper = /** @class */ (function () {
         this.defaultNamespace = defaultNamespace;
         loadPolyfillsLocale();
     }
-    IntlHelper.prototype.setResourcesLocation = function (location) {
+    setResourcesLocation(location) {
         this.resourcesLocation = location;
-    };
-    IntlHelper.prototype.setDefaultNamespace = function (namespace) {
+    }
+    setDefaultNamespace(namespace) {
         this.defaultNamespace = namespace;
-    };
-    IntlHelper.prototype.addNamespaceAlias = function (namespace, alias) {
+    }
+    addNamespaceAlias(namespace, alias) {
         this.namespaceAliases[alias] = namespace;
-    };
-    Object.defineProperty(IntlHelper.prototype, "locale", {
-        get: function () {
-            return this._locale;
-        },
-        set: function (locale) {
-            this._locale = locale || INTL_LOCALE || INTL_DEFAULT_LOCALE || "en-US";
-            this._locales = [];
-            var segments = this._locale.split("-");
-            for (var i = 0; i < segments.length; i++) {
-                this._locales.push(segments.slice(0, i + 1).join("-"));
-            }
-            this.formatters = {};
-        },
-        enumerable: true,
-        configurable: true
-    });
-    IntlHelper.prototype.setLocale = function (locale) {
+    }
+    get locale() {
+        return this._locale;
+    }
+    set locale(locale) {
+        this._locale = locale || INTL_LOCALE || INTL_DEFAULT_LOCALE || "en-US";
+        this._locales = [];
+        let segments = this._locale.split("-");
+        for (let i = 0; i < segments.length; i++) {
+            this._locales.push(segments.slice(0, i + 1).join("-"));
+        }
+        this.formatters = {};
+    }
+    setLocale(locale) {
         this.locale = locale;
         return this;
-    };
-    Object.defineProperty(IntlHelper.prototype, "locales", {
-        get: function () {
-            if (this._locales) {
-                return this._locales.slice();
-            }
-            return [];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    IntlHelper.prototype.formatterInstance = function (formatterConstructor, id, constructorArguments) {
-        var cacheKey = id ? formatterConstructor.name + "_" + id : getCacheId([formatterConstructor.name].concat(constructorArguments));
-        var formatter = this.formatters[cacheKey];
+    }
+    get locales() {
+        if (this._locales) {
+            return this._locales.slice();
+        }
+        return [];
+    }
+    formatterInstance(formatterConstructor, id, constructorArguments) {
+        let cacheKey = id ? `${formatterConstructor.name}_${id}` : getCacheId([formatterConstructor.name].concat(constructorArguments));
+        let formatter = this.formatters[cacheKey];
         if (!formatter && constructorArguments) {
             if (formatterConstructor === intl_messageformat_1.default && !messages_1.isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
@@ -139,58 +94,49 @@ var IntlHelper = /** @class */ (function () {
             this.formatters[cacheKey] = formatter;
         }
         return formatter;
-    };
-    IntlHelper.prototype.formatterInstanceExists = function (formatter, id) {
-        var formatterName = typeof formatter === "string" ? formatter : formatter.name;
-        id = formatterName + "_" + id;
+    }
+    formatterInstanceExists(formatter, id) {
+        let formatterName = typeof formatter === "string" ? formatter : formatter.name;
+        id = `${formatterName}_${id}`;
         return id in this.formatters[id];
-    };
-    IntlHelper.prototype.addFormatterPredefinedOptions = function (formatter, key, options) {
-        var formatterName = typeof formatter === "string" ? formatter : formatter.name;
+    }
+    addFormatterPredefinedOptions(formatter, key, options) {
+        let formatterName = typeof formatter === "string" ? formatter : formatter.name;
         if (!this.formattersOptions[formatterName]) {
             this.formattersOptions[formatterName] = {};
         }
         this.formattersOptions[formatterName][key] = options;
-    };
-    IntlHelper.prototype.addDateTimePredefinedOptions = function (key, options) {
+    }
+    addDateTimePredefinedOptions(key, options) {
         this.addFormatterPredefinedOptions(Intl.DateTimeFormat.name, key, options);
-    };
-    IntlHelper.prototype.findFormatterPredefinedOptions = function (formatter, key) {
-        var formatterName = typeof formatter === "string" ? formatter : formatter.name;
+    }
+    findFormatterPredefinedOptions(formatter, key) {
+        let formatterName = typeof formatter === "string" ? formatter : formatter.name;
         if (this.formattersOptions[formatterName]) {
             return this.formattersOptions[formatterName][key];
         }
         return undefined;
-    };
-    IntlHelper.prototype.value = function (value) {
+    }
+    value(value) {
         if (!value) {
             return;
         }
-        for (var _i = 0, _a = this._locales; _i < _a.length; _i++) {
-            var locale = _a[_i];
+        for (let locale of this._locales) {
             if (value[locale]) {
                 return value[locale];
             }
         }
-    };
-    IntlHelper.prototype.messagesImport = function (resourcePath) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, messages_1.importMessages(this.resourcesLocation + "/" + resourcePath + "/" + this.locale + ".json")];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
+    }
+    messagesImport(resourcePath) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            yield messages_1.importMessages(`${this.resourcesLocation}/${resourcePath}/${this.locale}.json`);
         });
-    };
-    IntlHelper.prototype.messageFormat = function (message, values, formats) {
+    }
+    messageFormat(message, values, formats) {
         return new intl_messageformat_1.default(message, this._locale, formats).format(values);
-    };
-    IntlHelper.prototype.message = function (key, values, formats) {
-        var _this = this;
-        var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
+    }
+    message(key, values, formats) {
+        let namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
             return namespaceAndKey.key;
         }
@@ -202,13 +148,13 @@ var IntlHelper = /** @class */ (function () {
                 formats = key.formats;
             }
         }
-        var formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key);
+        let formatter = this.formatterInstance(intl_messageformat_1.default, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
         }
-        var message = messages_1.findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
+        let message = messages_1.findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
         if (typeof message == "string") {
-            formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
+            formatter = this.formatterInstance(intl_messageformat_1.default, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
             if (formatter !== defaultMessageFormat) {
                 formatter = new intl_messageformat_1.default(message, this._locale, formats);
             }
@@ -221,75 +167,65 @@ var IntlHelper = /** @class */ (function () {
         }
         // value is stored in a file
         else if (message && message.file) {
-            return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                var contents, error_1;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            _a.trys.push([0, 2, , 3]);
-                            return [4 /*yield*/, this.readFile(message.file)];
-                        case 1:
-                            contents = _a.sent();
-                            return [3 /*break*/, 3];
-                        case 2:
-                            error_1 = _a.sent();
-                            reject(error_1);
-                            return [2 /*return*/];
-                        case 3:
-                            formatter = new intl_messageformat_1.default(contents, this._locale, formats);
-                            resolve(formatter.format(values));
-                            return [2 /*return*/];
-                    }
-                });
-            }); });
+            return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                let contents;
+                try {
+                    contents = yield this.readFile(message.file);
+                }
+                catch (error) {
+                    reject(error);
+                    return;
+                }
+                formatter = new intl_messageformat_1.default(contents, this._locale, formats);
+                resolve(formatter.format(values));
+            }));
         }
-    };
-    IntlHelper.prototype.readFile = function (file) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.resourcesLocation) {
-                var url_1 = _this.resourcesLocation + "/" + file;
-                var xhr_1 = new XMLHttpRequest();
-                xhr_1.onerror = function (error) {
+    }
+    readFile(file) {
+        return new Promise((resolve, reject) => {
+            if (this.resourcesLocation) {
+                let url = `${this.resourcesLocation}/${file}`;
+                let xhr = new XMLHttpRequest();
+                xhr.onerror = (error) => {
                     reject(error);
                 };
-                xhr_1.ontimeout = function () {
-                    reject(new Error("Timeout when fetching intl resource " + url_1));
+                xhr.ontimeout = () => {
+                    reject(new Error(`Timeout when fetching intl resource ${url}`));
                 };
-                xhr_1.onload = function () {
-                    resolve(xhr_1.responseText);
+                xhr.onload = () => {
+                    resolve(xhr.responseText);
                 };
-                xhr_1.open("GET", url_1, true);
-                xhr_1.send();
+                xhr.open("GET", url, true);
+                xhr.send();
             }
-            else if (_this.resourcesLocation && _this.resourcesLocation.startsWith("./") || _this.resourcesLocation.startsWith("/")) {
+            else if (this.resourcesLocation && this.resourcesLocation.startsWith("./") || this.resourcesLocation.startsWith("/")) {
             }
             else {
-                reject(new Error("Not able to read intl resource file " + file));
+                reject(new Error(`Not able to read intl resource file ${file}`));
             }
         });
-    };
-    IntlHelper.prototype.relativeFormat = function (dateTime, options) {
+    }
+    relativeFormat(dateTime, options) {
         if (typeof dateTime === "number") {
             dateTime = new Date(dateTime);
         }
         else if (dateTime instanceof core_1.DateTimezone) {
             dateTime = dateTime.date;
         }
-        var diff = relative_unit_selector_1.selectUnit(dateTime);
+        const diff = relative_unit_selector_1.selectUnit(dateTime);
         return this.formatterInstance(Intl["RelativeTimeFormat"], undefined, [{ numeric: "auto" }]).format(diff.value, diff.unit);
-    };
-    IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
+    }
+    dateFormat(dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);
-    };
-    IntlHelper.prototype.timeFormat = function (dateTime, predefinedOptionsOrOptions, options) {
+    }
+    timeFormat(dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("time", dateTime, predefinedOptionsOrOptions, options);
-    };
-    IntlHelper.prototype.dateTimeFormat = function (dateTime, predefinedOptionsOrOptions, options) {
+    }
+    dateTimeFormat(dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("dateTime", dateTime, predefinedOptionsOrOptions, options);
-    };
-    IntlHelper.prototype.dateTimeFormatImpl = function (mode, dateTime, predefinedOptionsOrOptions, options) {
-        var predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.DateTimeFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions;
+    }
+    dateTimeFormatImpl(mode, dateTime, predefinedOptionsOrOptions, options) {
+        let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.DateTimeFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions;
         predefinedOptions = Object.assign({}, predefinedOptions, options);
         if (mode == "time") {
             predefinedOptions.year = undefined;
@@ -326,20 +262,20 @@ var IntlHelper = /** @class */ (function () {
             }
             dateTime = dateTime.date;
         }
-        var formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
+        const formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
         return formatter.format(dateTime);
-    };
-    IntlHelper.prototype.currencyFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {
+    }
+    currencyFormat(value, predefinedOptionsOrOptions, additionalOptions) {
         return this.numberFormatImpl("currency", value, predefinedOptionsOrOptions, additionalOptions);
-    };
-    IntlHelper.prototype.decimalFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {
+    }
+    decimalFormat(value, predefinedOptionsOrOptions, additionalOptions) {
         return this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
-    };
-    IntlHelper.prototype.percentFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {
+    }
+    percentFormat(value, predefinedOptionsOrOptions, additionalOptions) {
         return this.numberFormatImpl("percent", value, predefinedOptionsOrOptions, additionalOptions);
-    };
-    IntlHelper.prototype.numberFormatImpl = function (mode, value, predefinedOptionsOrOptions, additionalOptions) {
-        var options = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.NumberFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions, additionalOptions);
+    }
+    numberFormatImpl(mode, value, predefinedOptionsOrOptions, additionalOptions) {
+        let options = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.NumberFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions, additionalOptions);
         if (mode == "currency") {
             options.style = "currency";
         }
@@ -374,15 +310,14 @@ var IntlHelper = /** @class */ (function () {
                 value = value[1];
             }
         }
-        var formatter = this.formatterInstance(Intl.NumberFormat, undefined, [options]);
+        let formatter = this.formatterInstance(Intl.NumberFormat, undefined, [options]);
         return formatter.format(value);
-    };
-    return IntlHelper;
-}());
+    }
+}
 exports.IntlHelper = IntlHelper;
 function getCacheId(inputs) {
-    var cacheId = [];
-    var i, len, input;
+    let cacheId = [];
+    let i, len, input;
     for (i = 0, len = inputs.length; i < len; i += 1) {
         input = inputs[i];
         if (input && typeof input === 'object') {
@@ -395,14 +330,14 @@ function getCacheId(inputs) {
     return JSON.stringify(cacheId);
 }
 function orderedProps(obj) {
-    var props = [], keys = [];
-    var key, i, len, prop;
+    let props = [], keys = [];
+    let key, i, len, prop;
     for (key in obj) {
         if (obj.hasOwnProperty(key)) {
             keys.push(key);
         }
     }
-    var orderedKeys = keys.sort();
+    let orderedKeys = keys.sort();
     for (i = 0, len = orderedKeys.length; i < len; i += 1) {
         key = orderedKeys[i];
         prop = {};
