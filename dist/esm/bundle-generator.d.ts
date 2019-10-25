@@ -4,8 +4,8 @@ export interface IntlBundleItem {
     path: string;
 }
 export declare namespace IntlBundleItem {
-    const intlPolyfill: IntlBundleItem;
-    const intlRelativeTimePolyfill: IntlBundleItem;
+    function intlPolyfill(node_modules?: string): IntlBundleItem;
+    function intlRelativeTimePolyfill(node_modules?: string): IntlBundleItem;
 }
 export declare class IntlBundleGenerator {
     private locales;

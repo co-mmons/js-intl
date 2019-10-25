@@ -2,10 +2,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fsextra = require("fs-extra");
 const path = require("path");
+class IntlPolyfillBundleItem {
+    constructor(path) {
+        this.path = path;
+    }
+}
+class IntlRelativeTimePolyfillBundleItem {
+    constructor(path) {
+        this.path = path;
+    }
+}
 var IntlBundleItem;
 (function (IntlBundleItem) {
-    IntlBundleItem.intlPolyfill = { path: "node_modules/intl/locale-data/jsonp/{{LOCALE}}.js" };
-    IntlBundleItem.intlRelativeTimePolyfill = { path: "node_modules/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js" };
+    function intlPolyfill(node_modules = "node_modules") {
+        return new IntlPolyfillBundleItem(`${node_modules}/intl/locale-data/jsonp/{{LOCALE}}.js`);
+    }
+    IntlBundleItem.intlPolyfill = intlPolyfill;
+    function intlRelativeTimePolyfill(node_modules = "node_modules") {
+        return new IntlRelativeTimePolyfillBundleItem(`${node_modules}/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js`);
+    }
+    IntlBundleItem.intlRelativeTimePolyfill = intlRelativeTimePolyfill;
 })(IntlBundleItem = exports.IntlBundleItem || (exports.IntlBundleItem = {}));
 class IntlBundleGenerator {
     constructor(locales, input, outputFile) {
@@ -56,11 +72,11 @@ class IntlBundleGenerator {
                         }
                         else {
                             let c = fsextra.readFileSync(itemPath).toString();
-                            if (item === IntlBundleItem.intlPolyfill) {
+                            if (item instanceof IntlPolyfillBundleItem) {
                                 intlPolyfill = true;
                                 c = c.replace("IntlPolyfill.__addLocaleData", "INTL_POLYFILL.push");
                             }
-                            if (item === IntlBundleItem.intlRelativeTimePolyfill) {
+                            if (item instanceof IntlRelativeTimePolyfillBundleItem) {
                                 intlRelativeTimePolyfill = true;
                                 c = c.replace(/Intl\.RelativeTimeFormat\.__addLocaleData/gm, "INTL_RELATIVE_POLYFILL.push");
                                 c = c.replace(/Intl\.RelativeTimeFormat/gm, "INTL_RELATIVE_POLYFILL");

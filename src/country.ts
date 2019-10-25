@@ -1,7 +1,4 @@
-import {IntlBundleItem} from "./bundle-generator";
 import {MessageRef} from "./message-ref";
-
-export const countryIntlBundleItem: IntlBundleItem = {path: "node_modules/@umpirsky/country-list/data/{{LOCALE}}/country.json", type: "message", namespace: "@umpirsky/country-list"};
 
 export class Country {
 

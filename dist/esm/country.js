@@ -1,5 +1,4 @@
 import { MessageRef } from "./message-ref";
-export const countryIntlBundleItem = { path: "node_modules/@umpirsky/country-list/data/{{LOCALE}}/country.json", type: "message", namespace: "@umpirsky/country-list" };
 export class Country {
     constructor(codeOrPrototype) {
         this.$constructor(codeOrPrototype);

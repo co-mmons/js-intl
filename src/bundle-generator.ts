@@ -7,11 +7,25 @@ export interface IntlBundleItem {
     path: string
 }
 
+class IntlPolyfillBundleItem implements IntlBundleItem {
+    constructor(public path: string) {
+    }
+}
+
+class IntlRelativeTimePolyfillBundleItem implements IntlBundleItem {
+    constructor(public path: string) {
+    }
+}
+
 export namespace IntlBundleItem {
 
-    export const intlPolyfill: IntlBundleItem = {path: "node_modules/intl/locale-data/jsonp/{{LOCALE}}.js"};
+    export function intlPolyfill(node_modules: string = "node_modules"): IntlBundleItem {
+        return new IntlPolyfillBundleItem(`${node_modules}/intl/locale-data/jsonp/{{LOCALE}}.js`);
+    }
 
-    export const intlRelativeTimePolyfill: IntlBundleItem = {path: "node_modules/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js"};
+    export function intlRelativeTimePolyfill(node_modules: string = "node_modules"): IntlBundleItem {
+        return new IntlRelativeTimePolyfillBundleItem(`${node_modules}/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js`);
+    }
 
 }
 
@@ -82,12 +96,12 @@ export class IntlBundleGenerator {
                         } else {
                             let c = fsextra.readFileSync(itemPath).toString();
 
-                            if (item === IntlBundleItem.intlPolyfill) {
+                            if (item instanceof IntlPolyfillBundleItem) {
                                 intlPolyfill = true;
                                 c = c.replace("IntlPolyfill.__addLocaleData", "INTL_POLYFILL.push");
                             }
 
-                            if (item === IntlBundleItem.intlRelativeTimePolyfill) {
+                            if (item instanceof IntlRelativeTimePolyfillBundleItem) {
                                 intlRelativeTimePolyfill = true;
                                 c = c.replace(/Intl\.RelativeTimeFormat\.__addLocaleData/gm, "INTL_RELATIVE_POLYFILL.push");
                                 c = c.replace(/Intl\.RelativeTimeFormat/gm, "INTL_RELATIVE_POLYFILL");

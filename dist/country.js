@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const message_ref_1 = require("./message-ref");
-exports.countryIntlBundleItem = { path: "node_modules/@umpirsky/country-list/data/{{LOCALE}}/country.json", type: "message", namespace: "@umpirsky/country-list" };
 class Country {
     constructor(codeOrPrototype) {
         this.$constructor(codeOrPrototype);
