@@ -1,46 +1,47 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const bignumber_js_1 = require("bignumber.js");
-const currency_1 = require("./currency");
-const money_1 = require("./money");
-class CurrencyCalculator {
-    constructor(baseCurrency) {
+var bignumber_js_1 = require("bignumber.js");
+var currency_1 = require("./currency");
+var money_1 = require("./money");
+var CurrencyCalculator = /** @class */ (function () {
+    function CurrencyCalculator(baseCurrency) {
         this.baseCurrency = baseCurrency;
         this.rates = [];
     }
-    static main() {
-        let converter = new CurrencyCalculator(new currency_1.Currency("PLN"));
+    CurrencyCalculator.main = function () {
+        var converter = new CurrencyCalculator(new currency_1.Currency("PLN"));
         converter.addRate(new currency_1.Currency("EUR"), new bignumber_js_1.BigNumber(1), new bignumber_js_1.BigNumber(4));
         converter.addRate(new currency_1.Currency("USD"), new bignumber_js_1.BigNumber(1), new bignumber_js_1.BigNumber(2));
-        let eur1 = new money_1.Money(new currency_1.Currency("EUR"), new bignumber_js_1.BigNumber(1));
+        var eur1 = new money_1.Money(new currency_1.Currency("EUR"), new bignumber_js_1.BigNumber(1));
         console.log("1 eur to pln:" + converter.calculate(eur1, new currency_1.Currency("PLN")));
-        let usd1 = new money_1.Money(new currency_1.Currency("USD"), new bignumber_js_1.BigNumber(1));
+        var usd1 = new money_1.Money(new currency_1.Currency("USD"), new bignumber_js_1.BigNumber(1));
         console.log("1 usd to pln:" + converter.calculate(usd1, new currency_1.Currency("PLN")));
         console.log("1 usd to eur:" + converter.calculate(usd1, new currency_1.Currency("EUR")));
         console.log("1 eur to usd:" + converter.calculate(eur1, new currency_1.Currency("USD")));
-        let pln1 = new money_1.Money(new currency_1.Currency("PLN"), new bignumber_js_1.BigNumber(1));
+        var pln1 = new money_1.Money(new currency_1.Currency("PLN"), new bignumber_js_1.BigNumber(1));
         console.log("1 pln to eur:" + converter.calculate(pln1, new currency_1.Currency("EUR")));
         console.log("1 pln to usd:" + converter.calculate(pln1, new currency_1.Currency("USD")));
-    }
-    getRate(currency) {
-        for (let r of this.rates) {
+    };
+    CurrencyCalculator.prototype.getRate = function (currency) {
+        for (var _i = 0, _a = this.rates; _i < _a.length; _i++) {
+            var r = _a[_i];
             if (r.currency.code == currency.code) {
                 return r;
             }
         }
-    }
-    addRate(currency, amount, rate) {
+    };
+    CurrencyCalculator.prototype.addRate = function (currency, amount, rate) {
         this.rates.push({ currency: currency, amount: amount, rate: rate });
-    }
-    calculate(amount, from, to) {
-        let amountValue = amount instanceof money_1.Money ? amount.amount : amount;
-        let fromCurrency = amount instanceof money_1.Money ? amount.currency : from;
-        let toCurrency = amount instanceof money_1.Money ? from : to;
+    };
+    CurrencyCalculator.prototype.calculate = function (amount, from, to) {
+        var amountValue = amount instanceof money_1.Money ? amount.amount : amount;
+        var fromCurrency = amount instanceof money_1.Money ? amount.currency : from;
+        var toCurrency = amount instanceof money_1.Money ? from : to;
         if (fromCurrency.code == toCurrency.code) {
             return amount;
         }
         if (this.baseCurrency.code == toCurrency.code) {
-            let calculated = this.calculateToBase(amountValue, fromCurrency);
+            var calculated = this.calculateToBase(amountValue, fromCurrency);
             if (amount instanceof money_1.Money) {
                 return new money_1.Money(toCurrency, calculated);
             }
@@ -48,23 +49,24 @@ class CurrencyCalculator {
                 return calculated;
             }
         }
-        let amountFrom = this.calculateToBase(new bignumber_js_1.BigNumber(1), fromCurrency);
-        let amountTo = this.calculateToBase(new bignumber_js_1.BigNumber(1), toCurrency);
-        let amountCalculated = amountFrom.dividedBy(amountTo).times(amountValue);
+        var amountFrom = this.calculateToBase(new bignumber_js_1.BigNumber(1), fromCurrency);
+        var amountTo = this.calculateToBase(new bignumber_js_1.BigNumber(1), toCurrency);
+        var amountCalculated = amountFrom.dividedBy(amountTo).times(amountValue);
         if (amount instanceof money_1.Money) {
             return new money_1.Money(toCurrency, amountCalculated);
         }
         else {
             return amountCalculated;
         }
-    }
-    calculateToBase(amount, fromCurrency) {
+    };
+    CurrencyCalculator.prototype.calculateToBase = function (amount, fromCurrency) {
         if (this.baseCurrency.code == fromCurrency.code) {
             return amount;
         }
-        let er = this.getRate(fromCurrency);
+        var er = this.getRate(fromCurrency);
         return er.rate.dividedBy(er.amount).times(amount);
-    }
-}
+    };
+    return CurrencyCalculator;
+}());
 exports.CurrencyCalculator = CurrencyCalculator;
 //# sourceMappingURL=currency-calculator.js.map

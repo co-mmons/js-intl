@@ -40,8 +40,9 @@
   },
   "main": "index.js",
   "module": "esm5/index.js",
-  "es2015": "esm2015/index.js",
+  "es5": "index.js",
   "esm5": "esm5/index.js",
+  "es2015": "esm2015/index.js",
   "esm2015": "esm2015/index.js",
   "sideEffects": false,
   "intlBundleItems": [

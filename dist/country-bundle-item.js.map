@@ -1,1 +1,1 @@
-{"version":3,"file":"country-bundle-item.js","sourceRoot":"","sources":["../src/country-bundle-item.ts"],"names":[],"mappings":";;AAEA,SAAwB,qBAAqB,CAAC,eAAuB,cAAc;IAC/E,OAAO,EAAC,IAAI,EAAE,GAAG,YAAY,sDAAsD,EAAE,IAAI,EAAE,SAAS,EAAE,SAAS,EAAE,wBAAwB,EAAC,CAAC;AAC/I,CAAC;AAFD,wCAEC"}
+{"version":3,"file":"country-bundle-item.js","sourceRoot":"","sources":["../src/country-bundle-item.ts"],"names":[],"mappings":";;AAEA,SAAwB,qBAAqB,CAAC,YAAqC;IAArC,6BAAA,EAAA,6BAAqC;IAC/E,OAAO,EAAC,IAAI,EAAK,YAAY,yDAAsD,EAAE,IAAI,EAAE,SAAS,EAAE,SAAS,EAAE,wBAAwB,EAAC,CAAC;AAC/I,CAAC;AAFD,wCAEC"}

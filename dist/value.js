@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const json_1 = require("@co.mmons/js-utils/json");
+var tslib_1 = require("tslib");
+var json_1 = require("@co.mmons/js-utils/json");
 var IntlValue;
 (function (IntlValue) {
     function value(value, locale) {
@@ -14,41 +15,46 @@ var IntlValue;
         if (!value) {
             return value;
         }
-        let niu = {};
-        for (let i in value) {
+        var niu = {};
+        for (var i in value) {
             niu[i] = value[i];
         }
         return niu;
     }
     IntlValue.clone = clone;
 })(IntlValue = exports.IntlValue || (exports.IntlValue = {}));
-class IntlValueSerializer extends json_1.ObjectAsMapSerializer {
-    constructor(valueType) {
-        super(valueType);
+var IntlValueSerializer = /** @class */ (function (_super) {
+    tslib_1.__extends(IntlValueSerializer, _super);
+    function IntlValueSerializer(valueType) {
+        return _super.call(this, valueType) || this;
     }
-}
+    return IntlValueSerializer;
+}(json_1.ObjectAsMapSerializer));
 exports.IntlValueSerializer = IntlValueSerializer;
-class IntlStringValueSerializer extends json_1.ObjectAsMapSerializer {
-    constructor(allowPlainValue) {
-        super(String);
-        this.allowPlainValue = allowPlainValue;
+var IntlStringValueSerializer = /** @class */ (function (_super) {
+    tslib_1.__extends(IntlStringValueSerializer, _super);
+    function IntlStringValueSerializer(allowPlainValue) {
+        var _this = _super.call(this, String) || this;
+        _this.allowPlainValue = allowPlainValue;
+        return _this;
     }
-    serialize(value, options) {
+    IntlStringValueSerializer.prototype.serialize = function (value, options) {
         if (this.allowPlainValue && typeof value == "string") {
             return json_1.serialize(value, options);
         }
         else {
-            return super.serialize(value, options);
+            return _super.prototype.serialize.call(this, value, options);
         }
-    }
-    unserialize(value, options) {
+    };
+    IntlStringValueSerializer.prototype.unserialize = function (value, options) {
         if (this.allowPlainValue && typeof value == "string") {
             return json_1.unserialize(value, String, options);
         }
         else {
-            return super.serialize(value, options);
+            return _super.prototype.serialize.call(this, value, options);
         }
-    }
-}
+    };
+    return IntlStringValueSerializer;
+}(json_1.ObjectAsMapSerializer));
 exports.IntlStringValueSerializer = IntlStringValueSerializer;
 //# sourceMappingURL=value.js.map

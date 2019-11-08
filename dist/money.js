@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const bignumber_js_1 = require("bignumber.js");
-const currency_1 = require("./currency");
+var bignumber_js_1 = require("bignumber.js");
+var currency_1 = require("./currency");
 function toBigNumber(value) {
     if (value instanceof bignumber_js_1.BigNumber) {
         return value;
@@ -16,11 +16,11 @@ function toBigNumber(value) {
         throw "Given value: " + value + " cannot be converted to BigNumber.";
     }
 }
-class Money {
-    constructor(currencyOrPrototype, amount) {
+var Money = /** @class */ (function () {
+    function Money(currencyOrPrototype, amount) {
         this.$constructor(currencyOrPrototype, amount);
     }
-    $constructor(currencyOrPrototype, amount) {
+    Money.prototype.$constructor = function (currencyOrPrototype, amount) {
         if (currencyOrPrototype instanceof currency_1.Currency || typeof currencyOrPrototype === "string") {
             this._currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
             this._amount = toBigNumber(amount);
@@ -29,32 +29,40 @@ class Money {
             this._amount = toBigNumber(currencyOrPrototype["amount"]);
             this._currency = currencyOrPrototype["currency"] instanceof currency_1.Currency ? currencyOrPrototype["amount"] : new currency_1.Currency(currencyOrPrototype["currency"]);
         }
-    }
-    get currency() {
-        return this._currency;
-    }
-    get amount() {
-        return this._amount;
-    }
-    plus(amount) {
+    };
+    Object.defineProperty(Money.prototype, "currency", {
+        get: function () {
+            return this._currency;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Money.prototype, "amount", {
+        get: function () {
+            return this._amount;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Money.prototype.plus = function (amount) {
         return new Money(this.currency, this.amount.plus(amount));
-    }
-    minus(amount) {
+    };
+    Money.prototype.minus = function (amount) {
         return new Money(this.currency, this.amount.minus(amount));
-    }
-    times(amount) {
+    };
+    Money.prototype.times = function (amount) {
         return new Money(this.currency, this.amount.times(amount));
-    }
-    dividedBy(amount) {
+    };
+    Money.prototype.dividedBy = function (amount) {
         return new Money(this.currency, this.amount.dividedBy(amount));
-    }
-    decimalPlaces(dp, roundingMode) {
+    };
+    Money.prototype.decimalPlaces = function (dp, roundingMode) {
         return new Money(this.currency, this.amount.decimalPlaces(dp, roundingMode));
-    }
-    comparedTo(money) {
+    };
+    Money.prototype.comparedTo = function (money) {
         return this.compareTo(money);
-    }
-    compareTo(money) {
+    };
+    Money.prototype.compareTo = function (money) {
         if (typeof money === "number")
             return this.amount.comparedTo(money);
         else if (money instanceof bignumber_js_1.BigNumber)
@@ -63,21 +71,21 @@ class Money {
             return this.amount.comparedTo(money.amount);
         else
             throw new Error("Cannot compare empty value");
-    }
-    toJSON() {
+    };
+    Money.prototype.toJSON = function () {
         return [this.currency.code, this.amount.toString()];
-    }
-    fromJSON(json) {
+    };
+    Money.prototype.fromJSON = function (json) {
         if (typeof json == "string") {
-            let currency = json.substr(0, 3);
-            let amount = json.substr(3);
+            var currency = json.substr(0, 3);
+            var amount = json.substr(3);
             this.$constructor(currency, amount);
             return;
         }
         else if (Array.isArray(json)) {
             if (json.length == 2 && typeof json[0] == "string" && (typeof json[1] == "string" || typeof json[1] == "number")) {
-                let currency = json[0];
-                let amount = json[1];
+                var currency = json[0];
+                var amount = json[1];
                 this.$constructor(currency, amount);
                 return;
             }
@@ -87,10 +95,11 @@ class Money {
             return;
         }
         throw new Error("Cannot unserialize  '" + json + "' to Money");
-    }
-    toString() {
+    };
+    Money.prototype.toString = function () {
         return this.currency.code + this.amount.toString();
-    }
-}
+    };
+    return Money;
+}());
 exports.Money = Money;
 //# sourceMappingURL=money.js.map
