@@ -9,9 +9,13 @@ export declare namespace IntlBundleItem {
 }
 export declare class IntlBundleGenerator {
     private locales;
-    private input;
     private outputFile;
-    constructor(locales: string[], input: IntlBundleItem[], outputFile: string);
+    private options?;
+    constructor(locales: string[], inputs: Array<IntlBundleItem | string>, outputFile: string, options?: {
+        nodeModulesPath?: string;
+    });
+    private readonly items;
+    private readonly nodeModulesPath;
     generate(): void;
     private extractLocales;
 }

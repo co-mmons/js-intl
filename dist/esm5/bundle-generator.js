@@ -1,31 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_extra_1 = require("fs-extra");
-const fsextra = require("fs-extra");
-const path = require("path");
-class IntlPolyfillBundleItem {
-    constructor(path) {
+var fs_extra_1 = require("fs-extra");
+var fsextra = require("fs-extra");
+var path = require("path");
+var IntlPolyfillBundleItem = /** @class */ (function () {
+    function IntlPolyfillBundleItem(path) {
         this.path = path;
     }
-}
-class IntlRelativeTimePolyfillBundleItem {
-    constructor(path) {
+    return IntlPolyfillBundleItem;
+}());
+var IntlRelativeTimePolyfillBundleItem = /** @class */ (function () {
+    function IntlRelativeTimePolyfillBundleItem(path) {
         this.path = path;
     }
-}
+    return IntlRelativeTimePolyfillBundleItem;
+}());
 var IntlBundleItem;
 (function (IntlBundleItem) {
-    function intlPolyfill(node_modules = "node_modules") {
-        return new IntlPolyfillBundleItem(`${node_modules}/intl/locale-data/jsonp/{{LOCALE}}.js`);
+    function intlPolyfill(node_modules) {
+        if (node_modules === void 0) { node_modules = "node_modules"; }
+        return new IntlPolyfillBundleItem(node_modules + "/intl/locale-data/jsonp/{{LOCALE}}.js");
     }
     IntlBundleItem.intlPolyfill = intlPolyfill;
-    function intlRelativeTimePolyfill(node_modules = "node_modules") {
-        return new IntlRelativeTimePolyfillBundleItem(`${node_modules}/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js`);
+    function intlRelativeTimePolyfill(node_modules) {
+        if (node_modules === void 0) { node_modules = "node_modules"; }
+        return new IntlRelativeTimePolyfillBundleItem(node_modules + "/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js");
     }
     IntlBundleItem.intlRelativeTimePolyfill = intlRelativeTimePolyfill;
 })(IntlBundleItem = exports.IntlBundleItem || (exports.IntlBundleItem = {}));
-class IntlBundleGenerator {
-    constructor(locales, inputs, outputFile, options) {
+var IntlBundleGenerator = /** @class */ (function () {
+    function IntlBundleGenerator(locales, inputs, outputFile, options) {
         this.locales = locales;
         this.outputFile = outputFile;
         this.options = options;
@@ -33,10 +37,12 @@ class IntlBundleGenerator {
             this.nodeModulesPath = this.options.nodeModulesPath;
         }
         this.items = [];
-        INPUTS: for (const input of inputs) {
+        INPUTS: for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
+            var input = inputs_1[_i];
             if (typeof input === "string") {
                 if (input === "intl" || input === "@formatjs/intl-relativetimeformat") {
-                    for (const nodeModulesPath of this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths) {
+                    for (var _a = 0, _b = this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths; _a < _b.length; _a++) {
+                        var nodeModulesPath = _b[_a];
                         if (fs_extra_1.existsSync(path.resolve(nodeModulesPath, input))) {
                             if (input === "intl") {
                                 this.items.push(IntlBundleItem.intlPolyfill(path.resolve(nodeModulesPath)));
@@ -48,16 +54,18 @@ class IntlBundleGenerator {
                         }
                     }
                 }
-                const segments = input.split("/");
-                for (const nodeModulesPath of this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths) {
+                var segments = input.split("/");
+                for (var _c = 0, _d = this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths; _c < _d.length; _c++) {
+                    var nodeModulesPath = _d[_c];
                     if (fs_extra_1.existsSync(nodeModulesPath)) {
-                        for (let i = segments.length; i >= 1; i--) {
-                            const dirPath = path.resolve(nodeModulesPath, segments.slice(0, i).join("/"));
-                            const packagePath = path.resolve(dirPath, "package.json");
+                        for (var i = segments.length; i >= 1; i--) {
+                            var dirPath = path.resolve(nodeModulesPath, segments.slice(0, i).join("/"));
+                            var packagePath = path.resolve(dirPath, "package.json");
                             if (fs_extra_1.existsSync(packagePath)) {
-                                const pckg = fs_extra_1.readJsonSync(packagePath);
+                                var pckg = fs_extra_1.readJsonSync(packagePath);
                                 if (pckg["intlBundleItems"] && Array.isArray(pckg["intlBundleItems"])) {
-                                    for (const item of pckg["intlBundleItems"]) {
+                                    for (var _e = 0, _f = pckg["intlBundleItems"]; _e < _f.length; _e++) {
+                                        var item = _f[_e];
                                         if (typeof item === "object" && item.type && item.path) {
                                             if (!item.path.startsWith("/")) {
                                                 item.path = path.resolve(dirPath, item.path);
@@ -79,24 +87,27 @@ class IntlBundleGenerator {
             }
         }
     }
-    generate() {
-        let jsType = this.outputFile.endsWith(".js");
-        let jsonType = this.outputFile.endsWith(".json");
+    IntlBundleGenerator.prototype.generate = function () {
+        var jsType = this.outputFile.endsWith(".js");
+        var jsonType = this.outputFile.endsWith(".json");
         //let tsType = this.outputFile.endsWith(".ts");
-        for (let baseLocale of this.locales) {
-            let contents = [];
-            let messages;
+        for (var _i = 0, _a = this.locales; _i < _a.length; _i++) {
+            var baseLocale = _a[_i];
+            var contents = [];
+            var messages = void 0;
             // whether intl polyfill locale data is in the bundle
-            let intlPolyfill = false;
-            let intlRelativeTimePolyfill = false;
-            let outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
+            var intlPolyfill = false;
+            var intlRelativeTimePolyfill = false;
+            var outputFile = path.resolve(this.outputFile.replace("{{LOCALE}}", baseLocale));
             fsextra.ensureFileSync(outputFile);
-            for (let locale of this.extractLocales(baseLocale)) {
-                let segments = locale.split(/(\-|\_)/g);
-                let dashed = segments.join("-");
-                let underscored = segments.join("_");
-                for (let item of this.items) {
-                    let itemPath = path.resolve(item.path.replace("{{LOCALE}}", dashed));
+            for (var _b = 0, _c = this.extractLocales(baseLocale); _b < _c.length; _b++) {
+                var locale = _c[_b];
+                var segments = locale.split(/(\-|\_)/g);
+                var dashed = segments.join("-");
+                var underscored = segments.join("_");
+                for (var _d = 0, _e = this.items; _d < _e.length; _d++) {
+                    var item = _e[_d];
+                    var itemPath = path.resolve(item.path.replace("{{LOCALE}}", dashed));
                     if (!fsextra.existsSync(itemPath)) {
                         itemPath = path.resolve(item.path.replace("{{LOCALE}}", underscored));
                     }
@@ -111,17 +122,17 @@ class IntlBundleGenerator {
                             if (!messages[item.namespace][baseLocale]) {
                                 messages[item.namespace][baseLocale] = {};
                             }
-                            let json = fsextra.readJsonSync(itemPath);
+                            var json = fsextra.readJsonSync(itemPath);
                             // we must look for resources and copy resources into output directory
-                            for (let key in json) {
+                            for (var key in json) {
                                 if (typeof json[key] != "string" && json[key]["file"]) {
-                                    fsextra.copyFileSync(path.resolve(path.dirname(itemPath), json[key]["file"]), path.resolve(path.dirname(outputFile), json[key]["file"] = `${item.namespace}-${json[key]["file"]}`.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")));
+                                    fsextra.copyFileSync(path.resolve(path.dirname(itemPath), json[key]["file"]), path.resolve(path.dirname(outputFile), json[key]["file"] = (item.namespace + "-" + json[key]["file"]).replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")));
                                 }
                             }
                             Object.assign(messages[item.namespace][baseLocale], json);
                         }
                         else {
-                            let c = fsextra.readFileSync(itemPath).toString();
+                            var c = fsextra.readFileSync(itemPath).toString();
                             if (item instanceof IntlPolyfillBundleItem) {
                                 intlPolyfill = true;
                                 c = c.replace("IntlPolyfill.__addLocaleData", "INTL_POLYFILL.push");
@@ -159,13 +170,13 @@ class IntlBundleGenerator {
             }
             fsextra.writeFileSync(outputFile, contents.join("\n"));
         }
-    }
-    extractLocales(locale) {
-        let locales = [];
-        let segments = locale.split("-");
-        for (let i = 0; i < segments.length; i++) {
-            let dash = segments.slice(0, i + 1).join("-");
-            let underscore = segments.slice(0, i + 1).join("_");
+    };
+    IntlBundleGenerator.prototype.extractLocales = function (locale) {
+        var locales = [];
+        var segments = locale.split("-");
+        for (var i = 0; i < segments.length; i++) {
+            var dash = segments.slice(0, i + 1).join("-");
+            var underscore = segments.slice(0, i + 1).join("_");
             if (locales.indexOf(dash) < 0) {
                 locales.push(dash);
             }
@@ -174,7 +185,8 @@ class IntlBundleGenerator {
             }
         }
         return locales;
-    }
-}
+    };
+    return IntlBundleGenerator;
+}());
 exports.IntlBundleGenerator = IntlBundleGenerator;
 //# sourceMappingURL=bundle-generator.js.map
