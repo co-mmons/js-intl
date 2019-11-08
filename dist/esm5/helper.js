@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var core_1 = require("@co.mmons/js-utils/core");
-var bignumber_js_1 = require("bignumber.js");
-var intl_messageformat_1 = require("intl-messageformat");
-var money_1 = require("./money");
-var currency_1 = require("./currency");
-var messages_1 = require("./messages");
-var _1 = require(".");
-var relative_unit_selector_1 = require("./relative-unit-selector");
+import * as tslib_1 from "tslib";
+import { DateTimezone } from "@co.mmons/js-utils/core";
+import { BigNumber } from "bignumber.js";
+import IntlMessageFormat from "intl-messageformat";
+import { Money } from "./money";
+import { Currency } from "./currency";
+import { extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter } from "./messages";
+import { MessageRef } from ".";
+import { selectUnit } from "./relative-unit-selector";
 for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]; _i < _a.length; _i++) {
     var v = _a[_i];
     if (typeof window !== "undefined" && !window[v]) {
@@ -35,7 +33,7 @@ function loadPolyfillsLocale() {
     }
 }
 loadPolyfillsLocale();
-var defaultMessageFormat = new intl_messageformat_1.default("", "en");
+var defaultMessageFormat = new IntlMessageFormat("", "en");
 var IntlHelper = /** @class */ (function () {
     function IntlHelper(defaultLocale, defaultNamespace) {
         this.defaultNamespace = defaultNamespace;
@@ -90,7 +88,7 @@ var IntlHelper = /** @class */ (function () {
         var cacheKey = id ? formatterConstructor.name + "_" + id : getCacheId([formatterConstructor.name].concat(constructorArguments));
         var formatter = this.formatters[cacheKey];
         if (!formatter && constructorArguments) {
-            if (formatterConstructor === intl_messageformat_1.default && !messages_1.isMessageNeedsFormatter(constructorArguments[0])) {
+            if (formatterConstructor === IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
             }
             else if (formatterConstructor === Intl["RelativeTimeFormat"]) {
@@ -143,7 +141,7 @@ var IntlHelper = /** @class */ (function () {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, messages_1.importMessages(this.resourcesLocation + "/" + resourcePath + "/" + this.locale + ".json")];
+                    case 0: return [4 /*yield*/, importMessages(this.resourcesLocation + "/" + resourcePath + "/" + this.locale + ".json")];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -152,15 +150,15 @@ var IntlHelper = /** @class */ (function () {
         });
     };
     IntlHelper.prototype.messageFormat = function (message, values, formats) {
-        return new intl_messageformat_1.default(message, this._locale, formats).format(values);
+        return new IntlMessageFormat(message, this._locale, formats).format(values);
     };
     IntlHelper.prototype.message = function (key, values, formats) {
         var _this = this;
-        var namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
+        var namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
             return namespaceAndKey.key;
         }
-        if (key instanceof _1.MessageRef) {
+        if (key instanceof MessageRef) {
             if (!values) {
                 values = key.values;
             }
@@ -168,15 +166,15 @@ var IntlHelper = /** @class */ (function () {
                 formats = key.formats;
             }
         }
-        var formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key);
+        var formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
         }
-        var message = messages_1.findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
+        var message = findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
         if (typeof message == "string") {
-            formatter = this.formatterInstance(intl_messageformat_1.default, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
+            formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key, [message]);
             if (formatter !== defaultMessageFormat) {
-                formatter = new intl_messageformat_1.default(message, this._locale, formats);
+                formatter = new IntlMessageFormat(message, this._locale, formats);
             }
             if (formatter && formatter !== defaultMessageFormat) {
                 return formatter.format(values);
@@ -202,7 +200,7 @@ var IntlHelper = /** @class */ (function () {
                             reject(error_1);
                             return [2 /*return*/];
                         case 3:
-                            formatter = new intl_messageformat_1.default(contents, this._locale, formats);
+                            formatter = new IntlMessageFormat(contents, this._locale, formats);
                             resolve(formatter.format(values));
                             return [2 /*return*/];
                     }
@@ -239,10 +237,10 @@ var IntlHelper = /** @class */ (function () {
         if (typeof dateTime === "number") {
             dateTime = new Date(dateTime);
         }
-        else if (dateTime instanceof core_1.DateTimezone) {
+        else if (dateTime instanceof DateTimezone) {
             dateTime = dateTime.date;
         }
-        var diff = relative_unit_selector_1.selectUnit(dateTime);
+        var diff = selectUnit(dateTime);
         return this.formatterInstance(Intl["RelativeTimeFormat"], undefined, [{ numeric: "auto" }]).format(diff.value, diff.unit);
     };
     IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
@@ -282,7 +280,7 @@ var IntlHelper = /** @class */ (function () {
         else {
             predefinedOptions = Object.assign({ year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }, predefinedOptions);
         }
-        if (dateTime instanceof core_1.DateTimezone) {
+        if (dateTime instanceof DateTimezone) {
             if (!dateTime.timezone) {
                 predefinedOptions.timeZone = "UTC";
                 predefinedOptions.timeZoneName = undefined;
@@ -315,25 +313,25 @@ var IntlHelper = /** @class */ (function () {
         else {
             options.style = "decimal";
         }
-        if (value instanceof money_1.Money) {
+        if (value instanceof Money) {
             if (mode == "currency") {
                 options.currency = value.currency.code;
             }
             value = value.amount.toNumber();
         }
-        else if (value instanceof bignumber_js_1.BigNumber) {
+        else if (value instanceof BigNumber) {
             value = value.toNumber();
         }
         else if (Array.isArray(value) && value) {
             if (mode == "currency") {
-                if (value[0] instanceof currency_1.Currency) {
+                if (value[0] instanceof Currency) {
                     options.currency = value[0].code;
                 }
                 else if (value[0]) {
                     options.currency = value[0];
                 }
             }
-            if (value[1] instanceof bignumber_js_1.BigNumber) {
+            if (value[1] instanceof BigNumber) {
                 value = value[1].toNumber();
             }
             else {
@@ -345,7 +343,7 @@ var IntlHelper = /** @class */ (function () {
     };
     return IntlHelper;
 }());
-exports.IntlHelper = IntlHelper;
+export { IntlHelper };
 function getCacheId(inputs) {
     var cacheId = [];
     var i, len, input;

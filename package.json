@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:es5 && npm run build:esm5 && npm run build:es2015 && npm run build:esm2015",
     "build:es5": "tsc && tsc -p tsconfig.json -m commonjs -t es5 --outDir dist",
-    "build:esm5": "tsc && tsc -p tsconfig.json -d false -m commonjs -t es5 --outDir dist/esm5",
+    "build:esm5": "tsc && tsc -p tsconfig.json -d false -m es2015 -t es5 --outDir dist/esm5",
     "build:esm2015": "tsc && tsc -p tsconfig.json -d false -m es2015 -t es2015 --outDir dist/esm2015",
     "build:es2015": "tsc && tsc -p tsconfig.json -d false -m commonjs -t es2015 --outDir dist/es2015",
     "messages": "npx ts-node src/google-sheet-importer-cli.ts --output-path messages --output-type json --document 1lTpcwU0ubFX7bJFCt8zeHYrwbDaoxNcjzpjUVdmiY_w --worksheet 1 --filterTags intl",
@@ -42,7 +42,7 @@
   "module": "esm5/index.js",
   "es5": "index.js",
   "esm5": "esm5/index.js",
-  "es2015": "esm2015/index.js",
+  "es2015": "es2015/index.js",
   "esm2015": "esm2015/index.js",
   "sideEffects": false,
   "intlBundleItems": [

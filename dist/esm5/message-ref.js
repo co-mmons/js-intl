@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var MessageRef = /** @class */ (function () {
     function MessageRef(namespace, key, values, formats) {
         this.namespace = namespace;
@@ -44,5 +42,5 @@ var MessageRef = /** @class */ (function () {
     };
     return MessageRef;
 }());
-exports.MessageRef = MessageRef;
+export { MessageRef };
 //# sourceMappingURL=message-ref.js.map

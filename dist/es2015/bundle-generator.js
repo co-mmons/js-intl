@@ -44,7 +44,7 @@ class IntlBundleGenerator {
                             else {
                                 this.items.push(IntlBundleItem.intlRelativeTimePolyfill(path.resolve(nodeModulesPath)));
                             }
-                            break INPUTS;
+                            continue INPUTS;
                         }
                     }
                 }

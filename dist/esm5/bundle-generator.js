@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var fs_extra_1 = require("fs-extra");
-var fsextra = require("fs-extra");
-var path = require("path");
+import { readJsonSync, existsSync } from "fs-extra";
+import * as fsextra from "fs-extra";
+import * as path from "path";
 var IntlPolyfillBundleItem = /** @class */ (function () {
     function IntlPolyfillBundleItem(path) {
         this.path = path;
@@ -15,7 +13,7 @@ var IntlRelativeTimePolyfillBundleItem = /** @class */ (function () {
     }
     return IntlRelativeTimePolyfillBundleItem;
 }());
-var IntlBundleItem;
+export var IntlBundleItem;
 (function (IntlBundleItem) {
     function intlPolyfill(node_modules) {
         if (node_modules === void 0) { node_modules = "node_modules"; }
@@ -27,7 +25,7 @@ var IntlBundleItem;
         return new IntlRelativeTimePolyfillBundleItem(node_modules + "/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js");
     }
     IntlBundleItem.intlRelativeTimePolyfill = intlRelativeTimePolyfill;
-})(IntlBundleItem = exports.IntlBundleItem || (exports.IntlBundleItem = {}));
+})(IntlBundleItem || (IntlBundleItem = {}));
 var IntlBundleGenerator = /** @class */ (function () {
     function IntlBundleGenerator(locales, inputs, outputFile, options) {
         this.locales = locales;
@@ -43,26 +41,26 @@ var IntlBundleGenerator = /** @class */ (function () {
                 if (input === "intl" || input === "@formatjs/intl-relativetimeformat") {
                     for (var _a = 0, _b = this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths; _a < _b.length; _a++) {
                         var nodeModulesPath = _b[_a];
-                        if (fs_extra_1.existsSync(path.resolve(nodeModulesPath, input))) {
+                        if (existsSync(path.resolve(nodeModulesPath, input))) {
                             if (input === "intl") {
                                 this.items.push(IntlBundleItem.intlPolyfill(path.resolve(nodeModulesPath)));
                             }
                             else {
                                 this.items.push(IntlBundleItem.intlRelativeTimePolyfill(path.resolve(nodeModulesPath)));
                             }
-                            break INPUTS;
+                            continue INPUTS;
                         }
                     }
                 }
                 var segments = input.split("/");
                 for (var _c = 0, _d = this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths; _c < _d.length; _c++) {
                     var nodeModulesPath = _d[_c];
-                    if (fs_extra_1.existsSync(nodeModulesPath)) {
+                    if (existsSync(nodeModulesPath)) {
                         for (var i = segments.length; i >= 1; i--) {
                             var dirPath = path.resolve(nodeModulesPath, segments.slice(0, i).join("/"));
                             var packagePath = path.resolve(dirPath, "package.json");
-                            if (fs_extra_1.existsSync(packagePath)) {
-                                var pckg = fs_extra_1.readJsonSync(packagePath);
+                            if (existsSync(packagePath)) {
+                                var pckg = readJsonSync(packagePath);
                                 if (pckg["intlBundleItems"] && Array.isArray(pckg["intlBundleItems"])) {
                                     for (var _e = 0, _f = pckg["intlBundleItems"]; _e < _f.length; _e++) {
                                         var item = _f[_e];
@@ -188,5 +186,5 @@ var IntlBundleGenerator = /** @class */ (function () {
     };
     return IntlBundleGenerator;
 }());
-exports.IntlBundleGenerator = IntlBundleGenerator;
+export { IntlBundleGenerator };
 //# sourceMappingURL=bundle-generator.js.map

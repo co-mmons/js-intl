@@ -1,9 +1,7 @@
 #!/usr/bin/env node
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var yargs = require("yargs");
-var google_sheet_importer_1 = require("./google-sheet-importer");
+import * as tslib_1 from "tslib";
+import * as yargs from "yargs";
+import { GoogleSheetImporter } from "./google-sheet-importer";
 var argv = yargs
     .option("outputPath", { description: "Output directory path" })
     .option("outputType", { description: "Output type", choices: ["json", "ts"] })
@@ -18,7 +16,7 @@ function main() {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    importer = new google_sheet_importer_1.GoogleSheetImporter();
+                    importer = new GoogleSheetImporter();
                     importer.outputPath = argv["outputPath"];
                     importer.outputType = argv["outputType"];
                     importer.defaultLocale = argv["defaultLocale"];

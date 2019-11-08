@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var message_ref_1 = require("./message-ref");
+import { MessageRef } from "./message-ref";
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
@@ -8,7 +6,7 @@ if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
     global["INTL_MESSAGES"] = {};
 }
 var importedResources = [];
-function importMessages(url) {
+export function importMessages(url) {
     if (importedResources.indexOf(url) > -1) {
         return Promise.resolve();
     }
@@ -47,8 +45,7 @@ function importMessages(url) {
         request.send();
     });
 }
-exports.importMessages = importMessages;
-function pushMessages(locale, namespace, messages) {
+export function pushMessages(locale, namespace, messages) {
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }
@@ -57,8 +54,7 @@ function pushMessages(locale, namespace, messages) {
     }
     Object.assign(INTL_MESSAGES[namespace][locale], messages);
 }
-exports.pushMessages = pushMessages;
-function findMessage(locales, namespace, key) {
+export function findMessage(locales, namespace, key) {
     for (var _i = 0, locales_1 = locales; _i < locales_1.length; _i++) {
         var locale = locales_1[_i];
         if (INTL_MESSAGES && INTL_MESSAGES[namespace] && INTL_MESSAGES[namespace][locale] && INTL_MESSAGES[namespace][locale][key]) {
@@ -67,14 +63,12 @@ function findMessage(locales, namespace, key) {
     }
     return key.replace(/.+\//g, "").replace(/\|.*/g, "").trim();
 }
-exports.findMessage = findMessage;
-function isMessageNeedsFormatter(message) {
+export function isMessageNeedsFormatter(message) {
     return message.indexOf("{") > -1 || message.indexOf("}") > -1;
 }
-exports.isMessageNeedsFormatter = isMessageNeedsFormatter;
-function extractMessageNamespaceAndKey(namespaceAndKey, defaultNamespace) {
+export function extractMessageNamespaceAndKey(namespaceAndKey, defaultNamespace) {
     var result = { namespace: undefined, key: undefined };
-    if (namespaceAndKey instanceof message_ref_1.MessageRef) {
+    if (namespaceAndKey instanceof MessageRef) {
         result.namespace = namespaceAndKey.namespace || defaultNamespace;
         result.key = namespaceAndKey.key;
     }
@@ -95,5 +89,4 @@ function extractMessageNamespaceAndKey(namespaceAndKey, defaultNamespace) {
     }
     return result;
 }
-exports.extractMessageNamespaceAndKey = extractMessageNamespaceAndKey;
 //# sourceMappingURL=messages.js.map

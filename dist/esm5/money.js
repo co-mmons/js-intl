@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var bignumber_js_1 = require("bignumber.js");
-var currency_1 = require("./currency");
+import { BigNumber } from "bignumber.js";
+import { Currency } from "./currency";
 function toBigNumber(value) {
-    if (value instanceof bignumber_js_1.BigNumber) {
+    if (value instanceof BigNumber) {
         return value;
     }
     else if (typeof value === "number") {
-        return new bignumber_js_1.BigNumber(value);
+        return new BigNumber(value);
     }
     else if (typeof value === "string") {
-        return new bignumber_js_1.BigNumber(value);
+        return new BigNumber(value);
     }
     else {
         throw "Given value: " + value + " cannot be converted to BigNumber.";
@@ -21,13 +19,13 @@ var Money = /** @class */ (function () {
         this.$constructor(currencyOrPrototype, amount);
     }
     Money.prototype.$constructor = function (currencyOrPrototype, amount) {
-        if (currencyOrPrototype instanceof currency_1.Currency || typeof currencyOrPrototype === "string") {
-            this._currency = currencyOrPrototype instanceof currency_1.Currency ? currencyOrPrototype : new currency_1.Currency(currencyOrPrototype);
+        if (currencyOrPrototype instanceof Currency || typeof currencyOrPrototype === "string") {
+            this._currency = currencyOrPrototype instanceof Currency ? currencyOrPrototype : new Currency(currencyOrPrototype);
             this._amount = toBigNumber(amount);
         }
         else if (currencyOrPrototype) {
             this._amount = toBigNumber(currencyOrPrototype["amount"]);
-            this._currency = currencyOrPrototype["currency"] instanceof currency_1.Currency ? currencyOrPrototype["amount"] : new currency_1.Currency(currencyOrPrototype["currency"]);
+            this._currency = currencyOrPrototype["currency"] instanceof Currency ? currencyOrPrototype["amount"] : new Currency(currencyOrPrototype["currency"]);
         }
     };
     Object.defineProperty(Money.prototype, "currency", {
@@ -65,7 +63,7 @@ var Money = /** @class */ (function () {
     Money.prototype.compareTo = function (money) {
         if (typeof money === "number")
             return this.amount.comparedTo(money);
-        else if (money instanceof bignumber_js_1.BigNumber)
+        else if (money instanceof BigNumber)
             return this.amount.comparedTo(money);
         else if (money)
             return this.amount.comparedTo(money.amount);
@@ -101,5 +99,5 @@ var Money = /** @class */ (function () {
     };
     return Money;
 }());
-exports.Money = Money;
+export { Money };
 //# sourceMappingURL=money.js.map

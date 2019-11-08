@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var date_fns_1 = require("date-fns");
-function selectUnit(from, to, thresholds) {
+import { differenceInCalendarDays, differenceInCalendarQuarters, differenceInCalendarYears, differenceInSeconds, differenceInCalendarMonths, differenceInCalendarWeeks } from "date-fns";
+export function selectUnit(from, to, thresholds) {
     if (to === void 0) { to = Date.now(); }
-    if (thresholds === void 0) { thresholds = exports.DEFAULT_THRESHOLDS; }
-    var secs = date_fns_1.differenceInSeconds(from, to);
+    if (thresholds === void 0) { thresholds = DEFAULT_THRESHOLDS; }
+    var secs = differenceInSeconds(from, to);
     if (Math.abs(secs) < thresholds.second) {
         return {
             value: Math.round(secs),
@@ -25,42 +23,41 @@ function selectUnit(from, to, thresholds) {
             unit: 'hour'
         };
     }
-    var years = date_fns_1.differenceInCalendarYears(from, to);
+    var years = differenceInCalendarYears(from, to);
     if (Math.abs(years) > 0) {
         return {
             value: Math.round(years),
             unit: 'year'
         };
     }
-    var quarters = date_fns_1.differenceInCalendarQuarters(from, to);
+    var quarters = differenceInCalendarQuarters(from, to);
     if (Math.abs(quarters) > 1) {
         return {
             value: Math.round(quarters),
             unit: 'quarter'
         };
     }
-    var months = date_fns_1.differenceInCalendarMonths(from, to);
+    var months = differenceInCalendarMonths(from, to);
     if (Math.abs(months) > 0) {
         return {
             value: Math.round(months),
             unit: 'month'
         };
     }
-    var weeks = date_fns_1.differenceInCalendarWeeks(from, to);
+    var weeks = differenceInCalendarWeeks(from, to);
     if (Math.abs(weeks) > 0) {
         return {
             value: Math.round(weeks),
             unit: 'week'
         };
     }
-    var days = date_fns_1.differenceInCalendarDays(from, to);
+    var days = differenceInCalendarDays(from, to);
     return {
         value: Math.round(days),
         unit: 'day'
     };
 }
-exports.selectUnit = selectUnit;
-exports.DEFAULT_THRESHOLDS = {
+export var DEFAULT_THRESHOLDS = {
     second: 45,
     minute: 45,
     hour: 22 // hour to day
