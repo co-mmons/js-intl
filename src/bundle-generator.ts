@@ -5,7 +5,8 @@ import * as path from "path";
 export interface IntlBundleItem {
     type?: "message" | null | undefined,
     namespace?: string,
-    path: string
+    path: string,
+    module?: string
 }
 
 class IntlPolyfillBundleItem implements IntlBundleItem {
@@ -62,25 +63,34 @@ export class IntlBundleGenerator {
                 const segments = input.split("/");
 
                 for (const nodeModulesPath of this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths) {
+
                     if (existsSync(nodeModulesPath)) {
+
                         for (let i = segments.length; i >= 1; i--) {
                             const dirPath = path.resolve(nodeModulesPath, segments.slice(0, i).join("/"));
                             const packagePath = path.resolve(dirPath, "package.json");
+
                             if (existsSync(packagePath)) {
                                 const pckg = readJsonSync(packagePath);
+
                                 if (pckg["intlBundleItems"] && Array.isArray(pckg["intlBundleItems"])) {
+
                                     for (const item of pckg["intlBundleItems"] as IntlBundleItem[]) {
+
                                         if (typeof item === "object" && item.type && item.path) {
 
-                                            if (!item.path.startsWith("/")) {
-                                                item.path = path.resolve(dirPath, item.path);
-                                            }
+                                            if (item.module === input || (!item.module && pckg.name === input)) {
 
-                                            if (!item.namespace) {
-                                                item.namespace = pckg.name;
-                                            }
+                                                if (!item.path.startsWith("/") && !item.path.startsWith("{{NODE_MODULES}}")) {
+                                                    item.path = path.resolve(dirPath, item.path);
+                                                }
 
-                                            this.items.push(item);
+                                                if (!item.namespace) {
+                                                    item.namespace = item.module || pckg.name;
+                                                }
+
+                                                this.items.push(item);
+                                            }
                                         }
                                     }
                                 }
@@ -126,13 +136,35 @@ export class IntlBundleGenerator {
 
                 for (let item of this.items) {
 
-                    let itemPath = path.resolve(item.path.replace("{{LOCALE}}", dashed));
-                    
-                    if (!fsextra.existsSync(itemPath)) {
-                        itemPath = path.resolve(item.path.replace("{{LOCALE}}", underscored));
+                    const resolveItemPath = (itemPath: string) => {
+
+                        let p = path.resolve(itemPath.replace("{{LOCALE}}", dashed));
+
+                        if (!fsextra.existsSync(itemPath)) {
+                            p = path.resolve(itemPath.replace("{{LOCALE}}", underscored));
+                        }
+
+                        if (fsextra.existsSync(p)) {
+                            return p;
+                        }
                     }
 
-                    if (fsextra.existsSync(itemPath)) {
+                    let itemPath: string;
+
+                    if (item.path.startsWith("{{NODE_MODULES}}")) {
+
+                        for (const nodeModulesPath of this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths) {
+                            itemPath = resolveItemPath(item.path.replace("{{NODE_MODULES}}", nodeModulesPath));
+                            if (itemPath) {
+                                break;
+                            }
+                        }
+
+                    } else {
+                        itemPath = resolveItemPath(item.path);
+                    }
+
+                    if (itemPath) {
                         if (item.type == "message") {
 
                             if (!messages) {

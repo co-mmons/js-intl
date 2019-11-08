@@ -2,6 +2,7 @@ export interface IntlBundleItem {
     type?: "message" | null | undefined;
     namespace?: string;
     path: string;
+    module?: string;
 }
 export declare namespace IntlBundleItem {
     function intlPolyfill(node_modules?: string): IntlBundleItem;

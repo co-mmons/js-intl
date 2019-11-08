@@ -1,6 +1,6 @@
 import { IntlBundleGenerator } from "./bundle-generator";
 new IntlBundleGenerator(["pl-PL", "en-US"], [
-    "@co.mmons/test",
+    { type: "message", path: "{{NODE_MODULES}}/@co.mmons/test/{{LOCALE}}.json", namespace: "@co.mmons/test" },
     "intl",
     "@formatjs/intl-relativetimeformat"
 ], "./test/test-out-{{LOCALE}}.js").generate();
