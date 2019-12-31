@@ -240,8 +240,11 @@ var IntlHelper = /** @class */ (function () {
         else if (dateTime instanceof DateTimezone) {
             dateTime = dateTime.date;
         }
+        if (dateTime === null || dateTime === undefined) {
+            dateTime = new Date();
+        }
         var diff = selectUnit(dateTime);
-        return this.formatterInstance(Intl["RelativeTimeFormat"], undefined, [{ numeric: "auto" }]).format(diff.value, diff.unit);
+        return this.formatterInstance(Intl["RelativeTimeFormat"], undefined, [Object.assign({ numeric: "auto" }, options)]).format(diff.value, diff.unit);
     };
     IntlHelper.prototype.dateFormat = function (dateTime, predefinedOptionsOrOptions, options) {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);

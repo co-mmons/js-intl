@@ -312,9 +312,13 @@ export class IntlHelper {
             dateTime = dateTime.date;
         }
 
+        if (dateTime === null || dateTime === undefined) {
+            dateTime = new Date();
+        }
+
         const diff = selectUnit(dateTime);
 
-        return this.formatterInstance<any>(Intl["RelativeTimeFormat"], undefined, [{numeric: "auto"}]).format(diff.value, diff.unit);
+        return this.formatterInstance<any>(Intl["RelativeTimeFormat"], undefined, [Object.assign({numeric: "auto"}, options)]).format(diff.value, diff.unit);
     }
 
 
