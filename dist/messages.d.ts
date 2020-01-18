@@ -1,4 +1,4 @@
-import { MessageRef } from "./message-ref";
+import { MessageRef } from "./refs";
 export declare function importMessages(url: string): Promise<void> | Promise<{}>;
 export declare function pushMessages(locale: string, namespace: string, messages: {
     [key: string]: string;

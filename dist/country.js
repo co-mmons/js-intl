@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var message_ref_1 = require("./message-ref");
+var refs_1 = require("./refs");
 var Country = /** @class */ (function () {
     function Country(codeOrPrototype) {
         this.$constructor(codeOrPrototype);
@@ -36,7 +36,7 @@ var Country = /** @class */ (function () {
                 }
             }
         }
-        this["name"] = new message_ref_1.MessageRef("@umpirsky/country-list", this.code);
+        this["name"] = new refs_1.MessageRef("@umpirsky/country-list", this.code);
     };
     Country.prototype.equals = function (country) {
         return this.code == (country && country.code);

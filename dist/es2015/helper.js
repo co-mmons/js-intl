@@ -7,7 +7,7 @@ const intl_messageformat_1 = require("intl-messageformat");
 const money_1 = require("./money");
 const currency_1 = require("./currency");
 const messages_1 = require("./messages");
-const _1 = require(".");
+const refs_1 = require("./refs");
 const relative_unit_selector_1 = require("./relative-unit-selector");
 for (const v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
     if (typeof window !== "undefined" && !window[v]) {
@@ -140,13 +140,28 @@ class IntlHelper {
         if (!namespaceAndKey.namespace) {
             return namespaceAndKey.key;
         }
-        if (key instanceof _1.MessageRef) {
+        if (key instanceof refs_1.MessageRef) {
             if (!values) {
                 values = key.values;
             }
             if (!formats) {
                 formats = key.formats;
             }
+        }
+        if (values) {
+            const fixedValues = {};
+            for (const key of Object.keys(values)) {
+                if (values[key] instanceof refs_1.MessageRef) {
+                    fixedValues[key] = this.message(values[key]);
+                }
+                else if (values[key] instanceof refs_1.DecimalFormatRef) {
+                    fixedValues[key] = this.decimalFormat(values[key]);
+                }
+                else {
+                    fixedValues[key] = values[key];
+                }
+            }
+            values = fixedValues;
         }
         let formatter = this.formatterInstance(intl_messageformat_1.default, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
@@ -272,6 +287,9 @@ class IntlHelper {
         return this.numberFormatImpl("currency", value, predefinedOptionsOrOptions, additionalOptions);
     }
     decimalFormat(value, predefinedOptionsOrOptions, additionalOptions) {
+        if (value instanceof refs_1.DecimalFormatRef) {
+            return this.numberFormatImpl("decimal", value.value, value.predefined, value.options);
+        }
         return this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
     }
     percentFormat(value, predefinedOptionsOrOptions, additionalOptions) {

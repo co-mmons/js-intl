@@ -5,7 +5,7 @@ import IntlMessageFormat from "intl-messageformat";
 import { Money } from "./money";
 import { Currency } from "./currency";
 import { extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter } from "./messages";
-import { MessageRef } from ".";
+import { DecimalFormatRef, MessageRef } from "./refs";
 import { selectUnit } from "./relative-unit-selector";
 for (const v of ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
     if (typeof window !== "undefined" && !window[v]) {
@@ -146,6 +146,21 @@ export class IntlHelper {
                 formats = key.formats;
             }
         }
+        if (values) {
+            const fixedValues = {};
+            for (const key of Object.keys(values)) {
+                if (values[key] instanceof MessageRef) {
+                    fixedValues[key] = this.message(values[key]);
+                }
+                else if (values[key] instanceof DecimalFormatRef) {
+                    fixedValues[key] = this.decimalFormat(values[key]);
+                }
+                else {
+                    fixedValues[key] = values[key];
+                }
+            }
+            values = fixedValues;
+        }
         let formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
@@ -270,6 +285,9 @@ export class IntlHelper {
         return this.numberFormatImpl("currency", value, predefinedOptionsOrOptions, additionalOptions);
     }
     decimalFormat(value, predefinedOptionsOrOptions, additionalOptions) {
+        if (value instanceof DecimalFormatRef) {
+            return this.numberFormatImpl("decimal", value.value, value.predefined, value.options);
+        }
         return this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
     }
     percentFormat(value, predefinedOptionsOrOptions, additionalOptions) {

@@ -5,7 +5,7 @@ import IntlMessageFormat from "intl-messageformat";
 import { Money } from "./money";
 import { Currency } from "./currency";
 import { extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter } from "./messages";
-import { MessageRef } from ".";
+import { DecimalFormatRef, MessageRef } from "./refs";
 import { selectUnit } from "./relative-unit-selector";
 for (var _i = 0, _a = ["INTL_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]; _i < _a.length; _i++) {
     var v = _a[_i];
@@ -166,6 +166,22 @@ var IntlHelper = /** @class */ (function () {
                 formats = key.formats;
             }
         }
+        if (values) {
+            var fixedValues = {};
+            for (var _i = 0, _a = Object.keys(values); _i < _a.length; _i++) {
+                var key_1 = _a[_i];
+                if (values[key_1] instanceof MessageRef) {
+                    fixedValues[key_1] = this.message(values[key_1]);
+                }
+                else if (values[key_1] instanceof DecimalFormatRef) {
+                    fixedValues[key_1] = this.decimalFormat(values[key_1]);
+                }
+                else {
+                    fixedValues[key_1] = values[key_1];
+                }
+            }
+            values = fixedValues;
+        }
         var formatter = this.formatterInstance(IntlMessageFormat, namespaceAndKey.namespace + "," + namespaceAndKey.key);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
@@ -300,6 +316,9 @@ var IntlHelper = /** @class */ (function () {
         return this.numberFormatImpl("currency", value, predefinedOptionsOrOptions, additionalOptions);
     };
     IntlHelper.prototype.decimalFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {
+        if (value instanceof DecimalFormatRef) {
+            return this.numberFormatImpl("decimal", value.value, value.predefined, value.options);
+        }
         return this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
     };
     IntlHelper.prototype.percentFormat = function (value, predefinedOptionsOrOptions, additionalOptions) {

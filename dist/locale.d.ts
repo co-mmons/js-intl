@@ -1,5 +1,5 @@
 import { IntlBundleItem } from "./bundle-generator";
-import { MessageRef } from "./message-ref";
+import { MessageRef } from "./refs";
 export declare const localeIntlBundleItem: IntlBundleItem;
 /**
  * https://en.wikipedia.org/wiki/IETF-language-tag

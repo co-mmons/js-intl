@@ -2,7 +2,7 @@ import { Type, DateTimezone } from "@co.mmons/js-utils/core";
 import { BigNumber } from "bignumber.js";
 import { Money } from "./money";
 import { Currency } from "./currency";
-import { MessageRef } from ".";
+import { DecimalFormatRef, MessageRef } from "./refs";
 import { IntlValue } from "./value";
 export declare type CurrencyAndNumber = [string | Currency, number | BigNumber];
 export declare type MessageResult = string | Promise<string>;
@@ -50,7 +50,7 @@ export declare class IntlHelper {
     private dateTimeFormatImpl;
     currencyFormat(value: Money | CurrencyAndNumber, predefinedOptions: string, additionalOptions?: Intl.NumberFormatOptions): any;
     currencyFormat(value: Money | CurrencyAndNumber, options?: Intl.NumberFormatOptions): any;
-    decimalFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string;
+    decimalFormat(value: number | BigNumber | DecimalFormatRef, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string;
     percentFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string;
     private numberFormatImpl;
 }

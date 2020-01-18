@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const message_ref_1 = require("./message-ref");
+const refs_1 = require("./refs");
 class Country {
     constructor(codeOrPrototype) {
         this.$constructor(codeOrPrototype);
@@ -35,7 +35,7 @@ class Country {
                 }
             }
         }
-        this["name"] = new message_ref_1.MessageRef("@umpirsky/country-list", this.code);
+        this["name"] = new refs_1.MessageRef("@umpirsky/country-list", this.code);
     }
     equals(country) {
         return this.code == (country && country.code);

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const message_ref_1 = require("./message-ref");
+const refs_1 = require("./refs");
 exports.localeIntlBundleItem = { path: "node_modules/@umpirsky/locale-list/data/{{LOCALE}}/locales.json", type: "message", namespace: "@umpirsky/locale-list" };
 /**
  * https://en.wikipedia.org/wiki/IETF-language-tag
@@ -19,7 +19,7 @@ class Locale {
         else {
             throw new Error("Locale code must be given in order to create Locale instance");
         }
-        this["name"] = new message_ref_1.MessageRef("@umpirsky/locale-list", this.code.split("-").join("_"));
+        this["name"] = new refs_1.MessageRef("@umpirsky/locale-list", this.code.split("-").join("_"));
     }
     toString() {
         return this.code;

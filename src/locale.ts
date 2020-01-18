@@ -1,5 +1,5 @@
 import {IntlBundleItem} from "./bundle-generator";
-import {MessageRef} from "./message-ref";
+import {MessageRef} from "./refs";
 
 export const localeIntlBundleItem: IntlBundleItem = {path: "node_modules/@umpirsky/locale-list/data/{{LOCALE}}/locales.json", type: "message", namespace: "@umpirsky/locale-list"};
 

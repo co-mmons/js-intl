@@ -1,4 +1,4 @@
-import {MessageRef} from "./message-ref";
+import {MessageRef} from "./refs";
 
 declare var INTL_MESSAGES: any;
 

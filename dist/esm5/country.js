@@ -1,4 +1,4 @@
-import { MessageRef } from "./message-ref";
+import { MessageRef } from "./refs";
 var Country = /** @class */ (function () {
     function Country(codeOrPrototype) {
         this.$constructor(codeOrPrototype);

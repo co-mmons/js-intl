@@ -6,7 +6,7 @@ import IntlMessageFormat from "intl-messageformat";
 import {Money} from "./money";
 import {Currency} from "./currency";
 import {extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter} from "./messages";
-import {MessageRef} from ".";
+import {DecimalFormatRef, IntlRef, MessageRef} from "./refs";
 import {selectUnit} from "./relative-unit-selector";
 import {IntlValue} from "./value";
 
@@ -224,6 +224,23 @@ export class IntlHelper {
             }
         }
 
+        if (values) {
+
+            const fixedValues = {};
+
+            for (const key of Object.keys(values)) {
+                if (values[key] instanceof MessageRef) {
+                    fixedValues[key] = this.message(values[key]);
+                } else if (values[key] instanceof DecimalFormatRef) {
+                    fixedValues[key] = this.decimalFormat(values[key]);
+                } else {
+                    fixedValues[key] = values[key];
+                }
+            }
+
+            values = fixedValues;
+        }
+
         let formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
 
         if (formatter && formatter !== defaultMessageFormat && !formats) {
@@ -400,7 +417,12 @@ export class IntlHelper {
         return this.numberFormatImpl("currency", value, predefinedOptionsOrOptions, additionalOptions);
     }
 
-    public decimalFormat(value: number | BigNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions) {
+    public decimalFormat(value: number | BigNumber | DecimalFormatRef, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions) {
+
+        if (value instanceof DecimalFormatRef) {
+            return this.numberFormatImpl("decimal", value.value, value.predefined, value.options);
+        }
+
         return this.numberFormatImpl("decimal", value, predefinedOptionsOrOptions, additionalOptions);
     }
 

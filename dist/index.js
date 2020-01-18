@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var country_1 = require("./country");
 exports.Country = country_1.Country;
 var currency_1 = require("./currency");
@@ -10,8 +11,7 @@ var helper_1 = require("./helper");
 exports.IntlHelper = helper_1.IntlHelper;
 var locale_1 = require("./locale");
 exports.Locale = locale_1.Locale;
-var message_ref_1 = require("./message-ref");
-exports.MessageRef = message_ref_1.MessageRef;
+tslib_1.__exportStar(require("./refs"), exports);
 var messages_1 = require("./messages");
 exports.importMessages = messages_1.importMessages;
 exports.pushMessages = messages_1.pushMessages;
