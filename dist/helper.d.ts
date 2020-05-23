@@ -41,7 +41,9 @@ export declare class IntlHelper {
     messageFormat(message: string, values: {
         [key: string]: any;
     }, formats?: any): string;
-    message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T;
+    message(key: string | MessageRef, values?: any, formats?: any): string;
+    asyncMessage(key: string | MessageRef, values?: any, formats?: any): Promise<string>;
+    private messageImpl;
     private readFile;
     relativeFormat(dateTime: number | Date | DateTimezone, options?: any): string;
     dateFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;

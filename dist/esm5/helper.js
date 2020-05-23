@@ -153,6 +153,27 @@ var IntlHelper = /** @class */ (function () {
         return new IntlMessageFormat(message, this._locale, formats).format(values);
     };
     IntlHelper.prototype.message = function (key, values, formats) {
+        var message = this.messageImpl(key, values, formats);
+        if (typeof message === "string") {
+            return message;
+        }
+        else if (message) {
+            throw new Error("External message, use asyncMessage()");
+        }
+        else {
+            return undefined;
+        }
+    };
+    IntlHelper.prototype.asyncMessage = function (key, values, formats) {
+        var message = this.messageImpl(key, values, formats);
+        if (typeof message === "string") {
+            return Promise.resolve(message);
+        }
+        else {
+            return message;
+        }
+    };
+    IntlHelper.prototype.messageImpl = function (key, values, formats) {
         var _this = this;
         var namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {

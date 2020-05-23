@@ -207,7 +207,27 @@ export class IntlHelper {
         return new IntlMessageFormat(message, this._locale, formats).format(values);
     }
 
-    public message<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T {
+    message(key: string | MessageRef, values?: any, formats?: any): string {
+        const message = this.messageImpl(key, values, formats);
+        if (typeof message === "string") {
+            return message as string;
+        } else if (message) {
+            throw new Error("External message, use asyncMessage()");
+        } else {
+            return undefined;
+        }
+    }
+
+    asyncMessage(key: string | MessageRef, values?: any, formats?: any): Promise<string> {
+        const message = this.messageImpl(key, values, formats);
+        if (typeof message === "string") {
+            return Promise.resolve(message);
+        } else {
+            return message;
+        }
+    }
+
+    private messageImpl<T extends string | Promise<string> = string>(key: string | MessageRef, values?: any, formats?: any): T {
 
         let namespaceAndKey = extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
@@ -262,8 +282,8 @@ export class IntlHelper {
                 return message as T;
             }
 
-        } 
-        
+        }
+
         // value is stored in a file
         else if (message && message.file) {
             return new Promise<string>(async (resolve, reject) => {
@@ -279,7 +299,7 @@ export class IntlHelper {
 
                 formatter = new IntlMessageFormat(contents, this._locale, formats);
                 resolve(formatter.format(values));
-                
+
             }) as T;
         }
     }
@@ -309,7 +329,7 @@ export class IntlHelper {
                 xhr.open("GET", url, true);
                 xhr.send();
             }
-        
+
             else if (this.resourcesLocation && this.resourcesLocation.startsWith("./") || this.resourcesLocation.startsWith("/")) {
 
             }

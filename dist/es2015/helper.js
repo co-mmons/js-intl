@@ -136,6 +136,27 @@ class IntlHelper {
         return new intl_messageformat_1.default(message, this._locale, formats).format(values);
     }
     message(key, values, formats) {
+        const message = this.messageImpl(key, values, formats);
+        if (typeof message === "string") {
+            return message;
+        }
+        else if (message) {
+            throw new Error("External message, use asyncMessage()");
+        }
+        else {
+            return undefined;
+        }
+    }
+    asyncMessage(key, values, formats) {
+        const message = this.messageImpl(key, values, formats);
+        if (typeof message === "string") {
+            return Promise.resolve(message);
+        }
+        else {
+            return message;
+        }
+    }
+    messageImpl(key, values, formats) {
         let namespaceAndKey = messages_1.extractMessageNamespaceAndKey(key, this.defaultNamespace);
         if (!namespaceAndKey.namespace) {
             return namespaceAndKey.key;
