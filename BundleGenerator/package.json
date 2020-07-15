@@ -1,0 +1,10 @@
+{
+    "name": "@co.mmons/js-intl/BundleGenerator",
+    "main": "../dist/BundleGenerator/index.js",
+    "module": "../dist/esm5/BundleGenerator/index.js",
+    "es5": "../dist/BundleGenerator/index.js",
+    "esm5": "../dist/esm5/BundleGenerator/index.js",
+    "es2015": "../dist/es2015/BundleGenerator/index.js",
+    "esm2015": "../dist/esm2015/BundleGenerator/index.js",
+    "sideEffects": false
+}

@@ -1,4 +1,4 @@
-import {MessageRef} from "./refs";
+import {MessageRef} from "./MessageRef";
 
 declare var INTL_MESSAGES: any;
 
@@ -37,7 +37,7 @@ export function importMessages(url: string) {
                     if (json) {
                         for (let namespace in json) {
                             INTL_MESSAGES[namespace] = INTL_MESSAGES[namespace] || {};
-                            
+
                             for (let locale in json[namespace] || {}) {
                                 INTL_MESSAGES[namespace][locale] = INTL_MESSAGES[namespace][locale] || {};
 

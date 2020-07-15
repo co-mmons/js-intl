@@ -1,5 +1,5 @@
-import { IntlBundleItem } from "./bundle-generator";
-import { MessageRef } from "./refs";
+import type { IntlBundleItem } from "./BundleGenerator";
+import { MessageRef } from "./MessageRef";
 export declare const localeIntlBundleItem: IntlBundleItem;
 /**
  * https://en.wikipedia.org/wiki/IETF-language-tag
@@ -7,11 +7,19 @@ export declare const localeIntlBundleItem: IntlBundleItem;
 export declare class Locale {
     private static _codes;
     private static _languages;
+    static readonly jsonTypeName = "intl/Locale";
+    static fromJSON(json: any): Locale;
     constructor(code: string);
-    private $constructor;
     readonly code: string;
     readonly name: MessageRef;
     toString(): string;
-    toJSON(): any;
-    protected fromJSON(json: any): void;
+    toJSON(options?: LocaleJsonOptions): string | {
+        "@type": string;
+        code: string;
+    };
+}
+export interface LocaleJsonOptions {
+    "@co.mmons/js-intl/Locale"?: {
+        output: "@type" | "string";
+    };
 }

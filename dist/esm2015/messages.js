@@ -1,4 +1,4 @@
-import { MessageRef } from "./refs";
+import { MessageRef } from "./MessageRef";
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }

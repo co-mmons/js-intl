@@ -1,5 +1,5 @@
-import { MessageRef } from "./refs";
-export declare function importMessages(url: string): Promise<void> | Promise<{}>;
+import { MessageRef } from "./MessageRef";
+export declare function importMessages(url: string): Promise<unknown>;
 export declare function pushMessages(locale: string, namespace: string, messages: {
     [key: string]: string;
 }): void;

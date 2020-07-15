@@ -1,11 +1,18 @@
 export declare class Currency {
     private static _codes;
+    static readonly jsonTypeName = "intl/Currency";
     static codes(): string[];
+    static fromJSON(json: any): Currency;
     constructor(code: string);
-    private $constructor;
-    private _code;
     readonly code: string;
     toString(): string;
-    toJSON(): any;
-    protected fromJSON(json: any): void;
+    toJSON(options?: CurrencyJsonOptions): string | {
+        "@type": string;
+        code: string;
+    };
+}
+export interface CurrencyJsonOptions {
+    "@co.mmons/js-intl/Currency"?: {
+        output: "@type" | "string";
+    };
 }

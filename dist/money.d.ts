@@ -1,12 +1,11 @@
 import { BigNumber } from "bignumber.js";
-import { Currency } from "./currency";
+import { Currency } from "./Currency";
 export declare class Money {
-    constructor(currency: Currency, amount: BigNumber | number);
-    constructor(currency: string, amount: BigNumber | number);
-    private $constructor;
-    private _currency;
+    static readonly jsonTypeName = "intl/Money";
+    static fromJSON(json: any): Money;
+    constructor(currency: Currency, amount: BigNumber | number | string);
+    constructor(currency: string, amount: BigNumber | number | string);
     readonly currency: Currency;
-    private _amount;
     readonly amount: BigNumber;
     plus(amount: BigNumber | number | string): Money;
     minus(amount: BigNumber | number | string): Money;
@@ -15,7 +14,15 @@ export declare class Money {
     decimalPlaces(dp: number, roundingMode: BigNumber.RoundingMode): Money;
     comparedTo(money: Money | BigNumber | number): number;
     compareTo(money: Money | BigNumber | number): number;
-    toJSON(): string[];
-    protected fromJSON(json: any): void;
+    toJSON(options?: MoneyJsonOptions): string | string[] | {
+        "@type": string;
+        currency: string;
+        amount: string;
+    };
     toString(): string;
+}
+export interface MoneyJsonOptions {
+    "@co.mmons/js-intl/Money"?: {
+        output: "@type" | "string" | "array";
+    };
 }

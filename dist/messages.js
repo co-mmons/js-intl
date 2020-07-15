@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var refs_1 = require("./refs");
+exports.extractMessageNamespaceAndKey = exports.isMessageNeedsFormatter = exports.findMessage = exports.pushMessages = exports.importMessages = void 0;
+var MessageRef_1 = require("./MessageRef");
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
@@ -74,7 +75,7 @@ function isMessageNeedsFormatter(message) {
 exports.isMessageNeedsFormatter = isMessageNeedsFormatter;
 function extractMessageNamespaceAndKey(namespaceAndKey, defaultNamespace) {
     var result = { namespace: undefined, key: undefined };
-    if (namespaceAndKey instanceof refs_1.MessageRef) {
+    if (namespaceAndKey instanceof MessageRef_1.MessageRef) {
         result.namespace = namespaceAndKey.namespace || defaultNamespace;
         result.key = namespaceAndKey.key;
     }
