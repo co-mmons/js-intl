@@ -1,9 +1,8 @@
-import {jsonSubtype, serialize} from "@co.mmons/js-utils/json";
+import {subtype, serialize} from "@co.mmons/js-utils/json";
 import {BigNumber} from "bignumber.js";
 import {IntlRef} from "./IntlRef";
 
-@jsonSubtype(IntlRef, "refType", "decimalFormat")
-@jsonSubtype(IntlRef, "@type", "intl/DecimalFormatRef")
+@subtype(IntlRef, "refType", "decimalFormat")
 export class DecimalFormatRef extends IntlRef {
 
     static readonly jsonTypeName = "intl/DecimalFormatRef";

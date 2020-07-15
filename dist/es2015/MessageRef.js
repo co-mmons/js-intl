@@ -62,7 +62,7 @@ let MessageRef = MessageRef_1 = class MessageRef extends IntlRef_1.IntlRef {
 };
 MessageRef.jsonTypeName = "intl/MessageRef";
 MessageRef = MessageRef_1 = tslib_1.__decorate([
-    json_1.jsonSubtype(IntlRef_1.IntlRef, "refType", "message"),
+    json_1.subtype(IntlRef_1.IntlRef, "refType", "message"),
     tslib_1.__metadata("design:paramtypes", [String, String, Object, Object])
 ], MessageRef);
 exports.MessageRef = MessageRef;

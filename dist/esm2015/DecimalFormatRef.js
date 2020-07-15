@@ -1,6 +1,6 @@
 var DecimalFormatRef_1;
 import { __decorate, __metadata } from "tslib";
-import { jsonSubtype, serialize } from "@co.mmons/js-utils/json";
+import { subtype, serialize } from "@co.mmons/js-utils/json";
 import { BigNumber } from "bignumber.js";
 import { IntlRef } from "./IntlRef";
 let DecimalFormatRef = DecimalFormatRef_1 = class DecimalFormatRef extends IntlRef {
@@ -38,8 +38,7 @@ let DecimalFormatRef = DecimalFormatRef_1 = class DecimalFormatRef extends IntlR
 };
 DecimalFormatRef.jsonTypeName = "intl/DecimalFormatRef";
 DecimalFormatRef = DecimalFormatRef_1 = __decorate([
-    jsonSubtype(IntlRef, "refType", "decimalFormat"),
-    jsonSubtype(IntlRef, "@type", "intl/DecimalFormatRef"),
+    subtype(IntlRef, "refType", "decimalFormat"),
     __metadata("design:paramtypes", [Object, Object, Object])
 ], DecimalFormatRef);
 export { DecimalFormatRef };

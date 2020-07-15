@@ -1,7 +1,7 @@
-import {jsonSubtype, serialize} from "@co.mmons/js-utils/json";
+import {serialize, subtype} from "@co.mmons/js-utils/json";
 import {IntlRef} from "./IntlRef";
 
-@jsonSubtype(IntlRef, "refType", "message")
+@subtype(IntlRef, "refType", "message")
 export class MessageRef extends IntlRef {
 
     static readonly jsonTypeName = "intl/MessageRef";

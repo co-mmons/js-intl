@@ -1,6 +1,6 @@
 var MessageRef_1;
 import { __decorate, __metadata } from "tslib";
-import { jsonSubtype, serialize } from "@co.mmons/js-utils/json";
+import { serialize, subtype } from "@co.mmons/js-utils/json";
 import { IntlRef } from "./IntlRef";
 let MessageRef = MessageRef_1 = class MessageRef extends IntlRef {
     constructor(namespace, key, values, formats) {
@@ -59,7 +59,7 @@ let MessageRef = MessageRef_1 = class MessageRef extends IntlRef {
 };
 MessageRef.jsonTypeName = "intl/MessageRef";
 MessageRef = MessageRef_1 = __decorate([
-    jsonSubtype(IntlRef, "refType", "message"),
+    subtype(IntlRef, "refType", "message"),
     __metadata("design:paramtypes", [String, String, Object, Object])
 ], MessageRef);
 export { MessageRef };

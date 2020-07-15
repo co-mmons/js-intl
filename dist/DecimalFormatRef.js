@@ -43,8 +43,7 @@ var DecimalFormatRef = /** @class */ (function (_super) {
     var DecimalFormatRef_1;
     DecimalFormatRef.jsonTypeName = "intl/DecimalFormatRef";
     DecimalFormatRef = DecimalFormatRef_1 = tslib_1.__decorate([
-        json_1.jsonSubtype(IntlRef_1.IntlRef, "refType", "decimalFormat"),
-        json_1.jsonSubtype(IntlRef_1.IntlRef, "@type", "intl/DecimalFormatRef"),
+        json_1.subtype(IntlRef_1.IntlRef, "refType", "decimalFormat"),
         tslib_1.__metadata("design:paramtypes", [Object, Object, Object])
     ], DecimalFormatRef);
     return DecimalFormatRef;
