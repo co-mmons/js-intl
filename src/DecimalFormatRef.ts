@@ -38,17 +38,12 @@ export class DecimalFormatRef extends IntlRef {
 
     readonly predefined?: string;
 
-    toJSON(options?: DecimalFormatRefJsonOptions) {
+    toJSON() {
 
         const json: any = {
+            "@type": DecimalFormatRef.jsonTypeName,
             value: serialize(this.value)
         };
-
-        if (options?.["@co.mmons/js-intl/DecimalFormatRef"]?.output === "refType") {
-            json.refType = this.refType;
-        } else {
-            json["@type"] = DecimalFormatRef.jsonTypeName;
-        }
 
         if (this.options) {
             json.options = serialize(this.options);
@@ -61,8 +56,4 @@ export class DecimalFormatRef extends IntlRef {
         return json;
     }
 
-}
-
-export interface DecimalFormatRefJsonOptions {
-    "@co.mmons/js-intl/DecimalFormatRef"?: {output?: "@type" | "refType"}
 }

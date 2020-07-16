@@ -88,23 +88,11 @@ export class Money {
         else throw new Error("Cannot compare empty value");
     }
 
-    toJSON(options?: MoneyJsonOptions) {
-
-        switch (options?.["@co.mmons/js-intl/Money"]?.output) {
-            case "string":
-                return `${this.currency.code}${this.amount.toString()}`;
-            case "array":
-                return [this.currency.code, this.amount.toString()];
-            default:
-                return {"@type": Money.jsonTypeName, currency: this.currency.code, amount: this.amount.toString()};
-        }
+    toJSON() {
+        return {"@type": Money.jsonTypeName, currency: this.currency.code, amount: this.amount.toString()};
     }
 
     toString() {
         return this.currency.code + this.amount.toString();
     }
-}
-
-export interface MoneyJsonOptions {
-    "@co.mmons/js-intl/Money"?: {output: "@type" | "string" | "array"}
 }

@@ -38,17 +38,7 @@ export class Currency {
 		return this.code;
 	}
 
-	toJSON(options?: CurrencyJsonOptions) {
-
-		switch (options?.["@co.mmons/js-intl/Country"]?.output) {
-			case "string":
-				return this.code;
-			default:
-				return {"@type": Currency.jsonTypeName, code: this.code};
-		}
+	toJSON() {
+		return {"@type": Currency.jsonTypeName, code: this.code};
 	}
-}
-
-export interface CurrencyJsonOptions {
-	"@co.mmons/js-intl/Currency"?: {output: "@type" | "string"}
 }

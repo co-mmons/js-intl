@@ -30,14 +30,8 @@ class Currency {
     toString() {
         return this.code;
     }
-    toJSON(options) {
-        var _a;
-        switch ((_a = options === null || options === void 0 ? void 0 : options["@co.mmons/js-intl/Country"]) === null || _a === void 0 ? void 0 : _a.output) {
-            case "string":
-                return this.code;
-            default:
-                return { "@type": Currency.jsonTypeName, code: this.code };
-        }
+    toJSON() {
+        return { "@type": Currency.jsonTypeName, code: this.code };
     }
 }
 exports.Currency = Currency;

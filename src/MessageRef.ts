@@ -37,17 +37,12 @@ export class MessageRef extends IntlRef {
         super("message");
     }
 
-    toJSON(options?: MessageRefJsonOptions) {
+    toJSON() {
 
         const json: any = {
+            "@type": MessageRef.jsonTypeName,
             key: this.key
         };
-
-        if (options?.["@co.mmons/js-intl/MessageRef"]?.output === "refType") {
-            json.refType = this.refType;
-        } else {
-            json["@type"] = MessageRef.jsonTypeName;
-        }
 
         if (this.namespace) {
             json.type = this.namespace;
@@ -63,8 +58,4 @@ export class MessageRef extends IntlRef {
     toString() {
         return this.key;
     }
-}
-
-export interface MessageRefJsonOptions {
-    "@co.mmons/js-intl/MessageRef"?: {output?: "@type" | "refType"}
 }

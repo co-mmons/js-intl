@@ -37,17 +37,11 @@ let MessageRef = MessageRef_1 = class MessageRef extends IntlRef_1.IntlRef {
         }
         throw new Error(`Cannot unserialize "${json}" as @co.mmons/js-intl/MessageRef`);
     }
-    toJSON(options) {
-        var _a;
+    toJSON() {
         const json = {
+            "@type": MessageRef_1.jsonTypeName,
             key: this.key
         };
-        if (((_a = options === null || options === void 0 ? void 0 : options["@co.mmons/js-intl/MessageRef"]) === null || _a === void 0 ? void 0 : _a.output) === "refType") {
-            json.refType = this.refType;
-        }
-        else {
-            json["@type"] = MessageRef_1.jsonTypeName;
-        }
         if (this.namespace) {
             json.type = this.namespace;
         }

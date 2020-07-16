@@ -30,14 +30,8 @@ class Locale {
     toString() {
         return this.code;
     }
-    toJSON(options) {
-        var _a;
-        switch ((_a = options === null || options === void 0 ? void 0 : options["@co.mmons/js-intl/Locale"]) === null || _a === void 0 ? void 0 : _a.output) {
-            case "string":
-                return this.code;
-            default:
-                return { "@type": Locale.jsonTypeName, code: this.code };
-        }
+    toJSON() {
+        return { "@type": Locale.jsonTypeName, code: this.code };
     }
 }
 exports.Locale = Locale;

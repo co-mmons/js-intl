@@ -46,17 +46,7 @@ export class Locale {
         return this.code;
     }
 
-    toJSON(options?: LocaleJsonOptions) {
-
-        switch (options?.["@co.mmons/js-intl/Locale"]?.output) {
-            case "string":
-                return this.code;
-            default:
-                return {"@type": Locale.jsonTypeName, code: this.code};
-        }
+    toJSON() {
+        return {"@type": Locale.jsonTypeName, code: this.code};
     }
-}
-
-export interface LocaleJsonOptions {
-    "@co.mmons/js-intl/Locale"?: {output: "@type" | "string"}
 }

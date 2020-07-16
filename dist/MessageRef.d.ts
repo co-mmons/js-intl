@@ -11,11 +11,6 @@ export declare class MessageRef extends IntlRef {
     constructor(namespace: string, key: string, values?: {
         [key: string]: any;
     }, formats?: any);
-    toJSON(options?: MessageRefJsonOptions): any;
+    toJSON(): any;
     toString(): string;
-}
-export interface MessageRefJsonOptions {
-    "@co.mmons/js-intl/MessageRef"?: {
-        output?: "@type" | "refType";
-    };
 }

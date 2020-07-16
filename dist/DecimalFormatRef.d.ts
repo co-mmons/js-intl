@@ -8,10 +8,5 @@ export declare class DecimalFormatRef extends IntlRef {
     readonly value: BigNumber;
     readonly options?: Intl.NumberFormatOptions;
     readonly predefined?: string;
-    toJSON(options?: DecimalFormatRefJsonOptions): any;
-}
-export interface DecimalFormatRefJsonOptions {
-    "@co.mmons/js-intl/DecimalFormatRef"?: {
-        output?: "@type" | "refType";
-    };
+    toJSON(): any;
 }

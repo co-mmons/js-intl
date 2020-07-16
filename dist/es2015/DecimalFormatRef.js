@@ -19,17 +19,11 @@ let DecimalFormatRef = DecimalFormatRef_1 = class DecimalFormatRef extends IntlR
         }
         throw new Error(`Cannot unserialize "${json}" as @co.mmons/js-intl/DecimalFormatRef`);
     }
-    toJSON(options) {
-        var _a;
+    toJSON() {
         const json = {
+            "@type": DecimalFormatRef_1.jsonTypeName,
             value: json_1.serialize(this.value)
         };
-        if (((_a = options === null || options === void 0 ? void 0 : options["@co.mmons/js-intl/DecimalFormatRef"]) === null || _a === void 0 ? void 0 : _a.output) === "refType") {
-            json.refType = this.refType;
-        }
-        else {
-            json["@type"] = DecimalFormatRef_1.jsonTypeName;
-        }
         if (this.options) {
             json.options = json_1.serialize(this.options);
         }

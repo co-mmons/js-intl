@@ -79,17 +79,8 @@ export class Country {
 		return this.code;
 	}
 
-	toJSON(options?: CountryJsonOptions) {
-
-		switch (options?.["@co.mmons/js-intl/Country"]?.output) {
-			case "string":
-				return this.code;
-			default:
-				return {"@type": Country.jsonTypeName, code: this.code};
-		}
+	toJSON() {
+		return {"@type": Country.jsonTypeName, code: this.code};
 	}
 }
 
-export interface CountryJsonOptions {
-	"@co.mmons/js-intl/Country"?: {output: "@type" | "string"}
-}
