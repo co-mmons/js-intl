@@ -1,4 +1,5 @@
-import { ObjectAsMapSerializer, serialize, unserialize } from "@co.mmons/js-utils/json";
+import { serialize, unserialize } from "@co.mmons/js-utils/json";
+import { ObjectAsMapSerializer } from "@co.mmons/js-utils/json/serializers";
 export class IntlStringValueSerializer extends ObjectAsMapSerializer {
     constructor(allowPlainValue) {
         super(String);
@@ -13,7 +14,7 @@ export class IntlStringValueSerializer extends ObjectAsMapSerializer {
         }
     }
     unserialize(value, options) {
-        if (this.allowPlainValue && typeof value == "string") {
+        if (this.allowPlainValue && typeof value === "string") {
             return unserialize(value, String, options);
         }
         else {

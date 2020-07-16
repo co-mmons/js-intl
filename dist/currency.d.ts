@@ -6,13 +6,8 @@ export declare class Currency {
     constructor(code: string);
     readonly code: string;
     toString(): string;
-    toJSON(options?: CurrencyJsonOptions): string | {
+    toJSON(): {
         "@type": string;
         code: string;
-    };
-}
-export interface CurrencyJsonOptions {
-    "@co.mmons/js-intl/Currency"?: {
-        output: "@type" | "string";
     };
 }

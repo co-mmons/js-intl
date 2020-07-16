@@ -72,16 +72,8 @@ var Money = /** @class */ (function () {
         else
             throw new Error("Cannot compare empty value");
     };
-    Money.prototype.toJSON = function (options) {
-        var _a;
-        switch ((_a = options === null || options === void 0 ? void 0 : options["@co.mmons/js-intl/Money"]) === null || _a === void 0 ? void 0 : _a.output) {
-            case "string":
-                return "" + this.currency.code + this.amount.toString();
-            case "array":
-                return [this.currency.code, this.amount.toString()];
-            default:
-                return { "@type": Money.jsonTypeName, currency: this.currency.code, amount: this.amount.toString() };
-        }
+    Money.prototype.toJSON = function () {
+        return { "@type": Money.jsonTypeName, currency: this.currency.code, amount: this.amount.toString() };
     };
     Money.prototype.toString = function () {
         return this.currency.code + this.amount.toString();

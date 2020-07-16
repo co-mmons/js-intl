@@ -14,15 +14,10 @@ export declare class Money {
     decimalPlaces(dp: number, roundingMode: BigNumber.RoundingMode): Money;
     comparedTo(money: Money | BigNumber | number): number;
     compareTo(money: Money | BigNumber | number): number;
-    toJSON(options?: MoneyJsonOptions): string | string[] | {
+    toJSON(): {
         "@type": string;
         currency: string;
         amount: string;
     };
     toString(): string;
-}
-export interface MoneyJsonOptions {
-    "@co.mmons/js-intl/Money"?: {
-        output: "@type" | "string" | "array";
-    };
 }

@@ -13,13 +13,8 @@ export declare class Locale {
     readonly code: string;
     readonly name: MessageRef;
     toString(): string;
-    toJSON(options?: LocaleJsonOptions): string | {
+    toJSON(): {
         "@type": string;
         code: string;
-    };
-}
-export interface LocaleJsonOptions {
-    "@co.mmons/js-intl/Locale"?: {
-        output: "@type" | "string";
     };
 }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IntlStringValueSerializer = void 0;
 var tslib_1 = require("tslib");
 var json_1 = require("@co.mmons/js-utils/json");
+var serializers_1 = require("@co.mmons/js-utils/json/serializers");
 var IntlStringValueSerializer = /** @class */ (function (_super) {
     tslib_1.__extends(IntlStringValueSerializer, _super);
     function IntlStringValueSerializer(allowPlainValue) {
@@ -19,7 +20,7 @@ var IntlStringValueSerializer = /** @class */ (function (_super) {
         }
     };
     IntlStringValueSerializer.prototype.unserialize = function (value, options) {
-        if (this.allowPlainValue && typeof value == "string") {
+        if (this.allowPlainValue && typeof value === "string") {
             return json_1.unserialize(value, String, options);
         }
         else {
@@ -27,6 +28,6 @@ var IntlStringValueSerializer = /** @class */ (function (_super) {
         }
     };
     return IntlStringValueSerializer;
-}(json_1.ObjectAsMapSerializer));
+}(serializers_1.ObjectAsMapSerializer));
 exports.IntlStringValueSerializer = IntlStringValueSerializer;
 //# sourceMappingURL=IntlStringValueSerializer.js.map

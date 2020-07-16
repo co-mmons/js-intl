@@ -14,13 +14,8 @@ export declare class Country {
     get alpha3(): string;
     equals(country: Country): boolean;
     toString(): string;
-    toJSON(options?: CountryJsonOptions): string | {
+    toJSON(): {
         "@type": string;
         code: string;
-    };
-}
-export interface CountryJsonOptions {
-    "@co.mmons/js-intl/Country"?: {
-        output: "@type" | "string";
     };
 }

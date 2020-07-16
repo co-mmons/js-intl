@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IntlStringValueSerializer = void 0;
 const json_1 = require("@co.mmons/js-utils/json");
-class IntlStringValueSerializer extends json_1.ObjectAsMapSerializer {
+const serializers_1 = require("@co.mmons/js-utils/json/serializers");
+class IntlStringValueSerializer extends serializers_1.ObjectAsMapSerializer {
     constructor(allowPlainValue) {
         super(String);
         this.allowPlainValue = allowPlainValue;
@@ -16,7 +17,7 @@ class IntlStringValueSerializer extends json_1.ObjectAsMapSerializer {
         }
     }
     unserialize(value, options) {
-        if (this.allowPlainValue && typeof value == "string") {
+        if (this.allowPlainValue && typeof value === "string") {
             return json_1.unserialize(value, String, options);
         }
         else {

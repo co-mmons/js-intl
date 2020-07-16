@@ -1,5 +1,6 @@
 import { __extends } from "tslib";
-import { ObjectAsMapSerializer, serialize, unserialize } from "@co.mmons/js-utils/json";
+import { serialize, unserialize } from "@co.mmons/js-utils/json";
+import { ObjectAsMapSerializer } from "@co.mmons/js-utils/json/serializers";
 var IntlStringValueSerializer = /** @class */ (function (_super) {
     __extends(IntlStringValueSerializer, _super);
     function IntlStringValueSerializer(allowPlainValue) {
@@ -16,7 +17,7 @@ var IntlStringValueSerializer = /** @class */ (function (_super) {
         }
     };
     IntlStringValueSerializer.prototype.unserialize = function (value, options) {
-        if (this.allowPlainValue && typeof value == "string") {
+        if (this.allowPlainValue && typeof value === "string") {
             return unserialize(value, String, options);
         }
         else {

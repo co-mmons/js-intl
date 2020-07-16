@@ -1,5 +1,5 @@
 import { __extends } from "tslib";
-import { ObjectAsMapSerializer } from "@co.mmons/js-utils/json";
+import { ObjectAsMapSerializer } from "@co.mmons/js-utils/json/serializers";
 var IntlValueSerializer = /** @class */ (function (_super) {
     __extends(IntlValueSerializer, _super);
     function IntlValueSerializer(valueType) {
