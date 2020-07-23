@@ -1,0 +1,10 @@
+{
+    "name": "@co.mmons/js-intl/GoogleSheetImporter",
+    "main": "index.js",
+    "module": "../esm5/GoogleSheetImporter/index.js",
+    "es5": "index.js",
+    "esm5": "../esm5/GoogleSheetImporter/index.js",
+    "es2015": "../es2015/GoogleSheetImporter/index.js",
+    "esm2015": "../esm2015/GoogleSheetImporter/index.js",
+    "sideEffects": false
+}
