@@ -6,5 +6,6 @@
     "esm5": "../esm5/GoogleSheetImporter/index.js",
     "es2015": "../es2015/GoogleSheetImporter/index.js",
     "esm2015": "../esm2015/GoogleSheetImporter/index.js",
+    "types": "index.d.ts",
     "sideEffects": false
 }
