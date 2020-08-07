@@ -6,11 +6,7 @@
   "license": "MIT",
   "scripts": {
     "install": "node-utils-npm-install-dist",
-    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:es5 && npm run build:esm5 && npm run build:es2015 && npm run build:esm2015 && node-utils-file-system-glob-copy src dist \"**/package.json\"",
-    "build:es5": "tsc -p tsconfig.json -m commonjs -t es5 --outDir dist",
-    "build:esm5": "tsc -p tsconfig.json -d false -m es2015 -t es5 --outDir dist/esm5",
-    "build:esm2015": "tsc -p tsconfig.json -d false -m es2015 -t es2015 --outDir dist/esm2015",
-    "build:es2015": "tsc -p tsconfig.json -d false -m commonjs -t es2015 --outDir dist/es2015",
+    "build": "rm -rf dist && tsc --emitDeclarationOnly && tsc -m es2015 -t es2017 -d false --outDir dist/.tmp && rollup -c && node-utils-file-system-glob-copy src dist \"**/package.json\"",
     "messages": "npx ts-node src/GoogleSheetImporter/cli.ts --output-path messages --output-type json --document 1lTpcwU0ubFX7bJFCt8zeHYrwbDaoxNcjzpjUVdmiY_w --worksheet 1 --filterTags intl"
   },
   "bin": {
@@ -34,16 +30,15 @@
     "@types/node": "^9.6.0",
     "@types/yargs": "^11.0.0",
     "bignumber.js": "^9.0.0",
+    "rollup": "^2.23.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^6.1.0",
     "ts-node": "^8.3.0",
     "tslib": "^1.10.0",
     "typescript": "^3.9.6"
   },
-  "main": "index.js",
-  "module": "esm5/index.js",
-  "es5": "index.js",
-  "esm5": "esm5/index.js",
-  "es2015": "es2015/index.js",
-  "esm2015": "esm2015/index.js",
+  "main": "index.cjs.js",
+  "module": "index.esm.js",
   "types": "index.d.ts",
   "sideEffects": false,
   "intlBundleItems": [

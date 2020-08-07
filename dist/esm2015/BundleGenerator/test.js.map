@@ -1,1 +1,0 @@
-{"version":3,"file":"test.js","sourceRoot":"","sources":["../../../src/BundleGenerator/test.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,mBAAmB,EAAC,MAAM,mBAAmB,CAAC;AAEtD,IAAI,mBAAmB,CAAC,CAAC,OAAO,EAAE,OAAO,CAAC,EAAE;IACxC,EAAC,IAAI,EAAE,SAAS,EAAE,IAAI,EAAE,iDAAiD,EAAE,SAAS,EAAE,gBAAgB,EAAC;IACvG,MAAM;IACN,mCAAmC;CAClC,EAAE,+BAA+B,CACrC,CAAC,QAAQ,EAAE,CAAC"}
