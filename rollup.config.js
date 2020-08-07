@@ -21,5 +21,10 @@ export default [
             {file: "dist/GoogleSheetImporter/index.esm.js", format: "esm"},
             {file: "dist/GoogleSheetImporter/index.cjs.js", format: "cjs"},
         ]
+    },
+    {
+        external: ["fs-extra", "path", "https", "htmlparser2", "yargs"],
+        input: "dist/.tmp/GoogleSheetImporter/cli.js",
+        output: {file: "dist/GoogleSheetImporter/cli.js", format: "cjs"}
     }
 ];
