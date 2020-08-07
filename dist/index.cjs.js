@@ -573,7 +573,7 @@ class IntlHelper {
         return new IntlMessageFormat(message, this._locale, formats).format(values);
     }
     message(key, values, formats) {
-        const message = this.messageImpl(key, values, formats);
+        const message = this.messageImpl(Array.isArray(key) ? (key.length > 0 ? key[0] : "") : key, values, formats);
         if (typeof message === "string") {
             return message;
         }

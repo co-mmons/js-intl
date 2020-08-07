@@ -43,7 +43,8 @@ export declare class IntlHelper {
     messageFormat(message: string, values: {
         [key: string]: any;
     }, formats?: any): string;
-    message(key: string | MessageRef, values?: any, formats?: any): string;
+    message(strings: TemplateStringsArray, ...values: any): string;
+    message(key: string | MessageRef, values?: any, formats?: any): any;
     asyncMessage(key: string | MessageRef, values?: any, formats?: any): Promise<string>;
     private messageImpl;
     private readFile;
