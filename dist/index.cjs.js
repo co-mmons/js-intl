@@ -939,6 +939,11 @@ class IntlValueSerializer extends serializers.ObjectAsMapSerializer {
 })(exports.IntlValue || (exports.IntlValue = {}));
 
 /**
+ * Global instance of {@link IntlHelper}.
+ */
+const intl = new IntlHelper();
+
+/**
  * https://en.wikipedia.org/wiki/IETF-language-tag
  */
 class Locale {
@@ -982,4 +987,5 @@ exports.IntlValueSerializer = IntlValueSerializer;
 exports.Locale = Locale;
 exports.Money = Money;
 exports.importMessages = importMessages;
+exports.intl = intl;
 exports.pushMessages = pushMessages;

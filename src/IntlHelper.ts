@@ -55,7 +55,7 @@ const defaultMessageFormat = new IntlMessageFormat("", "en");
 
 export class IntlHelper {
 
-    constructor(defaultLocale: string, private defaultNamespace?: string) {
+    constructor(defaultLocale?: string, private defaultNamespace?: string) {
         this.locale = defaultLocale;
         this.defaultNamespace = defaultNamespace;
 

@@ -9,7 +9,7 @@ export declare type CurrencyAndNumber = [string | Currency, number | BigNumber];
 export declare type MessageResult = string | Promise<string>;
 export declare class IntlHelper {
     private defaultNamespace?;
-    constructor(defaultLocale: string, defaultNamespace?: string);
+    constructor(defaultLocale?: string, defaultNamespace?: string);
     /**
      * Path or url to a directory, where intl resources are stored.
      */
