@@ -214,6 +214,15 @@ exports.DecimalFormatRef = DecimalFormatRef_1 = tslib.__decorate([
     tslib.__metadata("design:paramtypes", [Object, Object, Object])
 ], exports.DecimalFormatRef);
 
+for (const v of ["INTL_LOCALE", "INTL_DEFAULT_LOCALE", "INTL_SUPPORTED_LOCALE"]) {
+    if (typeof window !== "undefined" && !window[v]) {
+        window[v] = undefined;
+    }
+    if (typeof global !== "undefined" && !global[v]) {
+        global[v] = undefined;
+    }
+}
+
 if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
     window["INTL_MESSAGES"] = {};
 }
@@ -450,7 +459,7 @@ const DEFAULT_THRESHOLDS = {
     quarter: 0 // quarters to year
 };
 
-for (const v of ["INTL_LOCALE", "INTL_DEFAULT_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
+for (const v of ["INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
     if (typeof window !== "undefined" && !window[v]) {
         window[v] = undefined;
     }
@@ -890,6 +899,59 @@ class CurrencyCalculator {
     }
 }
 
+function bestLocale() {
+    if (typeof window === "undefined" || typeof window.navigator === "undefined") {
+        return INTL_DEFAULT_LOCALE;
+    }
+    let browserLocale = window.navigator["languages"] ? window.navigator["languages"][0] : undefined;
+    browserLocale = browserLocale || window.navigator.language || window.navigator["browserLanguage"] || window.navigator["userLanguage"];
+    browserLocale = browserLocale ? browserLocale.toLowerCase() : undefined;
+    let urlLocale;
+    let urlPath = INTL_LOCALE_URL_PATH ? window.location.pathname.substring(1).split("/") : undefined;
+    if (urlPath && urlPath.length >= (INTL_LOCALE_URL_PATH === true ? 1 : 2)) {
+        if (INTL_LOCALE_URL_PATH === true) {
+            urlLocale = urlPath[0].match(/^\W+$/g) ? undefined : urlPath[0];
+        }
+        else if (urlPath[0] == INTL_LOCALE_URL_PATH) {
+            urlLocale = urlPath[1];
+        }
+    }
+    if (!urlLocale) {
+        let queryLocaleMatch = new RegExp('[?&]' + INTL_LOCALE_URL_PARAM + '=([^&]*)').exec(window.location.search);
+        urlLocale = queryLocaleMatch && decodeURIComponent(queryLocaleMatch[1].replace(/\+/g, ' ')).toLowerCase();
+    }
+    if (!urlLocale && INTL_LOCALE_STORAGE_KEY) {
+        urlLocale = (window.localStorage && window.localStorage.getItem(INTL_LOCALE_STORAGE_KEY)) || undefined;
+    }
+    let bestLocale;
+    if (browserLocale || urlLocale) {
+        let bestLocaleRanking;
+        let supported = INTL_SUPPORTED_LOCALE;
+        for (const l of (typeof supported == "string" ? supported.split(",") : supported)) {
+            const s = l.toLowerCase();
+            if (s === urlLocale) {
+                return l;
+            }
+            else if (s === browserLocale) {
+                bestLocale = l;
+                bestLocaleRanking = 20;
+            }
+            else if (urlLocale && (!bestLocale || bestLocaleRanking < 30) && (s.indexOf(urlLocale) === 0 || urlLocale.indexOf(s) === 0)) {
+                bestLocale = l;
+                bestLocaleRanking = 30;
+            }
+            else if (browserLocale && (!bestLocale || bestLocaleRanking < 10) && (s.indexOf(browserLocale) === 0 || browserLocale.indexOf(s) === 0)) {
+                bestLocale = l;
+                bestLocaleRanking = 10;
+            }
+        }
+    }
+    if (!bestLocale) {
+        return INTL_DEFAULT_LOCALE;
+    }
+    return bestLocale;
+}
+
 class IntlStringValueSerializer extends serializers.ObjectAsMapSerializer {
     constructor(allowPlainValue) {
         super(String);
@@ -988,6 +1050,7 @@ exports.IntlStringValueSerializer = IntlStringValueSerializer;
 exports.IntlValueSerializer = IntlValueSerializer;
 exports.Locale = Locale;
 exports.Money = Money;
+exports.bestLocale = bestLocale;
 exports.importMessages = importMessages;
 exports.intl = intl;
 exports.pushMessages = pushMessages;

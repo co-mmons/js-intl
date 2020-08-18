@@ -3,20 +3,18 @@ import {BigNumber} from "bignumber.js";
 import IntlMessageFormat from "intl-messageformat";
 import {Currency} from "./Currency";
 import {DecimalFormatRef} from "./DecimalFormatRef";
+import "./globals";
 import {IntlValue} from "./IntlValue";
 import {MessageRef} from "./MessageRef";
 import {extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter} from "./messages";
 import {Money} from "./Money";
 import {selectUnit} from "./selectUnit";
 
-declare var INTL_LOCALE: string;
-declare var INTL_SUPPORTED_LOCALE: string;
-declare var INTL_DEFAULT_LOCALE: string;
 declare var INTL_POLYFILL: any[];
 declare var INTL_RELATIVE_POLYFILL: any[];
 declare var IntlPolyfill: any;
 
-for (const v of ["INTL_LOCALE", "INTL_DEFAULT_LOCALE", "INTL_SUPPORTED_LOCALE", "INT_DEFAULT_LOCALE", "INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
+for (const v of ["INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
     if (typeof window !== "undefined" && !window[v]) {
         window[v] = undefined;
     }
