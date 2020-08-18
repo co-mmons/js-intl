@@ -25,6 +25,6 @@ export default [
     {
         external: ["fs-extra", "path", "https", "htmlparser2", "yargs"],
         input: "dist/.tmp/GoogleSheetImporter/cli.js",
-        output: {file: "dist/GoogleSheetImporter/cli.js", format: "cjs"}
+        output: {file: "GoogleSheetImporter/cli.js", format: "cjs"}
     }
 ];
