@@ -10,7 +10,7 @@
     "messages": "npx ts-node src/GoogleSheetImporter/cli.ts --output-path messages --output-type json --document 1lTpcwU0ubFX7bJFCt8zeHYrwbDaoxNcjzpjUVdmiY_w --worksheet 1 --filterTags intl"
   },
   "bin": {
-    "js-intl-google-sheet-importer": "dist/GoogleSheetImporter/cli.js"
+    "js-intl-google-sheet-importer": "GoogleSheetImporter/cli.js"
   },
   "dependencies": {
     "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
