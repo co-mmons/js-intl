@@ -302,7 +302,7 @@ export class IntlHelper {
                 }
 
                 formatter = new IntlMessageFormat(contents, this._locale, formats);
-                resolve(formatter.format(values));
+                resolve(formatter.format(values) as string);
 
             }) as T;
         }

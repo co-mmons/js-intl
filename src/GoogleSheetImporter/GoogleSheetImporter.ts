@@ -1,10 +1,9 @@
 import * as fileSystem from "fs-extra";
 import * as https from "https";
 import * as path from "path";
-import {Parser} from "htmlparser2";
 
 export class GoogleSheetImporter {
-    
+
     constructor() {
     }
 
@@ -51,7 +50,7 @@ export class GoogleSheetImporter {
             let filePath = path.resolve(this.outputPath, `${locale}.${this.outputType}`);
 
             if (!Object.keys(data[locale]).length) {
-                
+
                 try {
                     fileSystem.unlinkSync(filePath);
                 } catch (e) {
@@ -69,71 +68,71 @@ export class GoogleSheetImporter {
                 sorted[key] = data[locale][key];
 
                 // complex value
-                if (typeof sorted[key] != "string") {
-
-                    // name of a file, that will contain value of this key
-                    // no suffix yet, must be added later, depends on resource type
-                    let keyFile = `${locale}-${key.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")}.txt`;
-                    
-                    // Google Document
-                    if (sorted[key]["type"] == "GoogleDocument") {
-
-                        let contents = (/(<div id="contents">)(.*)(<\/div><div id="footer">)/g).exec(await this.fetchHttps(sorted[key]["url"]));
-                        if (contents.length > 1 && contents[2]) {
-
-                            let html = "";
-
-                            let cssClass = "_intl" + Math.round(Math.random() * 1000);
-
-                            let escape = (text: string) => {
-                                return text.replace(/\{|\}|\#|\\/g, "\\$&");
-                            }
-
-                            let currentElementName: string;
-
-                            let parser = new Parser({
-
-                                onopentag: (name, attrs) => {
-
-                                    currentElementName = name;
-
-                                    html += `<${name}`
-
-                                    for (let a in attrs) {
-                                        html += ` ${a}="${escape(attrs[a])}"`;
-                                    }
-
-                                    html += ">";
-                                },
-
-                                onclosetag: (name?: string) => {
-                                    if (["br", "img"].indexOf(name) < 0) {
-                                        html += `</${name}>`;
-                                    }
-                                },
-
-                                ontext: (text) => {
-
-                                    if (currentElementName == "style") {
-                                        text = text.replace(/(font-size|font-family)\:.*?(\;|\})/g, "$2").replace(/color:#000000(\;|\})/g, "$1")
-                                        text = "." + cssClass + " " + escape(text).replace(/\}/g, "}." + cssClass + " ");
-                                    }
-
-                                    html += text;
-                                }
-
-                            }, {decodeEntities: false});
-
-                            parser.write(contents[2]);
-
-                            fileSystem.writeFileSync(path.resolve(this.outputPath, keyFile), `<div class="${cssClass}">${html}</div>`);
-                        }
-                    }
-
-                    sorted[key] = {file: keyFile} as any;
-                }
+                // if (typeof sorted[key] != "string") {
+                //
+                //     // name of a file, that will contain value of this key
+                //     // no suffix yet, must be added later, depends on resource type
+                //     let keyFile = `${locale}-${key.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")}.txt`;
+                //
+                //     // Google Document
+                //     if (sorted[key]["type"] == "GoogleDocument") {
+                //
+                //         let contents = (/(<div id="contents">)(.*)(<\/div><div id="footer">)/g).exec(await this.fetchHttps(sorted[key]["url"]));
+                //         if (contents.length > 1 && contents[2]) {
+                //
+                //             let html = "";
+                //
+                //             let cssClass = "_intl" + Math.round(Math.random() * 1000);
+                //
+                //             let escape = (text: string) => {
+                //                 return text.replace(/\{|\}|\#|\\/g, "\\$&");
+                //             }
+                //
+                //             let currentElementName: string;
+                //
+                //             let parser = new Parser({
+                //
+                //                 onopentag: (name, attrs) => {
+                //
+                //                     currentElementName = name;
+                //
+                //                     html += `<${name}`
+                //
+                //                     for (let a in attrs) {
+                //                         html += ` ${a}="${escape(attrs[a])}"`;
+                //                     }
+                //
+                //                     html += ">";
+                //                 },
+                //
+                //                 onclosetag: (name?: string) => {
+                //                     if (["br", "img"].indexOf(name) < 0) {
+                //                         html += `</${name}>`;
+                //                     }
+                //                 },
+                //
+                //                 ontext: (text) => {
+                //
+                //                     if (currentElementName == "style") {
+                //                         text = text.replace(/(font-size|font-family)\:.*?(\;|\})/g, "$2").replace(/color:#000000(\;|\})/g, "$1")
+                //                         text = "." + cssClass + " " + escape(text).replace(/\}/g, "}." + cssClass + " ");
+                //                     }
+                //
+                //                     html += text;
+                //                 }
+                //
+                //             }, {decodeEntities: false});
+                //
+                //             parser.write(contents[2]);
+                //
+                //             fileSystem.writeFileSync(path.resolve(this.outputPath, keyFile), `<div class="${cssClass}">${html}</div>`);
+                //         }
+                //     }
+                //
+                //     sorted[key] = {file: keyFile} as any;
+                // }
             }
-            
+
             if (this.outputType == "json") {
                 fileSystem.writeJsonSync(filePath, sorted, {spaces: 4, encoding: "UTF-8"});
             } else if (this.outputType == "ts") {
@@ -165,7 +164,7 @@ export class GoogleSheetImporter {
 
             // convert json to rows|cells arrays
             for (let entry of json.feed.entry) {
-                
+
                 if (!entry.gs$cell) {
                     continue;
                 }
@@ -180,7 +179,7 @@ export class GoogleSheetImporter {
                     if (entry.gs$cell.$t.startsWith("#") && entry.gs$cell.$t != "#default") {
                         data[entry.gs$cell.$t.substring(1)] = {};
                     }
-                } 
+                }
 
                 // keys row
                 else {
@@ -258,17 +257,17 @@ export class GoogleSheetImporter {
                         if (value) {
 
                             let alias: any = row[columns.alias];
-                            
+
                             // alias column contain JSON string (quoted)
                             if (alias && alias.startsWith("\"")) {
                                 alias = [JSON.parse(alias)];
-                            } 
-                            
+                            }
+
                             // alias column contain JSON array
                             else if (alias && alias.startsWith("[")) {
                                 alias = JSON.parse(alias);
                             }
-                            
+
                             // comma separated keys
                             else if (alias) {
                                 alias = alias.split(",");
@@ -282,8 +281,8 @@ export class GoogleSheetImporter {
                                     // value is a reference to external google document
                                     if (columns.type && row[columns.type] == "GoogleDocument") {
                                         data[locale][key] = {type: "GoogleDocument", url: value};
-                                    } 
-                                    
+                                    }
+
                                     // simple text
                                     else {
                                         data[locale][key] = value;
@@ -304,7 +303,7 @@ export class GoogleSheetImporter {
 }
 
 interface GoogleSheet {
-    id: string; 
+    id: string;
     worksheet: string;
     filterTags: string[];
 }

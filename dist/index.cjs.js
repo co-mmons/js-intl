@@ -2,15 +2,17 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
 var tslib = require('tslib');
 var json = require('@co.mmons/js-utils/json');
 var core = require('@co.mmons/js-utils/core');
 var bignumber_js = require('bignumber.js');
-var IntlMessageFormat = _interopDefault(require('intl-messageformat'));
+var IntlMessageFormat = require('intl-messageformat');
 var dateFns = require('date-fns');
 var serializers = require('@co.mmons/js-utils/json/serializers');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var IntlMessageFormat__default = /*#__PURE__*/_interopDefaultLegacy(IntlMessageFormat);
 
 exports.IntlRef = class IntlRef {
     constructor(type) {
@@ -471,7 +473,7 @@ function loadPolyfillsLocale() {
     }
 }
 loadPolyfillsLocale();
-const defaultMessageFormat = new IntlMessageFormat("", "en");
+const defaultMessageFormat = new IntlMessageFormat__default['default']("", "en");
 class IntlHelper {
     constructor(defaultLocale, defaultNamespace) {
         this.defaultNamespace = defaultNamespace;
@@ -518,7 +520,7 @@ class IntlHelper {
         let cacheKey = id ? `${formatterConstructor.name}_${id}` : getCacheId([formatterConstructor.name].concat(constructorArguments));
         let formatter = this.formatters[cacheKey];
         if (!formatter && constructorArguments) {
-            if (formatterConstructor === IntlMessageFormat && !isMessageNeedsFormatter(constructorArguments[0])) {
+            if (formatterConstructor === IntlMessageFormat__default['default'] && !isMessageNeedsFormatter(constructorArguments[0])) {
                 formatter = defaultMessageFormat;
             }
             else if (formatterConstructor === Intl["RelativeTimeFormat"]) {
@@ -570,7 +572,7 @@ class IntlHelper {
         await importMessages(`${this.resourcesLocation}/${resourcePath}/${this.locale}.json`);
     }
     messageFormat(message, values, formats) {
-        return new IntlMessageFormat(message, this._locale, formats).format(values);
+        return new IntlMessageFormat__default['default'](message, this._locale, formats).format(values);
     }
     message(key, values, formats) {
         const message = this.messageImpl(Array.isArray(key) ? (key.length > 0 ? key[0] : "") : key, values, formats);
@@ -621,15 +623,15 @@ class IntlHelper {
             }
             values = fixedValues;
         }
-        let formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
+        let formatter = this.formatterInstance(IntlMessageFormat__default['default'], `${namespaceAndKey.namespace},${namespaceAndKey.key}`);
         if (formatter && formatter !== defaultMessageFormat && !formats) {
             return formatter.format(values);
         }
         let message = findMessage(this._locales, namespaceAndKey.namespace, namespaceAndKey.key);
         if (typeof message == "string") {
-            formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
+            formatter = this.formatterInstance(IntlMessageFormat__default['default'], `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
             if (formatter !== defaultMessageFormat) {
-                formatter = new IntlMessageFormat(message, this._locale, formats);
+                formatter = new IntlMessageFormat__default['default'](message, this._locale, formats);
             }
             if (formatter && formatter !== defaultMessageFormat) {
                 return formatter.format(values);
@@ -649,7 +651,7 @@ class IntlHelper {
                     reject(error);
                     return;
                 }
-                formatter = new IntlMessageFormat(contents, this._locale, formats);
+                formatter = new IntlMessageFormat__default['default'](contents, this._locale, formats);
                 resolve(formatter.format(values));
             });
         }

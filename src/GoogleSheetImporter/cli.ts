@@ -3,11 +3,11 @@ import * as yargs from "yargs";
 import {GoogleSheetImporter} from "./GoogleSheetImporter";
 
 const argv = yargs
-    .option("outputPath", {description: "Output directory path"})
-    .option("outputType", {description: "Output type", choices: ["json", "ts"]})
-    .option("defaultLocale", {description: "Default locale to use, when no translation for some other locale"})
-    .option("document", {description: "Google document identifier"})
-    .option("worksheet", {description: "Document's worksheet index (1 based) or worksheet name"})
+    .option("outputPath", {description: "Output directory path", type: "string"})
+    .option("outputType", {description: "Output type", choices: ["json", "ts"], type: "string"})
+    .option("defaultLocale", {description: "Default locale to use, when no translation for some other locale", "type": "string"})
+    .option("document", {description: "Google document identifier", type: "string"})
+    .option("worksheet", {description: "Document's worksheet index (1 based) or worksheet name", type: "string"})
     .option("filterTags", {description: "Comma separated tags, that must be present for keys from worksheet. Key will be taken from worksheet if at least one tag is matched."})
     .demandOption(["outputPath", "outputType", "document"]).argv;
 
@@ -15,7 +15,7 @@ const argv = yargs
 
     let importer = new GoogleSheetImporter();
     importer.outputPath = argv["outputPath"];
-    importer.outputType = argv["outputType"];
+    importer.outputType = argv["outputType"] as any;
     importer.defaultLocale = argv["defaultLocale"];
 
     let documents: string[] = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];

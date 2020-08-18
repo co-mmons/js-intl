@@ -4,7 +4,6 @@ var yargs = require('yargs');
 var fileSystem = require('fs-extra');
 var https = require('https');
 var path = require('path');
-var htmlparser2 = require('htmlparser2');
 
 class GoogleSheetImporter {
     constructor() {
@@ -44,48 +43,69 @@ class GoogleSheetImporter {
             for (let key of Object.keys(data[locale]).sort((a, b) => a.localeCompare(b))) {
                 sorted[key] = data[locale][key];
                 // complex value
-                if (typeof sorted[key] != "string") {
-                    // name of a file, that will contain value of this key
-                    // no suffix yet, must be added later, depends on resource type
-                    let keyFile = `${locale}-${key.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")}.txt`;
-                    // Google Document
-                    if (sorted[key]["type"] == "GoogleDocument") {
-                        let contents = (/(<div id="contents">)(.*)(<\/div><div id="footer">)/g).exec(await this.fetchHttps(sorted[key]["url"]));
-                        if (contents.length > 1 && contents[2]) {
-                            let html = "";
-                            let cssClass = "_intl" + Math.round(Math.random() * 1000);
-                            let escape = (text) => {
-                                return text.replace(/\{|\}|\#|\\/g, "\\$&");
-                            };
-                            let currentElementName;
-                            let parser = new htmlparser2.Parser({
-                                onopentag: (name, attrs) => {
-                                    currentElementName = name;
-                                    html += `<${name}`;
-                                    for (let a in attrs) {
-                                        html += ` ${a}="${escape(attrs[a])}"`;
-                                    }
-                                    html += ">";
-                                },
-                                onclosetag: (name) => {
-                                    if (["br", "img"].indexOf(name) < 0) {
-                                        html += `</${name}>`;
-                                    }
-                                },
-                                ontext: (text) => {
-                                    if (currentElementName == "style") {
-                                        text = text.replace(/(font-size|font-family)\:.*?(\;|\})/g, "$2").replace(/color:#000000(\;|\})/g, "$1");
-                                        text = "." + cssClass + " " + escape(text).replace(/\}/g, "}." + cssClass + " ");
-                                    }
-                                    html += text;
-                                }
-                            }, { decodeEntities: false });
-                            parser.write(contents[2]);
-                            fileSystem.writeFileSync(path.resolve(this.outputPath, keyFile), `<div class="${cssClass}">${html}</div>`);
-                        }
-                    }
-                    sorted[key] = { file: keyFile };
-                }
+                // if (typeof sorted[key] != "string") {
+                //
+                //     // name of a file, that will contain value of this key
+                //     // no suffix yet, must be added later, depends on resource type
+                //     let keyFile = `${locale}-${key.replace(/[^(\w|\d|\.|\@|\_|\-|\,|\$)]/, "-")}.txt`;
+                //
+                //     // Google Document
+                //     if (sorted[key]["type"] == "GoogleDocument") {
+                //
+                //         let contents = (/(<div id="contents">)(.*)(<\/div><div id="footer">)/g).exec(await this.fetchHttps(sorted[key]["url"]));
+                //         if (contents.length > 1 && contents[2]) {
+                //
+                //             let html = "";
+                //
+                //             let cssClass = "_intl" + Math.round(Math.random() * 1000);
+                //
+                //             let escape = (text: string) => {
+                //                 return text.replace(/\{|\}|\#|\\/g, "\\$&");
+                //             }
+                //
+                //             let currentElementName: string;
+                //
+                //             let parser = new Parser({
+                //
+                //                 onopentag: (name, attrs) => {
+                //
+                //                     currentElementName = name;
+                //
+                //                     html += `<${name}`
+                //
+                //                     for (let a in attrs) {
+                //                         html += ` ${a}="${escape(attrs[a])}"`;
+                //                     }
+                //
+                //                     html += ">";
+                //                 },
+                //
+                //                 onclosetag: (name?: string) => {
+                //                     if (["br", "img"].indexOf(name) < 0) {
+                //                         html += `</${name}>`;
+                //                     }
+                //                 },
+                //
+                //                 ontext: (text) => {
+                //
+                //                     if (currentElementName == "style") {
+                //                         text = text.replace(/(font-size|font-family)\:.*?(\;|\})/g, "$2").replace(/color:#000000(\;|\})/g, "$1")
+                //                         text = "." + cssClass + " " + escape(text).replace(/\}/g, "}." + cssClass + " ");
+                //                     }
+                //
+                //                     html += text;
+                //                 }
+                //
+                //             }, {decodeEntities: false});
+                //
+                //             parser.write(contents[2]);
+                //
+                //             fileSystem.writeFileSync(path.resolve(this.outputPath, keyFile), `<div class="${cssClass}">${html}</div>`);
+                //         }
+                //     }
+                //
+                //     sorted[key] = {file: keyFile} as any;
+                // }
             }
             if (this.outputType == "json") {
                 fileSystem.writeJsonSync(filePath, sorted, { spaces: 4, encoding: "UTF-8" });
@@ -218,11 +238,11 @@ class GoogleSheetImporter {
     }
 }
 
-const argv = yargs.option("outputPath", { description: "Output directory path" })
-    .option("outputType", { description: "Output type", choices: ["json", "ts"] })
-    .option("defaultLocale", { description: "Default locale to use, when no translation for some other locale" })
-    .option("document", { description: "Google document identifier" })
-    .option("worksheet", { description: "Document's worksheet index (1 based) or worksheet name" })
+const argv = yargs.option("outputPath", { description: "Output directory path", type: "string" })
+    .option("outputType", { description: "Output type", choices: ["json", "ts"], type: "string" })
+    .option("defaultLocale", { description: "Default locale to use, when no translation for some other locale", "type": "string" })
+    .option("document", { description: "Google document identifier", type: "string" })
+    .option("worksheet", { description: "Document's worksheet index (1 based) or worksheet name", type: "string" })
     .option("filterTags", { description: "Comma separated tags, that must be present for keys from worksheet. Key will be taken from worksheet if at least one tag is matched." })
     .demandOption(["outputPath", "outputType", "document"]).argv;
 (async () => {
