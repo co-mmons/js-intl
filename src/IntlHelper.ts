@@ -49,7 +49,7 @@ export type CurrencyAndNumber = [string | Currency, number | BigNumber];
 
 export type MessageResult = string | Promise<string>;
 
-const defaultMessageFormat = new IntlMessageFormat("", "en");
+const defaultMessageFormat = new IntlMessageFormat("", "en", {}, {ignoreTag: true});
 
 export class IntlHelper {
 
@@ -201,7 +201,7 @@ export class IntlHelper {
     }
 
     public messageFormat(message: string, values: {[key: string]: any}, formats?: any): string {
-        return new IntlMessageFormat(message, this._locale, formats).format(values);
+        return new IntlMessageFormat(message, this._locale, formats, {ignoreTag: true}).format(values);
     }
 
     message(strings: TemplateStringsArray, ...values: any): string;
@@ -275,7 +275,7 @@ export class IntlHelper {
             formatter = this.formatterInstance(IntlMessageFormat, `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
 
             if (formatter !== defaultMessageFormat) {
-                formatter = new IntlMessageFormat(message, this._locale, formats);
+                formatter = new IntlMessageFormat(message, this._locale, formats, {ignoreTag: true});
             }
 
             if (formatter && formatter !== defaultMessageFormat) {
@@ -299,7 +299,7 @@ export class IntlHelper {
                     return;
                 }
 
-                formatter = new IntlMessageFormat(contents, this._locale, formats);
+                formatter = new IntlMessageFormat(contents, this._locale, formats, {ignoreTag: true});
                 resolve(formatter.format(values) as string);
 
             }) as T;

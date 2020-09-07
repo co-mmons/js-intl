@@ -482,7 +482,7 @@ function loadPolyfillsLocale() {
     }
 }
 loadPolyfillsLocale();
-const defaultMessageFormat = new IntlMessageFormat__default['default']("", "en");
+const defaultMessageFormat = new IntlMessageFormat__default['default']("", "en", {}, { ignoreTag: true });
 class IntlHelper {
     constructor(defaultLocale, defaultNamespace) {
         this.defaultNamespace = defaultNamespace;
@@ -581,7 +581,7 @@ class IntlHelper {
         await importMessages(`${this.resourcesLocation}/${resourcePath}/${this.locale}.json`);
     }
     messageFormat(message, values, formats) {
-        return new IntlMessageFormat__default['default'](message, this._locale, formats).format(values);
+        return new IntlMessageFormat__default['default'](message, this._locale, formats, { ignoreTag: true }).format(values);
     }
     message(key, values, formats) {
         const message = this.messageImpl(Array.isArray(key) ? (key.length > 0 ? key[0] : "") : key, values, formats);
@@ -640,7 +640,7 @@ class IntlHelper {
         if (typeof message == "string") {
             formatter = this.formatterInstance(IntlMessageFormat__default['default'], `${namespaceAndKey.namespace},${namespaceAndKey.key}`, [message]);
             if (formatter !== defaultMessageFormat) {
-                formatter = new IntlMessageFormat__default['default'](message, this._locale, formats);
+                formatter = new IntlMessageFormat__default['default'](message, this._locale, formats, { ignoreTag: true });
             }
             if (formatter && formatter !== defaultMessageFormat) {
                 return formatter.format(values);
@@ -660,7 +660,7 @@ class IntlHelper {
                     reject(error);
                     return;
                 }
-                formatter = new IntlMessageFormat__default['default'](contents, this._locale, formats);
+                formatter = new IntlMessageFormat__default['default'](contents, this._locale, formats, { ignoreTag: true });
                 resolve(formatter.format(values));
             });
         }
