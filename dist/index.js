@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("./globals");
 var Country_1 = require("./Country");
 Object.defineProperty(exports, "Country", { enumerable: true, get: function () { return Country_1.Country; } });
 var IntlHelper_1 = require("./IntlHelper");

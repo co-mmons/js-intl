@@ -1,3 +1,4 @@
+import "./globals";
 export { Country } from "./Country";
 export { IntlHelper } from "./IntlHelper";
 export { CurrencyCalculator } from "./CurrencyCalculator";
