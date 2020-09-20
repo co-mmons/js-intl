@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bestLocale = void 0;
-require("./globals");
+const defineGlobals_1 = require("./defineGlobals");
+defineGlobals_1.defineGlobals();
 function bestLocale() {
     if (typeof window === "undefined" || typeof window.navigator === "undefined") {
         return INTL_DEFAULT_LOCALE;

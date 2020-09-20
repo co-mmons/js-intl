@@ -2,7 +2,6 @@ import { DateTimezone, Type } from "@co.mmons/js-utils/core";
 import { BigNumber } from "bignumber.js";
 import { Currency } from "./Currency";
 import { DecimalFormatRef } from "./DecimalFormatRef";
-import "./globals";
 import { IntlValue } from "./IntlValue";
 import { MessageRef } from "./MessageRef";
 import { Money } from "./Money";

@@ -1,4 +1,6 @@
-import "./globals";
+import {defineGlobals} from "./defineGlobals";
+
+defineGlobals();
 
 export function bestLocale() {
 

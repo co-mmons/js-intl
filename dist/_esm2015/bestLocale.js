@@ -1,4 +1,5 @@
-import "./globals";
+import { defineGlobals } from "./defineGlobals";
+defineGlobals();
 export function bestLocale() {
     if (typeof window === "undefined" || typeof window.navigator === "undefined") {
         return INTL_DEFAULT_LOCALE;

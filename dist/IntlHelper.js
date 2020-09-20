@@ -7,19 +7,12 @@ const bignumber_js_1 = require("bignumber.js");
 const intl_messageformat_1 = require("intl-messageformat");
 const Currency_1 = require("./Currency");
 const DecimalFormatRef_1 = require("./DecimalFormatRef");
-require("./globals");
+const defineGlobals_1 = require("./defineGlobals");
 const MessageRef_1 = require("./MessageRef");
 const messages_1 = require("./messages");
 const Money_1 = require("./Money");
 const selectUnit_1 = require("./selectUnit");
-for (const v of ["INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
-    if (typeof window !== "undefined" && !window[v]) {
-        window[v] = undefined;
-    }
-    if (typeof global !== "undefined" && !global[v]) {
-        global[v] = undefined;
-    }
-}
+defineGlobals_1.defineGlobals();
 function loadPolyfillsLocale() {
     if (INTL_POLYFILL && INTL_POLYFILL.length && IntlPolyfill) {
         for (const a of INTL_POLYFILL) {

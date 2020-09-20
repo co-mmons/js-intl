@@ -3,26 +3,14 @@ import {BigNumber} from "bignumber.js";
 import IntlMessageFormat from "intl-messageformat";
 import {Currency} from "./Currency";
 import {DecimalFormatRef} from "./DecimalFormatRef";
-import "./globals";
+import {defineGlobals} from "./defineGlobals";
 import {IntlValue} from "./IntlValue";
 import {MessageRef} from "./MessageRef";
 import {extractMessageNamespaceAndKey, findMessage, importMessages, isMessageNeedsFormatter} from "./messages";
 import {Money} from "./Money";
 import {selectUnit} from "./selectUnit";
 
-declare var INTL_POLYFILL: any[];
-declare var INTL_RELATIVE_POLYFILL: any[];
-declare var IntlPolyfill: any;
-
-for (const v of ["INTL_POLYFILL", "INTL_RELATIVE_POLYFILL", "IntlPolyfill"]) {
-    if (typeof window !== "undefined" && !window[v]) {
-        window[v] = undefined;
-    }
-
-    if (typeof global !== "undefined" && !global[v]) {
-        global[v] = undefined;
-    }
-}
+defineGlobals();
 
 function loadPolyfillsLocale() {
 
