@@ -1,10 +1,9 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var fsextra = require('fs-extra');
-var path = require('path');
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IntlBundleGenerator = exports.IntlBundleItem = void 0;
+const fsextra = require("fs-extra");
+const fs_extra_1 = require("fs-extra");
+const path = require("path");
 class IntlPolyfillBundleItem {
     constructor(path) {
         this.path = path;
@@ -15,6 +14,7 @@ class IntlRelativeTimePolyfillBundleItem {
         this.path = path;
     }
 }
+var IntlBundleItem;
 (function (IntlBundleItem) {
     function intlPolyfill(node_modules = "node_modules") {
         return new IntlPolyfillBundleItem(`${node_modules}/intl/locale-data/jsonp/{{LOCALE}}.js`);
@@ -24,7 +24,7 @@ class IntlRelativeTimePolyfillBundleItem {
         return new IntlRelativeTimePolyfillBundleItem(`${node_modules}/@formatjs/intl-relativetimeformat/dist/locale-data/{{LOCALE}}.js`);
     }
     IntlBundleItem.intlRelativeTimePolyfill = intlRelativeTimePolyfill;
-})(exports.IntlBundleItem || (exports.IntlBundleItem = {}));
+})(IntlBundleItem = exports.IntlBundleItem || (exports.IntlBundleItem = {}));
 class IntlBundleGenerator {
     constructor(locales, inputs, outputFile, options) {
         this.locales = locales;
@@ -38,12 +38,12 @@ class IntlBundleGenerator {
             if (typeof input === "string") {
                 if (input === "intl" || input === "@formatjs/intl-relativetimeformat") {
                     for (const nodeModulesPath of this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths) {
-                        if (fsextra.existsSync(path.resolve(nodeModulesPath, input))) {
+                        if (fs_extra_1.existsSync(path.resolve(nodeModulesPath, input))) {
                             if (input === "intl") {
-                                this.items.push(exports.IntlBundleItem.intlPolyfill(path.resolve(nodeModulesPath)));
+                                this.items.push(IntlBundleItem.intlPolyfill(path.resolve(nodeModulesPath)));
                             }
                             else {
-                                this.items.push(exports.IntlBundleItem.intlRelativeTimePolyfill(path.resolve(nodeModulesPath)));
+                                this.items.push(IntlBundleItem.intlRelativeTimePolyfill(path.resolve(nodeModulesPath)));
                             }
                             continue INPUTS;
                         }
@@ -51,12 +51,12 @@ class IntlBundleGenerator {
                 }
                 const segments = input.split("/");
                 for (const nodeModulesPath of this.nodeModulesPath ? [this.nodeModulesPath] : require.main.paths) {
-                    if (fsextra.existsSync(nodeModulesPath)) {
+                    if (fs_extra_1.existsSync(nodeModulesPath)) {
                         for (let i = segments.length; i >= 1; i--) {
                             const dirPath = path.resolve(nodeModulesPath, segments.slice(0, i).join("/"));
                             const packagePath = path.resolve(dirPath, "package.json");
-                            if (fsextra.existsSync(packagePath)) {
-                                const pckg = fsextra.readJsonSync(packagePath);
+                            if (fs_extra_1.existsSync(packagePath)) {
+                                const pckg = fs_extra_1.readJsonSync(packagePath);
                                 if (pckg["intlBundleItems"] && Array.isArray(pckg["intlBundleItems"])) {
                                     for (const item of pckg["intlBundleItems"]) {
                                         if (typeof item === "object" && item.type && item.path) {
@@ -196,5 +196,5 @@ class IntlBundleGenerator {
         return locales;
     }
 }
-
 exports.IntlBundleGenerator = IntlBundleGenerator;
+//# sourceMappingURL=BundleGenerator.js.map

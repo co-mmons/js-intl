@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "install": "node-utils-npm-install-dist",
-    "build": "rm -rf dist && tsc --emitDeclarationOnly && tsc -m es2015 -t es2017 -d false --outDir dist/.tmp && rollup -c && node-utils-file-system-glob-copy src dist \"**/package.json\"",
+    "build": "rm -rf dist && npm run build:es2015 && npm run build:esm2015 && node-utils-file-system-glob-copy src dist \"**/package.json\"",
+    "build:es2015": "tsc -m commonjs -t es2015 --outDir dist",
+    "build:esm2015": "tsc -d false -m es2015 -t es2015 --outDir dist/_esm2015",
     "messages": "npx ts-node src/GoogleSheetImporter/cli.ts --output-path messages --output-type json --document 1lTpcwU0ubFX7bJFCt8zeHYrwbDaoxNcjzpjUVdmiY_w --worksheet 1 --filterTags intl"
   },
   "bin": {
@@ -34,9 +36,9 @@
     "tslib": "^2.0.1",
     "typescript": "^3.9.6"
   },
-  "main": "index.cjs.js",
-  "module": "index.esm.js",
-  "types": "index.d.ts",
+  "main": "./index.js",
+  "module": "_esm2015/index.js",
+  "esm2015": "_esm2015/index.js",
   "sideEffects": false,
   "intlBundleItems": [
     {

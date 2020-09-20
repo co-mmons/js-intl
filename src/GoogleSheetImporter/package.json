@@ -1,7 +1,6 @@
 {
     "name": "@co.mmons/js-intl/GoogleSheetImporter",
-    "main": "index.cjs.js",
-    "module": "index.esm.js",
-    "types": "index.d.ts",
+    "module": "../_esm2015/index.js",
+    "esm2015": "../_esm2015/index.js",
     "sideEffects": false
 }
