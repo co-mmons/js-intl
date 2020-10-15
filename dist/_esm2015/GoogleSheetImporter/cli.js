@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { __awaiter } from "tslib";
 import * as yargs from "yargs";
 import { GoogleSheetImporter } from "./GoogleSheetImporter";
