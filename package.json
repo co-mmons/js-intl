@@ -15,17 +15,17 @@
     "js-intl-google-sheet-importer": "GoogleSheetImporter/cli.js"
   },
   "dependencies": {
-    "@co.mmons/node-utils": "git+https://github.com/co-mmons/node-utils.git",
-    "@formatjs/intl-relativetimeformat": "^7.2.0",
+    "@co.mmons/node-utils": "github:co-mmons/node-utils",
+    "@formatjs/intl-relativetimeformat": "^8.0.0",
     "@formatjs/intl-utils": "^3.8.4",
-    "date-fns": "^2.15.0",
+    "date-fns": "^2.16.1",
     "fs-extra": "^9.0.1",
     "intl-format-cache": "^4.3.1",
-    "intl-messageformat": "^9.2.5",
+    "intl-messageformat": "^9.3.20",
     "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "@co.mmons/js-utils": "git+https://github.com/co-mmons/js-utils.git",
+    "@co.mmons/js-utils": "github:co-mmons/js-utils",
     "@types/fs-extra": "^9.0.1",
     "@types/htmlparser2": "^3.10.1",
     "@types/node": "^13.13.15",
