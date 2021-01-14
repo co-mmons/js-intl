@@ -1,10 +1,6 @@
+import { defineGlobals } from "./defineGlobals";
 import { MessageRef } from "./MessageRef";
-if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
-    window["INTL_MESSAGES"] = {};
-}
-if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
-    global["INTL_MESSAGES"] = {};
-}
+defineGlobals();
 const importedResources = [];
 export function importMessages(url) {
     if (importedResources.indexOf(url) > -1) {
@@ -45,7 +41,7 @@ export function importMessages(url) {
         request.send();
     });
 }
-export function pushMessages(locale, namespace, messages) {
+export function setMessages(locale, namespace, messages) {
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }
@@ -54,8 +50,48 @@ export function pushMessages(locale, namespace, messages) {
     }
     Object.assign(INTL_MESSAGES[namespace][locale], messages);
 }
+/**
+ * @deprecated Use {@link setMessages} instead.
+ */
+export function pushMessages(locale, namespace, messages) {
+    setMessages(locale, namespace, messages);
+}
+export function insertMessagesVersion(versionName, priority, locale, namespace, messages) {
+    const versions = INTL_MESSAGES_VERSIONS[namespace] || (INTL_MESSAGES_VERSIONS[namespace] = []);
+    CREATE: {
+        for (let i = 0; i < versions.length; i++) {
+            if (versions[i].name === versionName) {
+                break CREATE;
+            }
+        }
+        versions.unshift({ name: versionName, messages: {} });
+    }
+    for (let i = 0; i < versions.length; i++) {
+        if (versions[i].name === versionName) {
+            versions[i].messages[locale] = messages;
+        }
+    }
+}
+export function deleteMessagesVersion(versionName, locale, namespace) {
+    const versions = INTL_MESSAGES_VERSIONS[namespace];
+    if (versions) {
+        for (let i = 0; i < versions.length; i++) {
+            if (versions[i].name === versionName) {
+                versions.splice(i, 1);
+                break;
+            }
+        }
+    }
+}
 export function findMessage(locales, namespace, key) {
     for (let locale of locales) {
+        if (INTL_MESSAGES_VERSIONS === null || INTL_MESSAGES_VERSIONS === void 0 ? void 0 : INTL_MESSAGES_VERSIONS[namespace]) {
+            for (const variant of INTL_MESSAGES_VERSIONS[namespace]) {
+                if (variant.messages[locale] && key in variant.messages[locale]) {
+                    return variant.messages[locale][key];
+                }
+            }
+        }
         if (INTL_MESSAGES && INTL_MESSAGES[namespace] && INTL_MESSAGES[namespace][locale] && INTL_MESSAGES[namespace][locale][key]) {
             return INTL_MESSAGES[namespace][locale][key];
         }

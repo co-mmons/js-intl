@@ -9,3 +9,5 @@ declare var INTL_LOCALE_MATRIX_PARAM: string;
 declare var INTL_POLYFILL: any[];
 declare var INTL_RELATIVE_POLYFILL: any[];
 declare var IntlPolyfill: any;
+declare var INTL_MESSAGES: any;
+declare var INTL_MESSAGES_VERSIONS: {[namespace: string]: {name: string, messages: {[locale: string]: {[key: string]: any}}}[]};

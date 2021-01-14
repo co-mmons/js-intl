@@ -5,7 +5,7 @@ export { CurrencyCalculator } from "./CurrencyCalculator";
 export { Currency } from "./Currency";
 export { CurrencyStringSerializer } from "./CurrencyStringSerializer";
 export { DecimalFormatRef } from "./DecimalFormatRef";
-export { importMessages, pushMessages } from "./messages";
+export { importMessages, setMessages, pushMessages, insertMessagesVersion, deleteMessagesVersion } from "./messages";
 export { bestLocale } from "./bestLocale";
 export { IntlRef } from "./IntlRef";
 export { IntlStringValueSerializer } from "./IntlStringValueSerializer";

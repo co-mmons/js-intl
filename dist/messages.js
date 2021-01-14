@@ -1,13 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractMessageNamespaceAndKey = exports.isMessageNeedsFormatter = exports.findMessage = exports.pushMessages = exports.importMessages = void 0;
+exports.extractMessageNamespaceAndKey = exports.isMessageNeedsFormatter = exports.findMessage = exports.deleteMessagesVersion = exports.insertMessagesVersion = exports.pushMessages = exports.setMessages = exports.importMessages = void 0;
+const defineGlobals_1 = require("./defineGlobals");
 const MessageRef_1 = require("./MessageRef");
-if (typeof window !== "undefined" && !window["INTL_MESSAGES"]) {
-    window["INTL_MESSAGES"] = {};
-}
-if (typeof global !== "undefined" && !global["INTL_MESSAGES"]) {
-    global["INTL_MESSAGES"] = {};
-}
+defineGlobals_1.defineGlobals();
 const importedResources = [];
 function importMessages(url) {
     if (importedResources.indexOf(url) > -1) {
@@ -49,7 +45,7 @@ function importMessages(url) {
     });
 }
 exports.importMessages = importMessages;
-function pushMessages(locale, namespace, messages) {
+function setMessages(locale, namespace, messages) {
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }
@@ -58,9 +54,52 @@ function pushMessages(locale, namespace, messages) {
     }
     Object.assign(INTL_MESSAGES[namespace][locale], messages);
 }
+exports.setMessages = setMessages;
+/**
+ * @deprecated Use {@link setMessages} instead.
+ */
+function pushMessages(locale, namespace, messages) {
+    setMessages(locale, namespace, messages);
+}
 exports.pushMessages = pushMessages;
+function insertMessagesVersion(versionName, priority, locale, namespace, messages) {
+    const versions = INTL_MESSAGES_VERSIONS[namespace] || (INTL_MESSAGES_VERSIONS[namespace] = []);
+    CREATE: {
+        for (let i = 0; i < versions.length; i++) {
+            if (versions[i].name === versionName) {
+                break CREATE;
+            }
+        }
+        versions.unshift({ name: versionName, messages: {} });
+    }
+    for (let i = 0; i < versions.length; i++) {
+        if (versions[i].name === versionName) {
+            versions[i].messages[locale] = messages;
+        }
+    }
+}
+exports.insertMessagesVersion = insertMessagesVersion;
+function deleteMessagesVersion(versionName, locale, namespace) {
+    const versions = INTL_MESSAGES_VERSIONS[namespace];
+    if (versions) {
+        for (let i = 0; i < versions.length; i++) {
+            if (versions[i].name === versionName) {
+                versions.splice(i, 1);
+                break;
+            }
+        }
+    }
+}
+exports.deleteMessagesVersion = deleteMessagesVersion;
 function findMessage(locales, namespace, key) {
     for (let locale of locales) {
+        if (INTL_MESSAGES_VERSIONS === null || INTL_MESSAGES_VERSIONS === void 0 ? void 0 : INTL_MESSAGES_VERSIONS[namespace]) {
+            for (const variant of INTL_MESSAGES_VERSIONS[namespace]) {
+                if (variant.messages[locale] && key in variant.messages[locale]) {
+                    return variant.messages[locale][key];
+                }
+            }
+        }
         if (INTL_MESSAGES && INTL_MESSAGES[namespace] && INTL_MESSAGES[namespace][locale] && INTL_MESSAGES[namespace][locale][key]) {
             return INTL_MESSAGES[namespace][locale][key];
         }
