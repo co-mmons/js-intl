@@ -101,6 +101,8 @@ export function insertMessagesVersion(versionName: string, priority: number, nam
 
 export function deleteMessagesVersion(versionName: string);
 
+export function deleteMessagesVersion(versionName: string, namespace: string);
+
 export function deleteMessagesVersion(versionName: string, namespace?: string) {
     if (INTL_MESSAGES_VERSIONS) {
 

@@ -13,6 +13,7 @@ export declare function insertMessagesVersion(versionName: string, priority: num
     [key: string]: string;
 }): void;
 export declare function deleteMessagesVersion(versionName: string): any;
+export declare function deleteMessagesVersion(versionName: string, namespace: string): any;
 export declare function findMessage(locales: string[], namespace: string, key: string): any;
 export declare function isMessageNeedsFormatter(message: string): boolean;
 export declare function extractMessageNamespaceAndKey(namespaceAndKey: string | MessageRef, defaultNamespace?: string): {
