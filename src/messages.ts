@@ -80,6 +80,10 @@ export function pushMessages(locale: string, namespace: string, messages: {[key:
 
 export function insertMessagesVersion(versionName: string, priority: number, namespace: string, locale: string, messages: {[key: string]: string}) {
 
+    if (!INTL_MESSAGES_VERSIONS) {
+        INTL_MESSAGES_VERSIONS = {};
+    }
+
     const versions = INTL_MESSAGES_VERSIONS[namespace] || (INTL_MESSAGES_VERSIONS[namespace] = []);
 
     CREATE: {

@@ -63,6 +63,9 @@ function pushMessages(locale, namespace, messages) {
 }
 exports.pushMessages = pushMessages;
 function insertMessagesVersion(versionName, priority, namespace, locale, messages) {
+    if (!INTL_MESSAGES_VERSIONS) {
+        INTL_MESSAGES_VERSIONS = {};
+    }
     const versions = INTL_MESSAGES_VERSIONS[namespace] || (INTL_MESSAGES_VERSIONS[namespace] = []);
     CREATE: {
         for (let i = 0; i < versions.length; i++) {
