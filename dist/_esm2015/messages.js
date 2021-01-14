@@ -41,7 +41,7 @@ export function importMessages(url) {
         request.send();
     });
 }
-export function setMessages(locale, namespace, messages) {
+export function setMessages(namespace, locale, messages) {
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }
@@ -54,9 +54,9 @@ export function setMessages(locale, namespace, messages) {
  * @deprecated Use {@link setMessages} instead.
  */
 export function pushMessages(locale, namespace, messages) {
-    setMessages(locale, namespace, messages);
+    setMessages(namespace, locale, messages);
 }
-export function insertMessagesVersion(versionName, priority, locale, namespace, messages) {
+export function insertMessagesVersion(versionName, priority, namespace, locale, messages) {
     const versions = INTL_MESSAGES_VERSIONS[namespace] || (INTL_MESSAGES_VERSIONS[namespace] = []);
     CREATE: {
         for (let i = 0; i < versions.length; i++) {
@@ -72,13 +72,16 @@ export function insertMessagesVersion(versionName, priority, locale, namespace, 
         }
     }
 }
-export function deleteMessagesVersion(versionName, locale, namespace) {
-    const versions = INTL_MESSAGES_VERSIONS[namespace];
-    if (versions) {
-        for (let i = 0; i < versions.length; i++) {
-            if (versions[i].name === versionName) {
-                versions.splice(i, 1);
-                break;
+export function deleteMessagesVersion(versionName, namespace) {
+    if (INTL_MESSAGES_VERSIONS) {
+        for (const ns in INTL_MESSAGES_VERSIONS) {
+            if (!namespace || ns === namespace) {
+                for (let i = 0; i < INTL_MESSAGES_VERSIONS[ns].length; i++) {
+                    if (INTL_MESSAGES_VERSIONS[ns][i].name === versionName) {
+                        INTL_MESSAGES_VERSIONS[ns].splice(i, 1);
+                        break;
+                    }
+                }
             }
         }
     }

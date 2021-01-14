@@ -58,7 +58,7 @@ export function importMessages(url: string) {
     });
 }
 
-export function setMessages(locale: string, namespace: string, messages: {[key: string]: string}) {
+export function setMessages(namespace: string, locale: string, messages: {[key: string]: string}) {
 
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
@@ -75,10 +75,10 @@ export function setMessages(locale: string, namespace: string, messages: {[key: 
  * @deprecated Use {@link setMessages} instead.
  */
 export function pushMessages(locale: string, namespace: string, messages: {[key: string]: string}) {
-    setMessages(locale, namespace, messages);
+    setMessages(namespace, locale, messages);
 }
 
-export function insertMessagesVersion(versionName: string, priority: number, locale: string, namespace: string, messages: {[key: string]: string}) {
+export function insertMessagesVersion(versionName: string, priority: number, namespace: string, locale: string, messages: {[key: string]: string}) {
 
     const versions = INTL_MESSAGES_VERSIONS[namespace] || (INTL_MESSAGES_VERSIONS[namespace] = []);
 
@@ -99,13 +99,20 @@ export function insertMessagesVersion(versionName: string, priority: number, loc
     }
 }
 
-export function deleteMessagesVersion(versionName: string, locale: string, namespace: string) {
-    const versions = INTL_MESSAGES_VERSIONS[namespace];
-    if (versions) {
-        for (let i = 0; i < versions.length; i++) {
-            if (versions[i].name === versionName) {
-                versions.splice(i, 1);
-                break;
+export function deleteMessagesVersion(versionName: string);
+
+export function deleteMessagesVersion(versionName: string, namespace?: string) {
+    if (INTL_MESSAGES_VERSIONS) {
+
+        for (const ns in INTL_MESSAGES_VERSIONS) {
+            if (!namespace || ns === namespace) {
+
+                for (let i = 0; i < INTL_MESSAGES_VERSIONS[ns].length; i++) {
+                    if (INTL_MESSAGES_VERSIONS[ns][i].name === versionName) {
+                        INTL_MESSAGES_VERSIONS[ns].splice(i, 1);
+                        break;
+                    }
+                }
             }
         }
     }
