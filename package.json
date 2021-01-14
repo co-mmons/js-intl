@@ -50,6 +50,12 @@
       "path": "{{NODE_MODULES}}/@umpirsky/country-list/data/{{LOCALE}}/country.json",
       "module": "@co.mmons/js-intl/country",
       "namespace": "@umpirsky/country-list"
+    },
+    {
+      "type": "message",
+      "path": "{{NODE_MODULES}}/@umpirsky/locale-list/data/{{LOCALE}}/country.json",
+      "module": "@co.mmons/js-intl/locale",
+      "namespace": "@umpirsky/locale-list"
     }
   ]
 }

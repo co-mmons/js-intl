@@ -13,13 +13,18 @@ export function bestLocale() {
     browserLocale = browserLocale ? browserLocale.toLowerCase() : undefined;
 
     let urlLocale: string;
-    let urlPath = INTL_LOCALE_URL_PATH ? window.location.pathname.substring(1).split("/") : undefined;
-    if (urlPath && urlPath.length >= (INTL_LOCALE_URL_PATH === true ? 1 : 2)) {
+
+    const urlSegments = window.location.pathname.substring(1).split("/");
+
+    if (urlSegments.length >= (INTL_LOCALE_URL_PATH === true ? 1 : 2)) {
         if (INTL_LOCALE_URL_PATH === true) {
-            urlLocale = urlPath[0].match(/^\W+$/g) ? undefined : urlPath[0];
-        } else if (urlPath[0] == INTL_LOCALE_URL_PATH) {
-            urlLocale = urlPath[1];
+            urlLocale = urlSegments[0].match(/^\W+$/g) ? undefined : urlSegments[0];
+        } else if (urlSegments[0] == INTL_LOCALE_URL_PATH) {
+            urlLocale = urlSegments[1];
         }
+    }
+
+    if (!urlLocale && INTL_LOCALE_MATRIX_PATH && INTL_LOCALE_MATRIX_PARAM) {
     }
 
     if (!urlLocale) {

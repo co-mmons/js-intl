@@ -40,7 +40,7 @@ let MessageRef = MessageRef_1 = class MessageRef extends IntlRef {
             key: this.key
         };
         if (this.namespace) {
-            json.type = this.namespace;
+            json.namespace = this.namespace;
         }
         if (this.values) {
             json.values = serialize(this.values);

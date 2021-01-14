@@ -45,7 +45,7 @@ export class MessageRef extends IntlRef {
         };
 
         if (this.namespace) {
-            json.type = this.namespace;
+            json.namespace = this.namespace;
         }
 
         if (this.values) {
