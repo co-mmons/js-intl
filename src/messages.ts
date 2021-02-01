@@ -7,6 +7,10 @@ const importedResources: string[] = [];
 
 export function importMessages(url: string) {
 
+    if (!INTL_MESSAGES) {
+        INTL_MESSAGES = {};
+    }
+
     if (importedResources.indexOf(url) > -1) {
         return Promise.resolve();
     }
@@ -59,6 +63,10 @@ export function importMessages(url: string) {
 }
 
 export function setMessages(namespace: string, locale: string, messages: {[key: string]: string}) {
+
+    if (!INTL_MESSAGES) {
+        INTL_MESSAGES = {};
+    }
 
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};

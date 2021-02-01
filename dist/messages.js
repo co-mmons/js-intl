@@ -6,6 +6,9 @@ const MessageRef_1 = require("./MessageRef");
 defineGlobals_1.defineGlobals();
 const importedResources = [];
 function importMessages(url) {
+    if (!INTL_MESSAGES) {
+        INTL_MESSAGES = {};
+    }
     if (importedResources.indexOf(url) > -1) {
         return Promise.resolve();
     }
@@ -46,6 +49,9 @@ function importMessages(url) {
 }
 exports.importMessages = importMessages;
 function setMessages(namespace, locale, messages) {
+    if (!INTL_MESSAGES) {
+        INTL_MESSAGES = {};
+    }
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }

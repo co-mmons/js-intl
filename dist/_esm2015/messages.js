@@ -3,6 +3,9 @@ import { MessageRef } from "./MessageRef";
 defineGlobals();
 const importedResources = [];
 export function importMessages(url) {
+    if (!INTL_MESSAGES) {
+        INTL_MESSAGES = {};
+    }
     if (importedResources.indexOf(url) > -1) {
         return Promise.resolve();
     }
@@ -42,6 +45,9 @@ export function importMessages(url) {
     });
 }
 export function setMessages(namespace, locale, messages) {
+    if (!INTL_MESSAGES) {
+        INTL_MESSAGES = {};
+    }
     if (!INTL_MESSAGES[namespace]) {
         INTL_MESSAGES[namespace] = {};
     }
