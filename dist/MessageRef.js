@@ -6,12 +6,19 @@ const tslib_1 = require("tslib");
 const json_1 = require("@co.mmons/js-utils/json");
 const IntlRef_1 = require("./IntlRef");
 let MessageRef = MessageRef_1 = class MessageRef extends IntlRef_1.IntlRef {
-    constructor(namespace, key, values, formats) {
+    constructor(namespaceOrKey, keyOrValues, valuesOrFormats, formats) {
         super("message");
-        this.namespace = namespace;
-        this.key = key;
-        this.values = values;
-        this.formats = formats;
+        if (typeof keyOrValues === "string") {
+            this.namespace = namespaceOrKey;
+            this.key = keyOrValues;
+            this.values = valuesOrFormats;
+            this.formats = formats;
+        }
+        else {
+            this.key = namespaceOrKey;
+            this.values = keyOrValues;
+            this.formats = valuesOrFormats;
+        }
     }
     static fromJSON(json) {
         if (typeof json === "string") {
@@ -57,7 +64,7 @@ let MessageRef = MessageRef_1 = class MessageRef extends IntlRef_1.IntlRef {
 MessageRef.jsonTypeName = "intl/MessageRef";
 MessageRef = MessageRef_1 = tslib_1.__decorate([
     json_1.subtype(IntlRef_1.IntlRef, "refType", "message"),
-    tslib_1.__metadata("design:paramtypes", [String, String, Object, Object])
+    tslib_1.__metadata("design:paramtypes", [String, Object, Object, Object])
 ], MessageRef);
 exports.MessageRef = MessageRef;
 //# sourceMappingURL=MessageRef.js.map

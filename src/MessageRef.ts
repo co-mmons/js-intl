@@ -33,9 +33,32 @@ export class MessageRef extends IntlRef {
         throw new Error(`Cannot unserialize "${json}" as @co.mmons/js-intl/MessageRef`);
     }
 
-    constructor(public readonly namespace: string, public readonly key: string, public readonly values?: {[key: string]: any}, public readonly formats?: any) {
+    /**
+     * Constructor for a key with default namespace.
+     */
+    constructor(key: string, values?: {[key: string]: any}, formats?: any);
+
+    constructor(namespace: string, key: string, values?: {[key: string]: any}, formats?: any);
+
+    constructor(namespaceOrKey: string, keyOrValues?: string | {[key: string]: any}, valuesOrFormats?: {[key: string]: any} | any, formats?: any) {
         super("message");
+
+        if (typeof keyOrValues === "string") {
+            this.namespace = namespaceOrKey;
+            this.key = keyOrValues;
+            this.values = valuesOrFormats;
+            this.formats = formats;
+        } else {
+            this.key = namespaceOrKey;
+            this.values = keyOrValues;
+            this.formats = valuesOrFormats;
+        }
     }
+
+    readonly namespace: string;
+    readonly key: string;
+    readonly values?: {[key: string]: any};
+    readonly formats?: any;
 
     toJSON() {
 

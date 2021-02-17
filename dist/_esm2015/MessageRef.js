@@ -3,12 +3,19 @@ import { __decorate, __metadata } from "tslib";
 import { serialize, subtype } from "@co.mmons/js-utils/json";
 import { IntlRef } from "./IntlRef";
 let MessageRef = MessageRef_1 = class MessageRef extends IntlRef {
-    constructor(namespace, key, values, formats) {
+    constructor(namespaceOrKey, keyOrValues, valuesOrFormats, formats) {
         super("message");
-        this.namespace = namespace;
-        this.key = key;
-        this.values = values;
-        this.formats = formats;
+        if (typeof keyOrValues === "string") {
+            this.namespace = namespaceOrKey;
+            this.key = keyOrValues;
+            this.values = valuesOrFormats;
+            this.formats = formats;
+        }
+        else {
+            this.key = namespaceOrKey;
+            this.values = keyOrValues;
+            this.formats = valuesOrFormats;
+        }
     }
     static fromJSON(json) {
         if (typeof json === "string") {
@@ -54,7 +61,7 @@ let MessageRef = MessageRef_1 = class MessageRef extends IntlRef {
 MessageRef.jsonTypeName = "intl/MessageRef";
 MessageRef = MessageRef_1 = __decorate([
     subtype(IntlRef, "refType", "message"),
-    __metadata("design:paramtypes", [String, String, Object, Object])
+    __metadata("design:paramtypes", [String, Object, Object, Object])
 ], MessageRef);
 export { MessageRef };
 //# sourceMappingURL=MessageRef.js.map
