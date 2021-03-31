@@ -24,5 +24,8 @@
     "Sending the data...": "Senden der Daten...",
     "Skip": "Überspringen",
     "Undo": "Rückgängig machen",
+    "validation/invalidValueError": "Der Wert ist ungültig.",
+    "validation/minLengthError": "{length, plural, =0 {Der Wert hat zu wenige Zeichen.} =1 {Der Wert muss mindestens ein Zeichen haben.} other {Der Wert muss mindestens # Zeichen enthalten.}}",
+    "validation/requiredError": "Der Wert ist erforderlich.",
     "Yes": "Ja"
 }

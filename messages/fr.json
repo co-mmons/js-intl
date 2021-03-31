@@ -24,5 +24,8 @@
     "Sending the data...": "Envoi des données...",
     "Skip": "Sauter",
     "Undo": "Annuler",
+    "validation/invalidValueError": "La valeur n'est pas valide.",
+    "validation/minLengthError": "{length, plural, =0 {La valeur a trop peu de caractères.} =1 {La valeur doit avoir au moins un caractère.} other {La valeur doit contenir au moins # caractères.}}",
+    "validation/requiredError": "La valeur est obligatoire.",
     "Yes": "Oui"
 }
