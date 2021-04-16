@@ -1,4 +1,4 @@
-import {DateTimezone, Type} from "@co.mmons/js-utils/core";
+import {DateTimezone, Timestamp, TimeZoneDate, Type} from "@co.mmons/js-utils/core";
 import {BigNumber} from "bignumber.js";
 import IntlMessageFormat from "intl-messageformat";
 import {Currency} from "./Currency";
@@ -22,9 +22,9 @@ function loadPolyfillsLocale() {
         INTL_POLYFILL = [];
     }
 
-    if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
+    if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"]["__addLocaleData"]) {
         for (const a of INTL_RELATIVE_POLYFILL) {
-            Intl["RelativeTimeFormat"].__addLocaleData(a);
+            Intl["RelativeTimeFormat"]["__addLocaleData"](a);
         }
 
         INTL_RELATIVE_POLYFILL = [];
@@ -63,7 +63,7 @@ export class IntlHelper {
         this.defaultNamespace = namespace;
     }
 
-    private namespaceAliases: {[alias: string]: string} = {};
+    private namespaceAliases: { [alias: string]: string } = {};
 
     public addNamespaceAlias(namespace: string, alias: string) {
         this.namespaceAliases[alias] = namespace;
@@ -188,7 +188,7 @@ export class IntlHelper {
         await importMessages(`${this.resourcesLocation}/${resourcePath}/${this.locale}.json`);
     }
 
-    public messageFormat(message: string, values: {[key: string]: any}, formats?: any): string {
+    public messageFormat(message: string, values: { [key: string]: any }, formats?: any): string {
         return new IntlMessageFormat(message, this._locale, formats, {ignoreTag: true}).format(values);
     }
 
@@ -318,56 +318,54 @@ export class IntlHelper {
 
                 xhr.open("GET", url, true);
                 xhr.send();
-            }
+            } else if (this.resourcesLocation && this.resourcesLocation.startsWith("./") || this.resourcesLocation.startsWith("/")) {
 
-            else if (this.resourcesLocation && this.resourcesLocation.startsWith("./") || this.resourcesLocation.startsWith("/")) {
-
-            }
-
-            else {
+            } else {
                 reject(new Error(`Not able to read intl resource file ${file}`));
             }
         });
     }
 
 
-    public relativeFormat(dateTime: number | Date | DateTimezone, options?: any): string {
+    public relativeFormat(dateTime: number | Date | DateTimezone | Timestamp, options?: any): string {
 
         if (typeof dateTime === "number") {
             dateTime = new Date(dateTime);
         } else if (dateTime instanceof DateTimezone) {
             dateTime = dateTime.date;
+        } else if (dateTime && !(dateTime instanceof Date) && typeof dateTime.toDate === "function") {
+            dateTime = dateTime.toDate();
         }
 
         if (dateTime === null || dateTime === undefined) {
             dateTime = new Date();
         }
 
-        const diff = selectUnit(dateTime);
+        const diff = selectUnit(dateTime as Date);
 
         return this.formatterInstance<any>(Intl["RelativeTimeFormat"], undefined, [Object.assign({numeric: "auto"}, options)]).format(diff.value, diff.unit);
     }
 
 
-    public dateFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
+    public dateFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, options?: Intl.DateTimeFormatOptions): string;
 
-    public dateFormat(dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    public dateFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
         return this.dateTimeFormatImpl("date", dateTime, predefinedOptionsOrOptions, options);
     }
 
-    public timeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
+    public timeFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, options?: Intl.DateTimeFormatOptions): string;
 
-    public timeFormat(dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    public timeFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
         return this.dateTimeFormatImpl("time", dateTime, predefinedOptionsOrOptions, options);
     }
 
-    public dateTimeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
+    public dateTimeFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, options?: Intl.DateTimeFormatOptions): string;
 
-    public dateTimeFormat(dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    public dateTimeFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
         return this.dateTimeFormatImpl("dateTime", dateTime, predefinedOptionsOrOptions, options);
     }
 
-    private dateTimeFormatImpl(mode: string, dateTime: number | Date | DateTimezone, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
+    private dateTimeFormatImpl(mode: string, dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions): string {
 
         let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? this.findFormatterPredefinedOptions(Intl.DateTimeFormat.name, predefinedOptionsOrOptions) : predefinedOptionsOrOptions;
         predefinedOptions = Object.assign({}, predefinedOptions, options);
@@ -413,6 +411,21 @@ export class IntlHelper {
             }
 
             dateTime = dateTime.date;
+
+        } else if (dateTime instanceof TimeZoneDate) {
+
+            if (!dateTime.timeZone) {
+                predefinedOptions.timeZone = "UTC";
+                predefinedOptions.timeZoneName = undefined;
+            } else if (dateTime.timeZone !== "current") {
+                predefinedOptions.timeZone = dateTime.timeZone;
+            }
+
+        } else if (typeof dateTime === "number") {
+            dateTime = new Date(dateTime);
+
+        } else if (dateTime && !(dateTime instanceof Date) && typeof dateTime.toDate === "function") {
+            dateTime = dateTime.toDate();
         }
 
         const formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);

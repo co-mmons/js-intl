@@ -15,7 +15,7 @@ export function importMessages(url: string) {
         return Promise.resolve();
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
 
         let request = new XMLHttpRequest();
 

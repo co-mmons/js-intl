@@ -20,9 +20,9 @@ function loadPolyfillsLocale() {
         }
         INTL_POLYFILL = [];
     }
-    if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"].__addLocaleData) {
+    if (INTL_RELATIVE_POLYFILL && INTL_RELATIVE_POLYFILL.length && Intl["RelativeTimeFormat"] && Intl["RelativeTimeFormat"]["__addLocaleData"]) {
         for (const a of INTL_RELATIVE_POLYFILL) {
-            Intl["RelativeTimeFormat"].__addLocaleData(a);
+            Intl["RelativeTimeFormat"]["__addLocaleData"](a);
         }
         INTL_RELATIVE_POLYFILL = [];
     }
@@ -244,6 +244,9 @@ class IntlHelper {
         else if (dateTime instanceof core_1.DateTimezone) {
             dateTime = dateTime.date;
         }
+        else if (dateTime && !(dateTime instanceof Date) && typeof dateTime.toDate === "function") {
+            dateTime = dateTime.toDate();
+        }
         if (dateTime === null || dateTime === undefined) {
             dateTime = new Date();
         }
@@ -296,6 +299,21 @@ class IntlHelper {
                 predefinedOptions.timeZone = dateTime.timezone;
             }
             dateTime = dateTime.date;
+        }
+        else if (dateTime instanceof core_1.TimeZoneDate) {
+            if (!dateTime.timeZone) {
+                predefinedOptions.timeZone = "UTC";
+                predefinedOptions.timeZoneName = undefined;
+            }
+            else if (dateTime.timeZone !== "current") {
+                predefinedOptions.timeZone = dateTime.timeZone;
+            }
+        }
+        else if (typeof dateTime === "number") {
+            dateTime = new Date(dateTime);
+        }
+        else if (dateTime && !(dateTime instanceof Date) && typeof dateTime.toDate === "function") {
+            dateTime = dateTime.toDate();
         }
         const formatter = this.formatterInstance(Intl.DateTimeFormat, undefined, [predefinedOptions]);
         return formatter.format(dateTime);

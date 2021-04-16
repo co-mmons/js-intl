@@ -1,5 +1,5 @@
 import { MessageRef } from "./MessageRef";
-export declare function importMessages(url: string): Promise<unknown>;
+export declare function importMessages(url: string): Promise<void>;
 export declare function setMessages(namespace: string, locale: string, messages: {
     [key: string]: string;
 }): void;

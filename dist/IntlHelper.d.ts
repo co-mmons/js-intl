@@ -1,4 +1,4 @@
-import { DateTimezone, Type } from "@co.mmons/js-utils/core";
+import { DateTimezone, Timestamp, TimeZoneDate, Type } from "@co.mmons/js-utils/core";
 import { BigNumber } from "bignumber.js";
 import { Currency } from "./Currency";
 import { DecimalFormatRef } from "./DecimalFormatRef";
@@ -48,10 +48,10 @@ export declare class IntlHelper {
     asyncMessage(key: string | MessageRef, values?: any, formats?: any): Promise<string>;
     private messageImpl;
     private readFile;
-    relativeFormat(dateTime: number | Date | DateTimezone, options?: any): string;
-    dateFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
-    timeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
-    dateTimeFormat(dateTime: number | Date | DateTimezone, options?: Intl.DateTimeFormatOptions): string;
+    relativeFormat(dateTime: number | Date | DateTimezone | Timestamp, options?: any): string;
+    dateFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, options?: Intl.DateTimeFormatOptions): string;
+    timeFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, options?: Intl.DateTimeFormatOptions): string;
+    dateTimeFormat(dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, options?: Intl.DateTimeFormatOptions): string;
     private dateTimeFormatImpl;
     currencyFormat(value: Money | CurrencyAndNumber, predefinedOptions: string, additionalOptions?: Intl.NumberFormatOptions): any;
     currencyFormat(value: Money | CurrencyAndNumber, options?: Intl.NumberFormatOptions): any;

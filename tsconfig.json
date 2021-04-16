@@ -4,7 +4,7 @@
         "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "lib": ["dom", "es5", "esnext.intl", "es2017.intl", "es2018.intl"],
+        "lib": ["dom", "es5", "esnext.intl", "es2017.intl", "es2018.intl", "ES2020"],
         "module": "commonjs",
         "moduleResolution": "node",
         "target": "es5",

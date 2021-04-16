@@ -1,4 +1,3 @@
-import {Unit} from "@formatjs/intl-relativetimeformat";
 import {
     differenceInCalendarDays,
     differenceInCalendarQuarters,
@@ -8,7 +7,7 @@ import {
     differenceInCalendarWeeks
 } from "date-fns";
 
-export function selectUnit(from: Date | number, to: Date | number = Date.now(), thresholds = DEFAULT_THRESHOLDS): {value: number; unit: Unit} {
+export function selectUnit(from: Date | number, to: Date | number = Date.now(), thresholds = DEFAULT_THRESHOLDS): {value: number; unit: string} {
 
     const secs = differenceInSeconds(from, to);
     if (Math.abs(secs) < thresholds.second) {
