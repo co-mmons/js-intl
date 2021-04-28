@@ -112,7 +112,7 @@ export class GoogleSheetImporter {
                     fileSystem.writeJsonSync(filePath, sorted, { spaces: 4, encoding: "UTF-8" });
                 }
                 else if (this.outputType == "ts") {
-                    fileSystem.writeFileSync(filePath, `export = ${JSON.stringify(sorted, undefined, 4)}`);
+                    fileSystem.writeFileSync(filePath, `export default ${JSON.stringify(sorted, undefined, 4)}`);
                 }
             }
         });
