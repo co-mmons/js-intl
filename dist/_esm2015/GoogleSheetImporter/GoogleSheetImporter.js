@@ -132,7 +132,7 @@ export class GoogleSheetImporter {
                         console.warn(`[GoogleSheetImporter] Invalid output: ${url}`);
                     }
                 }
-                throw new Error(`[GoogleSheetImported] Cannot read sheet ${url}`);
+                throw new Error(`[GoogleSheetImporter] Cannot read sheet ${url}`);
             }
             else {
                 let contents = "";

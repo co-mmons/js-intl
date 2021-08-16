@@ -158,7 +158,7 @@ export class GoogleSheetImporter {
                     }
                 }
 
-                throw new Error(`[GoogleSheetImported] Cannot read sheet ${url}`);
+                throw new Error(`[GoogleSheetImporter] Cannot read sheet ${url}`);
 
             } else {
                 let contents = "";
