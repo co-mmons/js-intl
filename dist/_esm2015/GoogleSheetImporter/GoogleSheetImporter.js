@@ -2,6 +2,8 @@ import { __awaiter } from "tslib";
 import * as fileSystem from "fs-extra";
 import * as https from "https";
 import * as path from "path";
+import * as cprocess from "child_process";
+const useCURL = true;
 export class GoogleSheetImporter {
     constructor() {
         this.documents = [];
@@ -119,12 +121,27 @@ export class GoogleSheetImporter {
     }
     fetchHttps(url) {
         return new Promise((resolve, reject) => {
-            let contents = "";
-            https.get(url, (response) => {
-                response.setEncoding("utf8");
-                response.on("data", chunk => contents += chunk);
-                response.on("end", () => resolve(contents));
-            }).on("error", error => reject(error));
+            var _a;
+            if (useCURL) {
+                for (let i = 0; i < 10; i++) {
+                    const r = (_a = cprocess.spawnSync("curl", [url], { encoding: "utf8" })) === null || _a === void 0 ? void 0 : _a.stdout;
+                    if (r === null || r === void 0 ? void 0 : r.startsWith("{")) {
+                        return r;
+                    }
+                    else {
+                        console.warn(`[GoogleSheetImporter] Invalid output: ${url}`);
+                    }
+                }
+                throw new Error(`[GoogleSheetImported] Cannot read sheet ${url}`);
+            }
+            else {
+                let contents = "";
+                https.get(url, (response) => {
+                    response.setEncoding("utf8");
+                    response.on("data", chunk => contents += chunk);
+                    response.on("end", () => resolve(contents));
+                }).on("error", error => reject(error));
+            }
         });
     }
     readSheet(document) {
