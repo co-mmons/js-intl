@@ -1,9 +1,7 @@
 import * as fileSystem from "fs-extra";
 import * as https from "https";
 import * as path from "path";
-import * as cprocess from "child_process";
-
-const useCURL = true;
+import {parseString} from "@fast-csv/parse";
 
 export class GoogleSheetImporter {
 
@@ -24,20 +22,20 @@ export class GoogleSheetImporter {
 
     public async generate() {
 
-        let output: {[key: string]: string} = {};
-        let data: {[locale: string]: LocaleDictionary} = {};
+        const output: {[key: string]: string} = {};
+        const data: {[locale: string]: LocaleDictionary} = {};
 
-        for (let resource of this.documents) {
+        for (const resource of this.documents) {
 
-            let result = (await this.readSheet(resource));
+            const result = resource.id.startsWith("2PACX") ? await this.readCsv(resource) : await this.readSheet(resource);
 
-            for (let locale in result) {
+            for (const locale in result) {
 
                 if (!data[locale]) {
                     data[locale] = {};
                 }
 
-                for (let key in result[locale]) {
+                for (const key in result[locale]) {
 
                     if (!data[locale][key]) {
                         data[locale][key] = result[locale][key];
@@ -48,9 +46,9 @@ export class GoogleSheetImporter {
 
         fileSystem.ensureDirSync(this.outputPath);
 
-        for (let locale in data) {
+        for (const locale in data) {
 
-            let filePath = path.resolve(this.outputPath, `${locale}.${this.outputType}`);
+            const filePath = path.resolve(this.outputPath, `${locale}.${this.outputType}`);
 
             if (!Object.keys(data[locale]).length) {
 
@@ -148,27 +146,117 @@ export class GoogleSheetImporter {
 
         return new Promise((resolve, reject) => {
 
-            if (useCURL) {
-                for (let i = 0; i < 10; i++) {
-                    const r = cprocess.spawnSync("curl", [url], {encoding: "utf8"})?.stdout;
-                    if (r?.startsWith("{")) {
-                        return r;
-                    } else {
-                        console.warn(`[GoogleSheetImporter] Invalid output: ${url}`);
+            let contents = "";
+            https.get(url, (response) => {
+
+                if (response.statusCode >= 301 && response.statusCode <= 308) {
+                    try {
+                        resolve(this.fetchHttps(response.headers.location));
+                    } catch (e) {
+                        reject(e);
+                    } finally {
+                        return;
                     }
                 }
 
-                throw new Error(`[GoogleSheetImporter] Cannot read sheet ${url}`);
-
-            } else {
-                let contents = "";
-                https.get(url, (response) => {
-                    response.setEncoding("utf8");
-                    response.on("data", chunk => contents += chunk);
-                    response.on("end", () => resolve(contents));
-                }).on("error", error => reject(error));
-            }
+                response.setEncoding("utf8");
+                response.on("data", chunk => contents += chunk);
+                response.on("end", () => resolve(contents));
+            }).on("error", error => reject(error));
         });
+    }
+
+    private async readCsv(document: GoogleSheet) {
+        return new Promise<{[locale: string]: LocaleDictionary}>(async (resolve, reject) => {
+
+            const data: {[locale: string]: LocaleDictionary} = {};
+
+            parseString(await this.fetchHttps(`https://docs.google.com/spreadsheets/d/e/${document.id}/pub?output=csv&${document.worksheet ? `&gid=${document.worksheet}&single=true` : ""}`), {headers: true})
+                .on("error", err => reject(err))
+                .on("end", () => resolve(data))
+                .on("data", row => {
+
+                    if (row.key) {
+
+                        // filter by tags
+                        TAGS: if (document.filterTags) {
+                            const tags: string[] = row.tags ? row.tags.split(",") : ["--empty--"];
+
+                            for (const tag of document.filterTags) {
+                                for (let t of tags) {
+                                    t = t.trim();
+                                    if (tag === t || t.match(tag)) {
+                                        break TAGS;
+                                    }
+                                }
+                            }
+
+                            return;
+                        }
+
+                        let alias = row.alias;
+
+                        // alias column contain JSON string (quoted)
+                        if (alias && alias.startsWith("\"")) {
+                            alias = [JSON.parse(alias)];
+                        }
+
+                        // alias column contain JSON array
+                        else if (alias && alias.startsWith("[")) {
+                            alias = JSON.parse(alias);
+                        }
+
+                        // comma separated keys
+                        else if (alias) {
+                            alias = alias.split(",");
+                        }
+
+                        const keys = [row.key].concat(alias);
+
+                        for (const locale of Object.keys(row).filter(locale => locale.startsWith("#") && locale !== "#default").map(locale => locale.substr(1))) {
+                            let value = (row[`#${locale}`] || "").trim();
+
+                            if (value) {
+
+                                if (value.startsWith("#") && value !== "#default") {
+                                    value = row[value.toLowerCase()] || row["#default"];
+                                }
+
+                                if (!value || value === "#default") {
+                                    value = (row["#default"] || "").trim();
+                                }
+
+                            } else if (this.defaultLocale && row[`#${this.defaultLocale}`]) {
+                                value = (row[`#${this.defaultLocale}`] || "").trim();
+                            }
+
+                            if (value) {
+
+                                for (let key of keys) {
+                                    key = key.trim();
+
+                                    if (key) {
+
+                                        if (!data[locale]) {
+                                            data[locale] = {};
+                                        }
+
+                                        // value is a reference to external google document
+                                        if (row.type === "GoogleDocument") {
+                                            data[locale][key] = {type: "GoogleDocument", url: value};
+                                        }
+
+                                        // simple text
+                                        else {
+                                            data[locale][key] = value;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+        })
     }
 
     private async readSheet(document: GoogleSheet): Promise<{[locale: string]: LocaleDictionary}> {
@@ -273,23 +361,6 @@ export class GoogleSheetImporter {
                         }
 
                         if (value) {
-
-                            let alias: any = row[columns.alias];
-
-                            // alias column contain JSON string (quoted)
-                            if (alias && alias.startsWith("\"")) {
-                                alias = [JSON.parse(alias)];
-                            }
-
-                            // alias column contain JSON array
-                            else if (alias && alias.startsWith("[")) {
-                                alias = JSON.parse(alias);
-                            }
-
-                            // comma separated keys
-                            else if (alias) {
-                                alias = alias.split(",");
-                            }
 
                             for (let key of keys) {
                                 key = key.trim();

@@ -9,7 +9,7 @@
     "build": "rm -rf dist && npm run build:es2015 && npm run build:esm2015 && node-utils-file-system-glob-copy src dist \"**/package.json\"",
     "build:es2015": "tsc -m commonjs -t es2015 --outDir dist",
     "build:esm2015": "tsc -d false -m es2015 -t es2015 --outDir dist/_esm2015",
-    "messages": "npx ts-node src/GoogleSheetImporter/cli.ts --output-path messages --output-type json --document 1lTpcwU0ubFX7bJFCt8zeHYrwbDaoxNcjzpjUVdmiY_w --worksheet 1 --filterTags intl"
+    "messages": "npx ts-node src/GoogleSheetImporter/cli.ts --output-path messages --output-type json --document 2PACX-1vR5jv8NqEb7E3wgHZaxjGZVeJaLCZN7F3qm8WkZN2tiCiv9EgYhjCK26LdFbiINdExItbehp_iVmEs9 --filterTags intl"
   },
   "bin": {
     "js-intl-google-sheet-importer": "GoogleSheetImporter/cli.js"
@@ -22,7 +22,8 @@
     "fs-extra": "^9.0.1",
     "intl-format-cache": "^4.3.1",
     "intl-messageformat": "^9.3.20",
-    "yargs": "^15.4.1"
+    "yargs": "^15.4.1",
+    "@fast-csv/parse": "^4.3.6"
   },
   "devDependencies": {
     "@co.mmons/js-utils": "github:co-mmons/js-utils",

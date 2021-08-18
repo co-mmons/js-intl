@@ -15,14 +15,14 @@ const argv = yargs
 
 (async () => {
 
-    let importer = new GoogleSheetImporter();
+    const importer = new GoogleSheetImporter();
     importer.outputPath = argv["outputPath"];
     importer.outputType = argv["outputType"] as any;
     importer.defaultLocale = argv["defaultLocale"];
 
-    let documents: string[] = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];
-    let sheets = Array.isArray(argv["worksheet"]) ? argv["worksheet"] : [argv["worksheet"]];
-    let tags = Array.isArray(argv["filterTags"]) ? argv["filterTags"] : [argv["filterTags"]];
+    const documents: string[] = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];
+    const sheets = Array.isArray(argv["worksheet"]) ? argv["worksheet"] : [argv["worksheet"]];
+    const tags = Array.isArray(argv["filterTags"]) ? argv["filterTags"] : [argv["filterTags"]];
 
     for (let i = 0; i < documents.length; i++) {
         importer.addDocument(documents[i], sheets.length > i ? sheets[i] : undefined, tags.length > i ? (tags[i] ? tags[i].split(",") : undefined) : undefined);

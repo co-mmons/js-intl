@@ -7,5 +7,6 @@ export declare class GoogleSheetImporter {
     defaultLocale: string;
     generate(): Promise<void>;
     private fetchHttps;
+    private readCsv;
     private readSheet;
 }

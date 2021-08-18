@@ -2,8 +2,7 @@ import { __awaiter } from "tslib";
 import * as fileSystem from "fs-extra";
 import * as https from "https";
 import * as path from "path";
-import * as cprocess from "child_process";
-const useCURL = true;
+import { parseString } from "@fast-csv/parse";
 export class GoogleSheetImporter {
     constructor() {
         this.documents = [];
@@ -14,15 +13,15 @@ export class GoogleSheetImporter {
     }
     generate() {
         return __awaiter(this, void 0, void 0, function* () {
-            let output = {};
-            let data = {};
-            for (let resource of this.documents) {
-                let result = (yield this.readSheet(resource));
-                for (let locale in result) {
+            const output = {};
+            const data = {};
+            for (const resource of this.documents) {
+                const result = resource.id.startsWith("2PACX") ? yield this.readCsv(resource) : yield this.readSheet(resource);
+                for (const locale in result) {
                     if (!data[locale]) {
                         data[locale] = {};
                     }
-                    for (let key in result[locale]) {
+                    for (const key in result[locale]) {
                         if (!data[locale][key]) {
                             data[locale][key] = result[locale][key];
                         }
@@ -30,8 +29,8 @@ export class GoogleSheetImporter {
                 }
             }
             fileSystem.ensureDirSync(this.outputPath);
-            for (let locale in data) {
-                let filePath = path.resolve(this.outputPath, `${locale}.${this.outputType}`);
+            for (const locale in data) {
+                const filePath = path.resolve(this.outputPath, `${locale}.${this.outputType}`);
                 if (!Object.keys(data[locale]).length) {
                     try {
                         fileSystem.unlinkSync(filePath);
@@ -121,27 +120,96 @@ export class GoogleSheetImporter {
     }
     fetchHttps(url) {
         return new Promise((resolve, reject) => {
-            var _a;
-            if (useCURL) {
-                for (let i = 0; i < 10; i++) {
-                    const r = (_a = cprocess.spawnSync("curl", [url], { encoding: "utf8" })) === null || _a === void 0 ? void 0 : _a.stdout;
-                    if (r === null || r === void 0 ? void 0 : r.startsWith("{")) {
-                        return r;
+            let contents = "";
+            https.get(url, (response) => {
+                if (response.statusCode >= 301 && response.statusCode <= 308) {
+                    try {
+                        resolve(this.fetchHttps(response.headers.location));
                     }
-                    else {
-                        console.warn(`[GoogleSheetImporter] Invalid output: ${url}`);
+                    catch (e) {
+                        reject(e);
+                    }
+                    finally {
+                        return;
                     }
                 }
-                throw new Error(`[GoogleSheetImporter] Cannot read sheet ${url}`);
-            }
-            else {
-                let contents = "";
-                https.get(url, (response) => {
-                    response.setEncoding("utf8");
-                    response.on("data", chunk => contents += chunk);
-                    response.on("end", () => resolve(contents));
-                }).on("error", error => reject(error));
-            }
+                response.setEncoding("utf8");
+                response.on("data", chunk => contents += chunk);
+                response.on("end", () => resolve(contents));
+            }).on("error", error => reject(error));
+        });
+    }
+    readCsv(document) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                const data = {};
+                parseString(yield this.fetchHttps(`https://docs.google.com/spreadsheets/d/e/${document.id}/pub?output=csv&${document.worksheet ? `&gid=${document.worksheet}&single=true` : ""}`), { headers: true })
+                    .on("error", err => reject(err))
+                    .on("end", () => resolve(data))
+                    .on("data", row => {
+                    if (row.key) {
+                        // filter by tags
+                        TAGS: if (document.filterTags) {
+                            const tags = row.tags ? row.tags.split(",") : ["--empty--"];
+                            for (const tag of document.filterTags) {
+                                for (let t of tags) {
+                                    t = t.trim();
+                                    if (tag === t || t.match(tag)) {
+                                        break TAGS;
+                                    }
+                                }
+                            }
+                            return;
+                        }
+                        let alias = row.alias;
+                        // alias column contain JSON string (quoted)
+                        if (alias && alias.startsWith("\"")) {
+                            alias = [JSON.parse(alias)];
+                        }
+                        // alias column contain JSON array
+                        else if (alias && alias.startsWith("[")) {
+                            alias = JSON.parse(alias);
+                        }
+                        // comma separated keys
+                        else if (alias) {
+                            alias = alias.split(",");
+                        }
+                        const keys = [row.key].concat(alias);
+                        for (const locale of Object.keys(row).filter(locale => locale.startsWith("#") && locale !== "#default").map(locale => locale.substr(1))) {
+                            let value = (row[`#${locale}`] || "").trim();
+                            if (value) {
+                                if (value.startsWith("#") && value !== "#default") {
+                                    value = row[value.toLowerCase()] || row["#default"];
+                                }
+                                if (!value || value === "#default") {
+                                    value = (row["#default"] || "").trim();
+                                }
+                            }
+                            else if (this.defaultLocale && row[`#${this.defaultLocale}`]) {
+                                value = (row[`#${this.defaultLocale}`] || "").trim();
+                            }
+                            if (value) {
+                                for (let key of keys) {
+                                    key = key.trim();
+                                    if (key) {
+                                        if (!data[locale]) {
+                                            data[locale] = {};
+                                        }
+                                        // value is a reference to external google document
+                                        if (row.type === "GoogleDocument") {
+                                            data[locale][key] = { type: "GoogleDocument", url: value };
+                                        }
+                                        // simple text
+                                        else {
+                                            data[locale][key] = value;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }));
         });
     }
     readSheet(document) {
@@ -220,19 +288,6 @@ export class GoogleSheetImporter {
                                 value = (row[columns["#" + this.defaultLocale]] || "").trim();
                             }
                             if (value) {
-                                let alias = row[columns.alias];
-                                // alias column contain JSON string (quoted)
-                                if (alias && alias.startsWith("\"")) {
-                                    alias = [JSON.parse(alias)];
-                                }
-                                // alias column contain JSON array
-                                else if (alias && alias.startsWith("[")) {
-                                    alias = JSON.parse(alias);
-                                }
-                                // comma separated keys
-                                else if (alias) {
-                                    alias = alias.split(",");
-                                }
                                 for (let key of keys) {
                                     key = key.trim();
                                     if (key) {

@@ -13,13 +13,13 @@ const argv = yargs
     .option("filterTags", { description: "Comma separated tags, that must be present for keys from worksheet. Key will be taken from worksheet if at least one tag is matched." })
     .demandOption(["outputPath", "outputType", "document"]).argv;
 (() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    let importer = new GoogleSheetImporter_1.GoogleSheetImporter();
+    const importer = new GoogleSheetImporter_1.GoogleSheetImporter();
     importer.outputPath = argv["outputPath"];
     importer.outputType = argv["outputType"];
     importer.defaultLocale = argv["defaultLocale"];
-    let documents = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];
-    let sheets = Array.isArray(argv["worksheet"]) ? argv["worksheet"] : [argv["worksheet"]];
-    let tags = Array.isArray(argv["filterTags"]) ? argv["filterTags"] : [argv["filterTags"]];
+    const documents = Array.isArray(argv["document"]) ? argv["document"] : [argv["document"]];
+    const sheets = Array.isArray(argv["worksheet"]) ? argv["worksheet"] : [argv["worksheet"]];
+    const tags = Array.isArray(argv["filterTags"]) ? argv["filterTags"] : [argv["filterTags"]];
     for (let i = 0; i < documents.length; i++) {
         importer.addDocument(documents[i], sheets.length > i ? sheets[i] : undefined, tags.length > i ? (tags[i] ? tags[i].split(",") : undefined) : undefined);
     }
