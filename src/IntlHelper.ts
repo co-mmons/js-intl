@@ -397,7 +397,14 @@ export class IntlHelper {
             }
 
         } else {
-            predefinedOptions = Object.assign({year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"}, predefinedOptions);
+            predefinedOptions = Object.assign({
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            }, predefinedOptions);
 
         }
 
@@ -417,8 +424,9 @@ export class IntlHelper {
             if (!dateTime.timeZone) {
                 predefinedOptions.timeZone = "UTC";
                 predefinedOptions.timeZoneName = undefined;
-            } else if (dateTime.timeZone !== "current") {
-                predefinedOptions.timeZone = dateTime.timeZone;
+            } else {
+                predefinedOptions.timeZone = dateTime.timeZone !== "current" ? dateTime.timeZone : undefined;
+                predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
             }
 
         } else if (typeof dateTime === "number") {
