@@ -16,4 +16,5 @@ export { Locale } from "./Locale";
 export { LocaleStringSerializer } from "./LocaleStringSerializer";
 export { MessageRef } from "./MessageRef";
 export { Money } from "./Money";
+export { CountryStringSerializer } from "./CountryStringSerializer";
 //# sourceMappingURL=index.js.map
