@@ -1,6 +1,6 @@
 import {serializable} from "@co.mmons/js-utils/json";
 
-type RefType = "message" | "decimalFormat";
+type RefType = "value" | "message" | "decimalFormat";
 
 @serializable()
 export abstract class IntlRef {

@@ -1,0 +1,1 @@
+{"version":3,"file":"getGlobalValuesVersions.js","sourceRoot":"","sources":["../../src/getGlobalValuesVersions.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,aAAa,EAAC,MAAM,iBAAiB,CAAC;AAE9C,aAAa,EAAE,CAAC;AAEhB,MAAM,UAAU,uBAAuB;IAEnC,IAAI,CAAC,oBAAoB,EAAE;QACvB,oBAAoB,GAAG,sBAAsB,GAAG,CAAC,sBAAsB,IAAI,EAAE,CAAC,CAAC;KAClF;IAED,OAAO,oBAAoB,CAAC;AAChC,CAAC"}

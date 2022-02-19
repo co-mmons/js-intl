@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bestLocale = void 0;
 const defineGlobals_1 = require("./defineGlobals");
-defineGlobals_1.defineGlobals();
+(0, defineGlobals_1.defineGlobals)();
 function bestLocale() {
     if (typeof window === "undefined" || typeof window.navigator === "undefined") {
         return INTL_DEFAULT_LOCALE;

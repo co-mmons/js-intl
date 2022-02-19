@@ -22,10 +22,10 @@ let DecimalFormatRef = DecimalFormatRef_1 = class DecimalFormatRef extends IntlR
     toJSON() {
         const json = {
             "@type": DecimalFormatRef_1.jsonTypeName,
-            value: json_1.serialize(this.value)
+            value: (0, json_1.serialize)(this.value)
         };
         if (this.options) {
-            json.options = json_1.serialize(this.options);
+            json.options = (0, json_1.serialize)(this.options);
         }
         if (this.predefined) {
             json.predefined = this.predefined;
@@ -34,9 +34,9 @@ let DecimalFormatRef = DecimalFormatRef_1 = class DecimalFormatRef extends IntlR
     }
 };
 DecimalFormatRef.jsonTypeName = "intl/DecimalFormatRef";
-DecimalFormatRef = DecimalFormatRef_1 = tslib_1.__decorate([
-    json_1.subtype(IntlRef_1.IntlRef, "refType", "decimalFormat"),
-    tslib_1.__metadata("design:paramtypes", [Object, Object, Object])
+DecimalFormatRef = DecimalFormatRef_1 = (0, tslib_1.__decorate)([
+    (0, json_1.subtype)(IntlRef_1.IntlRef, "refType", "decimalFormat"),
+    (0, tslib_1.__metadata)("design:paramtypes", [Object, Object, Object])
 ], DecimalFormatRef);
 exports.DecimalFormatRef = DecimalFormatRef;
 //# sourceMappingURL=DecimalFormatRef.js.map

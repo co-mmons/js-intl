@@ -3,7 +3,7 @@ import {existsSync, readJsonSync} from "fs-extra";
 import * as path from "path";
 
 export interface IntlBundleItem {
-    type?: "message" | null | undefined,
+    type?: "message" | "value" | null | undefined,
     namespace?: string,
     path: string,
     module?: string
@@ -118,7 +118,7 @@ export class IntlBundleGenerator {
         for (let baseLocale of this.locales) {
 
             let contents: string[] = [];
-            let messages: any;
+            let values: any;
 
             // whether intl polyfill locale data is in the bundle
             let intlPolyfill: boolean = false;
@@ -165,18 +165,18 @@ export class IntlBundleGenerator {
                     }
 
                     if (itemPath) {
-                        if (item.type == "message") {
+                        if (item.type == "message" || item.type === "value") {
 
-                            if (!messages) {
-                                messages = {};
+                            if (!values) {
+                                values = {};
                             }
 
-                            if (!messages[item.namespace]) {
-                                messages[item.namespace] = {};
+                            if (!values[item.namespace]) {
+                                values[item.namespace] = {};
                             }
 
-                            if (!messages[item.namespace][baseLocale]) {
-                                messages[item.namespace][baseLocale] = {};
+                            if (!values[item.namespace][baseLocale]) {
+                                values[item.namespace][baseLocale] = {};
                             }
 
                             let json = fsextra.readJsonSync(itemPath);
@@ -188,7 +188,7 @@ export class IntlBundleGenerator {
                                 }
                             }
 
-                            Object.assign(messages[item.namespace][baseLocale], json);
+                            Object.assign(values[item.namespace][baseLocale], json);
 
                         } else {
                             let c = fsextra.readFileSync(itemPath).toString();
@@ -212,17 +212,17 @@ export class IntlBundleGenerator {
                 }
             }
 
-            if (messages) {
+            if (values) {
                 if (jsType) {
-                    contents.push("{var INTL_MESSAGES;");
-                    contents.push("if(typeof window !== 'undefined'){INTL_MESSAGES=window['INTL_MESSAGES']=(window['INTL_MESSAGES']||{});}");
-                    contents.push("if(typeof global !== 'undefined'){INTL_MESSAGES=global['INTL_MESSAGES']=(global['INTL_MESSAGES']||{});}");
-                    contents.push("var messages = " + JSON.stringify(messages) + ";");
-                    contents.push("for (var key0 in messages) { INTL_MESSAGES[key0] = {}; for (var key1 in (messages[key0] || {})) { INTL_MESSAGES[key0][key1] = messages[key0][key1]; }}");
+                    contents.push("{var INTL_VALUES;");
+                    contents.push("if(typeof window !== 'undefined'){INTL_VALUES=window['INTL_VALUES']=(window['INTL_VALUES']||{});}");
+                    contents.push("if(typeof global !== 'undefined'){INTL_VALUES=global['INTL_VALUES']=(global['INTL_VALUES']||{});}");
+                    contents.push("var values = " + JSON.stringify(values) + ";");
+                    contents.push("for (var key0 in values) { INTL_VALUES[key0] = {}; for (var key1 in (values[key0] || {})) { INTL_VALUES[key0][key1] = values[key0][key1]; }}");
                     contents.push("}");
 
                 } else if (jsonType) {
-                    contents.push(JSON.stringify(messages));
+                    contents.push(JSON.stringify(values));
                 }
             }
 

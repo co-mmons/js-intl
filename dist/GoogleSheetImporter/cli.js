@@ -12,7 +12,7 @@ const argv = yargs
     .option("worksheet", { description: "Document's worksheet index (1 based) or worksheet name", type: "string" })
     .option("filterTags", { description: "Comma separated tags, that must be present for keys from worksheet. Key will be taken from worksheet if at least one tag is matched." })
     .demandOption(["outputPath", "outputType", "document"]).argv;
-(() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
     const importer = new GoogleSheetImporter_1.GoogleSheetImporter();
     importer.outputPath = argv["outputPath"];
     importer.outputType = argv["outputType"];

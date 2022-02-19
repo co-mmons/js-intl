@@ -1,5 +1,5 @@
 export interface IntlBundleItem {
-    type?: "message" | null | undefined;
+    type?: "message" | "value" | null | undefined;
     namespace?: string;
     path: string;
     module?: string;
