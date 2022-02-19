@@ -18,7 +18,6 @@ export { MessageRef } from "./MessageRef";
 export { Money } from "./Money";
 export { ValueRef } from "./ValueRef";
 export { bestLocale } from "./bestLocale";
-export { bestRelativeTimeFormatValue } from "./bestRelativeTimeFormatValue";
 export { formatCurrency } from "./formatCurrency";
 export { formatDateTime } from "./formatDateTime";
 export { formatDate } from "./formatDate";
