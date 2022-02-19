@@ -1,6 +1,7 @@
 import IntlMessageFormat from "intl-messageformat";
 import {DecimalFormatRef} from "./DecimalFormatRef";
 import {extractNamespaceAndKey} from "./extractNamespaceAndKey";
+import {formatDecimal} from "./formatDecimal";
 import {getGlobalVersionedValue} from "./getGlobalVersionedValue";
 import {IntlContext} from "./IntlContext";
 import {isFormattedMessage} from "./isFormattedMessage";
@@ -10,9 +11,14 @@ import {ValueRef} from "./ValueRef";
 
 type KeyType = ValueKey | MessageRef | ValueRef;
 
-export function translate(key: KeyType, values?: any, formats?: any): string;
+interface TranslateOptions {
+    formats?: any;
+    defaultMessage?: "key" | "undefined" | ((namespace: string, key: string) => string);
+}
 
-export function translate(context: IntlContext, key: KeyType, values?: any, formats?: any): string;
+export function translate(key: KeyType, values?: any, options?: TranslateOptions): string;
+
+export function translate(context: IntlContext, key: KeyType, values?: any, options?: TranslateOptions): string;
 
 export function translate(): string {
 
@@ -21,7 +27,7 @@ export function translate(): string {
 
     const key: KeyType = arguments[0 + knownContext];
     let values: any = arguments[1 + knownContext];
-    let formats: any = arguments[2 + knownContext];
+    let options: TranslateOptions = arguments[2 + knownContext];
 
     const namespaceAndKey = extractNamespaceAndKey(key, context.defaultNamespace);
     if (!namespaceAndKey.namespace) {
@@ -33,8 +39,13 @@ export function translate(): string {
             values = key.values;
         }
 
-        if (!formats) {
-            formats = key.formats;
+        if (key.formats) {
+
+            if (!options) {
+                options = {};
+            }
+
+            options.formats = key.formats;
         }
     }
 
@@ -46,7 +57,7 @@ export function translate(): string {
             if (values[key] instanceof MessageRef) {
                 fixedValues[key] = translate(context, values[key]);
             } else if (values[key] instanceof DecimalFormatRef) {
-                fixedValues[key] = this.decimalFormat(values[key]);
+                fixedValues[key] = formatDecimal(values[key]);
             } else {
                 fixedValues[key] = values[key];
             }
@@ -57,13 +68,19 @@ export function translate(): string {
 
     let message = getGlobalVersionedValue(context.locales, namespaceAndKey.namespace, namespaceAndKey.key);
     if (!message) {
-        message = namespaceAndKey.key.replace(/.+\//g, "").replace(/\|.*/g, "").trim();
+        if (!options?.defaultMessage || options.defaultMessage === "key") {
+            message = namespaceAndKey.key.replace(/.+\//g, "").replace(/\|.*/g, "").trim();
+        } else if (typeof options.defaultMessage === "function") {
+            return options.defaultMessage(namespaceAndKey.namespace, namespaceAndKey.key);
+        } else {
+            return undefined;
+        }
     }
 
     if (typeof message === "string") {
 
         if (isFormattedMessage(message)) {
-            return new IntlMessageFormat(message, context.locales, formats, {ignoreTag: true}).format(values) as string;
+            return new IntlMessageFormat(message, context.locales, options?.formats, {ignoreTag: true}).format(values) as string;
         } else {
             return message;
         }

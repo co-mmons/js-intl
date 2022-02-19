@@ -4,6 +4,7 @@ exports.translate = void 0;
 const intl_messageformat_1 = require("intl-messageformat");
 const DecimalFormatRef_1 = require("./DecimalFormatRef");
 const extractNamespaceAndKey_1 = require("./extractNamespaceAndKey");
+const formatDecimal_1 = require("./formatDecimal");
 const getGlobalVersionedValue_1 = require("./getGlobalVersionedValue");
 const IntlContext_1 = require("./IntlContext");
 const isFormattedMessage_1 = require("./isFormattedMessage");
@@ -13,7 +14,7 @@ function translate() {
     const context = knownContext ? arguments[0] : INTL_DEFAULT_CONTEXT;
     const key = arguments[0 + knownContext];
     let values = arguments[1 + knownContext];
-    let formats = arguments[2 + knownContext];
+    let options = arguments[2 + knownContext];
     const namespaceAndKey = (0, extractNamespaceAndKey_1.extractNamespaceAndKey)(key, context.defaultNamespace);
     if (!namespaceAndKey.namespace) {
         return namespaceAndKey.key;
@@ -22,8 +23,11 @@ function translate() {
         if (!values) {
             values = key.values;
         }
-        if (!formats) {
-            formats = key.formats;
+        if (key.formats) {
+            if (!options) {
+                options = {};
+            }
+            options.formats = key.formats;
         }
     }
     if (values) {
@@ -33,7 +37,7 @@ function translate() {
                 fixedValues[key] = translate(context, values[key]);
             }
             else if (values[key] instanceof DecimalFormatRef_1.DecimalFormatRef) {
-                fixedValues[key] = this.decimalFormat(values[key]);
+                fixedValues[key] = (0, formatDecimal_1.formatDecimal)(values[key]);
             }
             else {
                 fixedValues[key] = values[key];
@@ -43,11 +47,19 @@ function translate() {
     }
     let message = (0, getGlobalVersionedValue_1.getGlobalVersionedValue)(context.locales, namespaceAndKey.namespace, namespaceAndKey.key);
     if (!message) {
-        message = namespaceAndKey.key.replace(/.+\//g, "").replace(/\|.*/g, "").trim();
+        if (!(options === null || options === void 0 ? void 0 : options.defaultMessage) || options.defaultMessage === "key") {
+            message = namespaceAndKey.key.replace(/.+\//g, "").replace(/\|.*/g, "").trim();
+        }
+        else if (typeof options.defaultMessage === "function") {
+            return options.defaultMessage(namespaceAndKey.namespace, namespaceAndKey.key);
+        }
+        else {
+            return undefined;
+        }
     }
     if (typeof message === "string") {
         if ((0, isFormattedMessage_1.isFormattedMessage)(message)) {
-            return new intl_messageformat_1.default(message, context.locales, formats, { ignoreTag: true }).format(values);
+            return new intl_messageformat_1.default(message, context.locales, options === null || options === void 0 ? void 0 : options.formats, { ignoreTag: true }).format(values);
         }
         else {
             return message;

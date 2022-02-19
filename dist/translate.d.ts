@@ -3,6 +3,10 @@ import { MessageRef } from "./MessageRef";
 import { ValueKey } from "./ValueKey";
 import { ValueRef } from "./ValueRef";
 declare type KeyType = ValueKey | MessageRef | ValueRef;
-export declare function translate(key: KeyType, values?: any, formats?: any): string;
-export declare function translate(context: IntlContext, key: KeyType, values?: any, formats?: any): string;
+interface TranslateOptions {
+    formats?: any;
+    defaultMessage?: "key" | "undefined" | ((namespace: string, key: string) => string);
+}
+export declare function translate(key: KeyType, values?: any, options?: TranslateOptions): string;
+export declare function translate(context: IntlContext, key: KeyType, values?: any, options?: TranslateOptions): string;
 export {};

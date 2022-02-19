@@ -83,7 +83,7 @@ class IntlHelper extends IntlContext_1.IntlContext {
         return (0, formatMessage_1.formatMessage)(this, message, values, formats);
     }
     message(key, values, formats) {
-        const message = (0, translate_1.translate)(this, Array.isArray(key) ? (key.length > 0 ? key[0] : "") : key, values, formats);
+        const message = (0, translate_1.translate)(this, Array.isArray(key) ? (key.length > 0 ? key[0] : "") : key, values, { formats });
         if (typeof message === "string") {
             return message;
         }

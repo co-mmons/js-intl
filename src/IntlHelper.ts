@@ -144,7 +144,7 @@ export class IntlHelper extends IntlContext {
 
     message(key: string | MessageRef | TemplateStringsArray, values?: any, formats?: any): string {
 
-        const message = translate(this, Array.isArray(key) ? (key.length > 0 ? key[0] : "") : key, values, formats);
+        const message = translate(this, Array.isArray(key) ? (key.length > 0 ? key[0] : "") : key, values, {formats});
         if (typeof message === "string") {
             return message as string;
         } else if (message) {
