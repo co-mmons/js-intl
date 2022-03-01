@@ -11,9 +11,9 @@ let IntlRef = class IntlRef {
         }
     }
 };
-IntlRef = (0, tslib_1.__decorate)([
+IntlRef = tslib_1.__decorate([
     (0, json_1.serializable)(),
-    (0, tslib_1.__metadata)("design:paramtypes", [String])
+    tslib_1.__metadata("design:paramtypes", [String])
 ], IntlRef);
 exports.IntlRef = IntlRef;
 //# sourceMappingURL=IntlRef.js.map

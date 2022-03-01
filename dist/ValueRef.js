@@ -53,9 +53,9 @@ let ValueRef = ValueRef_1 = class ValueRef extends IntlRef_1.IntlRef {
     }
 };
 ValueRef.jsonTypeName = "intl/ValueRef";
-ValueRef = ValueRef_1 = (0, tslib_1.__decorate)([
+ValueRef = ValueRef_1 = tslib_1.__decorate([
     (0, json_1.subtype)(IntlRef_1.IntlRef, "refType", "message"),
-    (0, tslib_1.__metadata)("design:paramtypes", [String, String])
+    tslib_1.__metadata("design:paramtypes", [String, String])
 ], ValueRef);
 exports.ValueRef = ValueRef;
 //# sourceMappingURL=ValueRef.js.map

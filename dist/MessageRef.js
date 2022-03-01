@@ -62,9 +62,9 @@ let MessageRef = MessageRef_1 = class MessageRef extends IntlRef_1.IntlRef {
     }
 };
 MessageRef.jsonTypeName = "intl/MessageRef";
-MessageRef = MessageRef_1 = (0, tslib_1.__decorate)([
+MessageRef = MessageRef_1 = tslib_1.__decorate([
     (0, json_1.subtype)(IntlRef_1.IntlRef, "refType", "message"),
-    (0, tslib_1.__metadata)("design:paramtypes", [String, Object, Object, Object])
+    tslib_1.__metadata("design:paramtypes", [String, Object, Object, Object])
 ], MessageRef);
 exports.MessageRef = MessageRef;
 //# sourceMappingURL=MessageRef.js.map

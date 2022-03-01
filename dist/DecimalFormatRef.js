@@ -34,9 +34,9 @@ let DecimalFormatRef = DecimalFormatRef_1 = class DecimalFormatRef extends IntlR
     }
 };
 DecimalFormatRef.jsonTypeName = "intl/DecimalFormatRef";
-DecimalFormatRef = DecimalFormatRef_1 = (0, tslib_1.__decorate)([
+DecimalFormatRef = DecimalFormatRef_1 = tslib_1.__decorate([
     (0, json_1.subtype)(IntlRef_1.IntlRef, "refType", "decimalFormat"),
-    (0, tslib_1.__metadata)("design:paramtypes", [Object, Object, Object])
+    tslib_1.__metadata("design:paramtypes", [Object, Object, Object])
 ], DecimalFormatRef);
 exports.DecimalFormatRef = DecimalFormatRef;
 //# sourceMappingURL=DecimalFormatRef.js.map

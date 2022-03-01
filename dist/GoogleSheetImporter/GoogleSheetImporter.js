@@ -15,7 +15,7 @@ class GoogleSheetImporter {
         this.documents.push({ id: id, worksheet: worksheet, filterTags: filterTags });
     }
     generate() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const output = {};
             const data = {};
             for (const resource of this.documents) {
@@ -143,8 +143,8 @@ class GoogleSheetImporter {
         });
     }
     readCsv(document) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                 const data = {};
                 (0, parse_1.parseString)(yield this.fetchHttps(`https://docs.google.com/spreadsheets/d/e/${document.id}/pub?output=csv&${document.worksheet ? `&gid=${document.worksheet}&single=true` : ""}`), { headers: true })
                     .on("error", err => reject(err))
@@ -216,7 +216,7 @@ class GoogleSheetImporter {
         });
     }
     readSheet(document) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 let json = JSON.parse((yield this.fetchHttps(`https://spreadsheets.google.com/feeds/cells/${document.id}/${document.worksheet || 'default'}/public/values?alt=json`)));
                 let rows = [];
