@@ -18,7 +18,6 @@
     "@co.mmons/js-utils": "github:co-mmons/js-utils",
     "@co.mmons/node-utils": "github:co-mmons/node-utils",
     "@formatjs/intl-relativetimeformat": "^10.0.0",
-    "@formatjs/intl-utils": "^3.0.0",
     "date-fns": "^2.0.0",
     "fs-extra": "^10.0.0",
     "intl-format-cache": "^4.0.0",
