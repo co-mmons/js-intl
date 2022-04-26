@@ -1,6 +1,5 @@
 import {Type} from "@co.mmons/js-utils/core";
-import {Serializer} from "@co.mmons/js-utils/json";
-import {ObjectAsMapSerializer} from "@co.mmons/js-utils/json/serializers";
+import {ObjectAsMapSerializer, Serializer} from "@co.mmons/js-utils/json";
 
 export class IntlStoreSerializer extends ObjectAsMapSerializer {
 

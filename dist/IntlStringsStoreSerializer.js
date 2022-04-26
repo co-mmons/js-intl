@@ -2,8 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IntlStringsStoreSerializer = void 0;
 const json_1 = require("@co.mmons/js-utils/json");
-const serializers_1 = require("@co.mmons/js-utils/json/serializers");
-class IntlStringsStoreSerializer extends serializers_1.ObjectAsMapSerializer {
+class IntlStringsStoreSerializer extends json_1.ObjectAsMapSerializer {
     constructor(allowPlainValue) {
         super(String);
         this.allowPlainValue = allowPlainValue;

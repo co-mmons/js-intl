@@ -16,22 +16,23 @@
   },
   "dependencies": {
     "@co.mmons/node-utils": "github:co-mmons/node-utils",
+    "@fast-csv/parse": "^4.3.6",
     "@formatjs/icu-messageformat-parser": "^2.0.18",
     "date-fns": "^2.0.0",
     "fs-extra": "^10.0.0",
-    "yargs": "^17.3.1",
-    "@fast-csv/parse": "^4.3.6"
+    "yargs": "^17.3.1"
   },
   "peerDependencies": {
     "@co.mmons/js-utils": "github:co-mmons/js-utils",
     "@formatjs/intl-relativetimeformat": "^10.0.0",
-    "tslib": "^2.0.0",
-    "bignumber.js": "^9.0.0"
+    "bignumber.js": "^9.0.0",
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.0.0",
     "@types/yargs": "^17.0.8",
+    "intl-messageformat": "^9.0.0",
     "rollup": "^2.68.0",
     "ts-node": "^10.6.0",
     "typescript": "^4.6.2"
