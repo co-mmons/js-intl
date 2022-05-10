@@ -47,25 +47,13 @@ function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOptionsOr
         }
         dateTime = dateTime.date;
     }
-    else if (dateTime instanceof core_1.DateWithTimeZone) {
-        if (dateTime.timeZone === "local") {
-            predefinedOptions.timeZone = "UTC";
-            predefinedOptions.timeZoneName = undefined;
-        }
-        else {
-            predefinedOptions.timeZone = dateTime.timeZone && dateTime.timeZone !== "current" ? dateTime.timeZone : undefined;
-            predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
-        }
+    else if (dateTime instanceof core_1.LocalDate || dateTime instanceof core_1.NoTimeDate) {
+        predefinedOptions.timeZone = "UTC";
+        predefinedOptions.timeZoneName = undefined;
     }
     else if (dateTime instanceof core_1.TimeZoneDate) {
-        if (!dateTime.timeZone) {
-            predefinedOptions.timeZone = "UTC";
-            predefinedOptions.timeZoneName = undefined;
-        }
-        else {
-            predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
-            predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
-        }
+        predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
+        predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
     }
     else if (typeof dateTime === "number") {
         dateTime = new Date(dateTime);

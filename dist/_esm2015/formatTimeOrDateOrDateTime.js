@@ -1,4 +1,4 @@
-import { DateTimezone, TimeZoneDate, DateWithTimeZone } from "@co.mmons/js-utils/core";
+import { DateTimezone, TimeZoneDate, LocalDate, NoTimeDate } from "@co.mmons/js-utils/core";
 export function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOptionsOrOptions, options) {
     let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(`Intl.DateTimeFormat:${predefinedOptionsOrOptions}`) : predefinedOptionsOrOptions;
     predefinedOptions = Object.assign({}, predefinedOptions, options);
@@ -44,25 +44,13 @@ export function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOp
         }
         dateTime = dateTime.date;
     }
-    else if (dateTime instanceof DateWithTimeZone) {
-        if (dateTime.timeZone === "local") {
-            predefinedOptions.timeZone = "UTC";
-            predefinedOptions.timeZoneName = undefined;
-        }
-        else {
-            predefinedOptions.timeZone = dateTime.timeZone && dateTime.timeZone !== "current" ? dateTime.timeZone : undefined;
-            predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
-        }
+    else if (dateTime instanceof LocalDate || dateTime instanceof NoTimeDate) {
+        predefinedOptions.timeZone = "UTC";
+        predefinedOptions.timeZoneName = undefined;
     }
     else if (dateTime instanceof TimeZoneDate) {
-        if (!dateTime.timeZone) {
-            predefinedOptions.timeZone = "UTC";
-            predefinedOptions.timeZoneName = undefined;
-        }
-        else {
-            predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
-            predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
-        }
+        predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
+        predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
     }
     else if (typeof dateTime === "number") {
         dateTime = new Date(dateTime);

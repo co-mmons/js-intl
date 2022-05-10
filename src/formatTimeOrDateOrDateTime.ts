@@ -1,4 +1,4 @@
-import {DateTimezone, Timestamp, TimeZoneDate, LocalDate} from "@co.mmons/js-utils/core";
+import {DateTimezone, Timestamp, TimeZoneDate, LocalDate, NoTimeDate} from "@co.mmons/js-utils/core";
 import {IntlContext} from "./IntlContext";
 
 export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | "date" | "dateTime", dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions) {
@@ -56,7 +56,7 @@ export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | 
 
         dateTime = dateTime.date;
 
-    } else if (dateTime instanceof LocalDate) {
+    } else if (dateTime instanceof LocalDate || dateTime instanceof NoTimeDate) {
         predefinedOptions.timeZone = "UTC";
         predefinedOptions.timeZoneName = undefined;
 
