@@ -58,11 +58,11 @@ export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | 
 
     } else if (dateTime instanceof TimeZoneDate) {
 
-        if (!dateTime.timeZone) {
+        if (dateTime.timeZone === "local") {
             predefinedOptions.timeZone = "UTC";
             predefinedOptions.timeZoneName = undefined;
         } else {
-            predefinedOptions.timeZone = dateTime.timeZone !== "current" ? dateTime.timeZone : undefined;
+            predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
             predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
         }
 

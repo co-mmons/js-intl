@@ -48,12 +48,12 @@ function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOptionsOr
         dateTime = dateTime.date;
     }
     else if (dateTime instanceof core_1.TimeZoneDate) {
-        if (!dateTime.timeZone) {
+        if (dateTime.timeZone === "local") {
             predefinedOptions.timeZone = "UTC";
             predefinedOptions.timeZoneName = undefined;
         }
         else {
-            predefinedOptions.timeZone = dateTime.timeZone !== "current" ? dateTime.timeZone : undefined;
+            predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
             predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
         }
     }
