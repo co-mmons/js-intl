@@ -1,4 +1,4 @@
-import {DateTimezone, Timestamp, TimeZoneDate, DateWithTimeZone} from "@co.mmons/js-utils/core";
+import {DateTimezone, Timestamp, TimeZoneDate, LocalDate} from "@co.mmons/js-utils/core";
 import {IntlContext} from "./IntlContext";
 
 export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | "date" | "dateTime", dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions) {
@@ -56,25 +56,13 @@ export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | 
 
         dateTime = dateTime.date;
 
-    } else if (dateTime instanceof DateWithTimeZone) {
-
-        if (dateTime.timeZone === "local") {
-            predefinedOptions.timeZone = "UTC";
-            predefinedOptions.timeZoneName = undefined;
-        } else {
-            predefinedOptions.timeZone = dateTime.timeZone && dateTime.timeZone !== "current" ? dateTime.timeZone : undefined;
-            predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
-        }
+    } else if (dateTime instanceof LocalDate) {
+        predefinedOptions.timeZone = "UTC";
+        predefinedOptions.timeZoneName = undefined;
 
     } else if (dateTime instanceof TimeZoneDate) {
-
-        if (!dateTime.timeZone) {
-            predefinedOptions.timeZone = "UTC";
-            predefinedOptions.timeZoneName = undefined;
-        } else {
-            predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
-            predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
-        }
+        predefinedOptions.timeZone = dateTime.timeZone !== "current" && dateTime.timeZone ? dateTime.timeZone : undefined;
+        predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
 
     } else if (typeof dateTime === "number") {
         dateTime = new Date(dateTime);
