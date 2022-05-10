@@ -58,7 +58,7 @@ export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | 
 
     } else if (dateTime instanceof TimeZoneDate) {
 
-        if (dateTime.timeZone === "local") {
+        if (!dateTime.timeZone) {
             predefinedOptions.timeZone = "UTC";
             predefinedOptions.timeZoneName = undefined;
         } else {

@@ -48,7 +48,7 @@ function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOptionsOr
         dateTime = dateTime.date;
     }
     else if (dateTime instanceof core_1.TimeZoneDate) {
-        if (dateTime.timeZone === "local") {
+        if (!dateTime.timeZone) {
             predefinedOptions.timeZone = "UTC";
             predefinedOptions.timeZoneName = undefined;
         }
