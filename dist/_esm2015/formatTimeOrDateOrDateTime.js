@@ -1,4 +1,4 @@
-import { DateTimezone, TimeZoneDate } from "@co.mmons/js-utils/core";
+import { DateTimezone, TimeZoneDate, DateWithTimeZone } from "@co.mmons/js-utils/core";
 export function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOptionsOrOptions, options) {
     let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(`Intl.DateTimeFormat:${predefinedOptionsOrOptions}`) : predefinedOptionsOrOptions;
     predefinedOptions = Object.assign({}, predefinedOptions, options);
@@ -43,6 +43,16 @@ export function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOp
             predefinedOptions.timeZone = dateTime.timezone;
         }
         dateTime = dateTime.date;
+    }
+    else if (dateTime instanceof DateWithTimeZone) {
+        if (dateTime.timeZone === "local") {
+            predefinedOptions.timeZone = "UTC";
+            predefinedOptions.timeZoneName = undefined;
+        }
+        else {
+            predefinedOptions.timeZone = dateTime.timeZone && dateTime.timeZone !== "current" ? dateTime.timeZone : undefined;
+            predefinedOptions.timeZoneName = "timeZoneName" in predefinedOptions ? predefinedOptions.timeZoneName : "short";
+        }
     }
     else if (dateTime instanceof TimeZoneDate) {
         if (!dateTime.timeZone) {
