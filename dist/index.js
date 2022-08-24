@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.translate = exports.setGlobalValues = exports.intl = exports.insertGlobalValuesVersion = exports.importGlobalValuesFromUrl = exports.getValue = exports.formatTime = exports.formatRelativeTime = exports.formatMessage = exports.formatDecimal = exports.formatDate = exports.formatDateTime = exports.formatCurrency = exports.deleteGlobalValuesVersion = exports.bestLocale = exports.ValueRef = exports.Money = exports.MessageRef = exports.Locale = exports.LocaleStringSerializer = exports.IntlStringValueSerializer = exports.IntlStringsStoreSerializer = exports.IntlValueSerializer = exports.IntlStoreSerializer = exports.IntlRef = exports.IntlHelper = exports.IntlContext = exports.DecimalFormatRef = exports.Currency = exports.CurrencyStringSerializer = exports.CurrencyCalculator = exports.Country = exports.CountryStringSerializer = void 0;
+exports.translate = exports.setGlobalValues = exports.intl = exports.insertGlobalValuesVersion = exports.importGlobalValuesFromUrl = exports.getValue = exports.formatTime = exports.formatRelativeTime = exports.formatMessage = exports.formatDecimal = exports.formatDate = exports.formatDateTime = exports.formatCurrency = exports.deleteGlobalValuesVersion = exports.bestLocale = exports.ValueRef = exports.MoneyStringSerializer = exports.Money = exports.MessageRef = exports.Locale = exports.LocaleStringSerializer = exports.IntlStringValueSerializer = exports.IntlStringsStoreSerializer = exports.IntlValueSerializer = exports.IntlStoreSerializer = exports.IntlRef = exports.IntlHelper = exports.IntlContext = exports.DecimalFormatRef = exports.Currency = exports.CurrencyStringSerializer = exports.CurrencyCalculator = exports.Country = exports.CountryStringSerializer = void 0;
 require("./globals");
 var CountryStringSerializer_1 = require("./CountryStringSerializer");
 Object.defineProperty(exports, "CountryStringSerializer", { enumerable: true, get: function () { return CountryStringSerializer_1.CountryStringSerializer; } });
@@ -34,6 +34,8 @@ var MessageRef_1 = require("./MessageRef");
 Object.defineProperty(exports, "MessageRef", { enumerable: true, get: function () { return MessageRef_1.MessageRef; } });
 var Money_1 = require("./Money");
 Object.defineProperty(exports, "Money", { enumerable: true, get: function () { return Money_1.Money; } });
+var MoneyStringSerializer_1 = require("./MoneyStringSerializer");
+Object.defineProperty(exports, "MoneyStringSerializer", { enumerable: true, get: function () { return MoneyStringSerializer_1.MoneyStringSerializer; } });
 var ValueRef_1 = require("./ValueRef");
 Object.defineProperty(exports, "ValueRef", { enumerable: true, get: function () { return ValueRef_1.ValueRef; } });
 var bestLocale_1 = require("./bestLocale");

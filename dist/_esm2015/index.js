@@ -14,6 +14,7 @@ export { LocaleStringSerializer } from "./LocaleStringSerializer";
 export { Locale } from "./Locale";
 export { MessageRef } from "./MessageRef";
 export { Money } from "./Money";
+export { MoneyStringSerializer } from "./MoneyStringSerializer";
 export { ValueRef } from "./ValueRef";
 export { bestLocale } from "./bestLocale";
 export { deleteGlobalValuesVersion } from "./deleteGlobalValuesVersion";
