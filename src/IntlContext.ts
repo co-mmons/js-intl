@@ -6,7 +6,7 @@ export abstract class IntlContext {
 
     private predefinedFormatOptions: any = {};
 
-    private addPredefinedFormatOptions<T>(name: string, options: any) {
+    addPredefinedFormatOptions<T>(name: string, options: any) {
         this.predefinedFormatOptions[name] = options;
     }
 
