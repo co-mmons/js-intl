@@ -4,8 +4,14 @@ export abstract class IntlContext {
 
     abstract get defaultNamespace(): string;
 
+    private predefinedFormatOptions: any = {};
+
+    private addPredefinedFormatOptions<T>(name: string, options: any) {
+        this.predefinedFormatOptions[name] = options;
+    }
+
     findPredefinedFormatOptions(name: string) {
-        return undefined;
+        return this.predefinedFormatOptions[name];
     }
 
     /**

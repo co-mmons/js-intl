@@ -8,7 +8,7 @@ export type NumberFormatType = "currency" | "percent" | "decimal";
 
 export function formatNumber(context: IntlContext, mode: NumberFormatType, value: number | Money | BigNumber | CurrencyAndNumber, predefinedOptionsOrOptions?: string | Intl.NumberFormatOptions, additionalOptions?: Intl.NumberFormatOptions): string {
 
-    const options: Intl.NumberFormatOptions = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(`Intl.NumberFormat:${predefinedOptionsOrOptions}`) : predefinedOptionsOrOptions, additionalOptions);
+    const options: Intl.NumberFormatOptions = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(predefinedOptionsOrOptions) : predefinedOptionsOrOptions, additionalOptions);
 
     if (mode == "currency") {
         options.style = "currency";

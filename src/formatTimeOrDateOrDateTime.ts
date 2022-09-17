@@ -3,7 +3,7 @@ import {IntlContext} from "./IntlContext";
 
 export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | "date" | "dateTime", dateTime: number | Date | DateTimezone | TimeZoneDate | Timestamp, predefinedOptionsOrOptions?: string | Intl.DateTimeFormatOptions, options?: Intl.DateTimeFormatOptions) {
 
-    let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(`Intl.DateTimeFormat:${predefinedOptionsOrOptions}`) : predefinedOptionsOrOptions;
+    let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(predefinedOptionsOrOptions) : predefinedOptionsOrOptions;
 
     predefinedOptions = Object.assign({}, predefinedOptions, options);
 

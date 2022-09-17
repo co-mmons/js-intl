@@ -5,7 +5,7 @@ const bignumber_js_1 = require("bignumber.js");
 const Currency_1 = require("./Currency");
 const Money_1 = require("./Money");
 function formatNumber(context, mode, value, predefinedOptionsOrOptions, additionalOptions) {
-    const options = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(`Intl.NumberFormat:${predefinedOptionsOrOptions}`) : predefinedOptionsOrOptions, additionalOptions);
+    const options = Object.assign({}, typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(predefinedOptionsOrOptions) : predefinedOptionsOrOptions, additionalOptions);
     if (mode == "currency") {
         options.style = "currency";
     }

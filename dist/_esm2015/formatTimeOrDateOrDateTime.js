@@ -1,6 +1,6 @@
 import { DateTimezone, TimeZoneDate, LocalDate, NoTimeDate } from "@co.mmons/js-utils/core";
 export function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOptionsOrOptions, options) {
-    let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(`Intl.DateTimeFormat:${predefinedOptionsOrOptions}`) : predefinedOptionsOrOptions;
+    let predefinedOptions = typeof predefinedOptionsOrOptions === "string" ? context.findPredefinedFormatOptions(predefinedOptionsOrOptions) : predefinedOptionsOrOptions;
     predefinedOptions = Object.assign({}, predefinedOptions, options);
     if (mode === "time") {
         predefinedOptions.year = undefined;
