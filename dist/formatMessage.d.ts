@@ -1,11 +1,10 @@
 import { HtmlString } from "@co.mmons/js-utils/core";
 import { IntlContext } from "./IntlContext";
-export declare function formatMessage(message: HtmlString, values: {
+declare type MessageType = string | HtmlString;
+export declare function formatMessage<T extends MessageType>(message: T, values: {
     [key: string]: any;
-}, formats?: any): HtmlString;
-export declare function formatMessage(message: string, values: {
+}, formats?: any): T;
+export declare function formatMessage<T extends MessageType>(context: IntlContext, message: T, values: {
     [key: string]: any;
-}, formats?: any): string;
-export declare function formatMessage(context: IntlContext, message: string | HtmlString, values: {
-    [key: string]: any;
-}, formats?: any): string;
+}, formats?: any): T;
+export {};

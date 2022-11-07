@@ -2,13 +2,13 @@ import {HtmlString} from "@co.mmons/js-utils/core";
 import IntlMessageFormat from "intl-messageformat";
 import {IntlContext} from "./IntlContext";
 
-export function formatMessage(message: HtmlString, values: {[key: string]: any}, formats?: any): HtmlString;
+type MessageType = string | HtmlString;
 
-export function formatMessage(message: string, values: {[key: string]: any}, formats?: any): string;
+export function formatMessage<T extends MessageType>(message: T, values: {[key: string]: any}, formats?: any): T;
 
-export function formatMessage(context: IntlContext, message: string | HtmlString, values: {[key: string]: any}, formats?: any): string
+export function formatMessage<T extends MessageType>(context: IntlContext, message: T, values: {[key: string]: any}, formats?: any): T;
 
-export function formatMessage(): string | HtmlString {
+export function formatMessage(): MessageType {
 
     const knownContext = arguments[0] instanceof IntlContext ? 1 : 0;
     const context: IntlContext = knownContext ? arguments[0] : INTL_DEFAULT_CONTEXT;
