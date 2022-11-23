@@ -6,7 +6,6 @@ import { IntlContext } from "./IntlContext";
 import { IntlStore } from "./IntlStore";
 import { MessageRef } from "./MessageRef";
 import { Money } from "./Money";
-export declare type MessageResult = string | Promise<string>;
 export declare class IntlHelper extends IntlContext {
     constructor(defaultLocale?: string, defaultNamespace?: string);
     /**

@@ -1,7 +1,5 @@
 import {DateTimezone, Timestamp, TimeZoneDate} from "@co.mmons/js-utils/core";
 import {BigNumber} from "bignumber.js";
-import IntlMessageFormat from "intl-messageformat";
-import {Currency} from "./Currency";
 import {CurrencyAndNumber} from "./CurrencyAndNumber";
 import {DecimalFormatRef} from "./DecimalFormatRef";
 import {defineGlobals} from "./defineGlobals";
@@ -38,10 +36,6 @@ function loadPolyfillsLocale() {
 }
 
 loadPolyfillsLocale();
-
-export type MessageResult = string | Promise<string>;
-
-const defaultMessageFormat = new IntlMessageFormat("", "en", {}, {ignoreTag: true});
 
 export class IntlHelper extends IntlContext {
 

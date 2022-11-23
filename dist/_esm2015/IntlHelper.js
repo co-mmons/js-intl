@@ -1,4 +1,3 @@
-import IntlMessageFormat from "intl-messageformat";
 import { defineGlobals } from "./defineGlobals";
 import { formatDecimal } from "./formatDecimal";
 import { formatMessage } from "./formatMessage";
@@ -23,7 +22,6 @@ function loadPolyfillsLocale() {
     }
 }
 loadPolyfillsLocale();
-const defaultMessageFormat = new IntlMessageFormat("", "en", {}, { ignoreTag: true });
 export class IntlHelper extends IntlContext {
     constructor(defaultLocale, defaultNamespace) {
         super();

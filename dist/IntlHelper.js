@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IntlHelper = void 0;
-const intl_messageformat_1 = require("intl-messageformat");
 const defineGlobals_1 = require("./defineGlobals");
 const formatDecimal_1 = require("./formatDecimal");
 const formatMessage_1 = require("./formatMessage");
@@ -26,7 +25,6 @@ function loadPolyfillsLocale() {
     }
 }
 loadPolyfillsLocale();
-const defaultMessageFormat = new intl_messageformat_1.default("", "en", {}, { ignoreTag: true });
 class IntlHelper extends IntlContext_1.IntlContext {
     constructor(defaultLocale, defaultNamespace) {
         super();
