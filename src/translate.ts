@@ -9,7 +9,7 @@ import {MessageRef} from "./MessageRef";
 import {ValueKey} from "./ValueKey";
 import {ValueRef} from "./ValueRef";
 
-type KeyType = ValueKey | MessageRef | ValueRef;
+type KeyType = ValueKey | MessageRef | ValueRef | [namespace: string, key: string];
 
 interface TranslateOptions {
     formats?: any;

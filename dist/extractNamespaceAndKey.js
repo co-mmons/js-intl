@@ -4,12 +4,16 @@ exports.extractNamespaceAndKey = void 0;
 const MessageRef_1 = require("./MessageRef");
 const ValueRef_1 = require("./ValueRef");
 function extractNamespaceAndKey(namespaceAndKey, defaultNamespace) {
-    let result = { namespace: undefined, key: undefined };
+    const result = { namespace: undefined, key: undefined };
     if (namespaceAndKey instanceof MessageRef_1.MessageRef || namespaceAndKey instanceof ValueRef_1.ValueRef) {
         result.namespace = namespaceAndKey.namespace || defaultNamespace;
         result.key = namespaceAndKey.key;
     }
-    else if (namespaceAndKey[0] == "#") {
+    else if (Array.isArray(namespaceAndKey)) {
+        result.namespace = namespaceAndKey[0];
+        result.key = namespaceAndKey[1];
+    }
+    else if (namespaceAndKey[0] === "#") {
         result.namespace = defaultNamespace;
         result.key = namespaceAndKey.substring(1);
     }

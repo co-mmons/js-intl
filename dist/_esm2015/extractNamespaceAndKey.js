@@ -1,12 +1,16 @@
 import { MessageRef } from "./MessageRef";
 import { ValueRef } from "./ValueRef";
 export function extractNamespaceAndKey(namespaceAndKey, defaultNamespace) {
-    let result = { namespace: undefined, key: undefined };
+    const result = { namespace: undefined, key: undefined };
     if (namespaceAndKey instanceof MessageRef || namespaceAndKey instanceof ValueRef) {
         result.namespace = namespaceAndKey.namespace || defaultNamespace;
         result.key = namespaceAndKey.key;
     }
-    else if (namespaceAndKey[0] == "#") {
+    else if (Array.isArray(namespaceAndKey)) {
+        result.namespace = namespaceAndKey[0];
+        result.key = namespaceAndKey[1];
+    }
+    else if (namespaceAndKey[0] === "#") {
         result.namespace = defaultNamespace;
         result.key = namespaceAndKey.substring(1);
     }
