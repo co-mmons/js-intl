@@ -74,6 +74,8 @@ export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | 
     let locale = context.locale;
     if (navigator.language.startsWith(locale)) {
         locale = navigator.language;
+    } else if (locale === "en" && navigator.language !== "en-US") {
+        locale = "en-GB";
     }
 
     return new Intl.DateTimeFormat(locale, predefinedOptions).format(dateTime as Date);

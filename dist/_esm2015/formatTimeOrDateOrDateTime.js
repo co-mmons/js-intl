@@ -62,6 +62,9 @@ export function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOp
     if (navigator.language.startsWith(locale)) {
         locale = navigator.language;
     }
+    else if (locale === "en" && navigator.language !== "en-US") {
+        locale = "en-GB";
+    }
     return new Intl.DateTimeFormat(locale, predefinedOptions).format(dateTime);
 }
 //# sourceMappingURL=formatTimeOrDateOrDateTime.js.map
