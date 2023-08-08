@@ -71,5 +71,10 @@ export function formatTimeOrDateOrDateTime(context: IntlContext, mode: "time" | 
         dateTime = dateTime.toDate();
     }
 
-    return new Intl.DateTimeFormat(context.locales, predefinedOptions).format(dateTime as Date);
+    let locale = context.locale;
+    if (navigator.language.startsWith(locale)) {
+        locale = navigator.language;
+    }
+
+    return new Intl.DateTimeFormat(locale, predefinedOptions).format(dateTime as Date);
 }

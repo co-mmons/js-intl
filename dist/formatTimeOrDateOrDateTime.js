@@ -61,7 +61,11 @@ function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOptionsOr
     else if (dateTime && !(dateTime instanceof Date) && typeof dateTime.toDate === "function") {
         dateTime = dateTime.toDate();
     }
-    return new Intl.DateTimeFormat(context.locales, predefinedOptions).format(dateTime);
+    let locale = context.locale;
+    if (navigator.language.startsWith(locale)) {
+        locale = navigator.language;
+    }
+    return new Intl.DateTimeFormat(locale, predefinedOptions).format(dateTime);
 }
 exports.formatTimeOrDateOrDateTime = formatTimeOrDateOrDateTime;
 //# sourceMappingURL=formatTimeOrDateOrDateTime.js.map
