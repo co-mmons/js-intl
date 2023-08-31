@@ -223,7 +223,7 @@ export class GoogleSheetImporter {
                                 }
 
                                 if (!value || value === "#default") {
-                                    value = (row["#default"] || "").trim();
+                                    value = (row["#default"] || (this.defaultLocale ? row[`#${this.defaultLocale}`] : "") || "").trim();
                                 }
 
                             } else if (this.defaultLocale && row[`#${this.defaultLocale}`]) {
