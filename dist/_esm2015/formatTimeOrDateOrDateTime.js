@@ -59,11 +59,13 @@ export function formatTimeOrDateOrDateTime(context, mode, dateTime, predefinedOp
         dateTime = dateTime.toDate();
     }
     let locale = context.locale;
-    if (navigator.language.startsWith(locale)) {
-        locale = navigator.language;
-    }
-    else if (locale === "en" && navigator.language !== "en-US") {
-        locale = "en-GB";
+    if (typeof navigator !== "undefined" && navigator.language) {
+        if (navigator.language.startsWith(locale)) {
+            locale = navigator.language;
+        }
+        else if (locale === "en" && navigator.language !== "en-US") {
+            locale = "en-GB";
+        }
     }
     return new Intl.DateTimeFormat(locale, predefinedOptions).format(dateTime);
 }
