@@ -26,6 +26,13 @@ export class GoogleSheetImporter {
                             data[locale][key] = result[locale][key];
                         }
                     }
+                    if (this.locales && this.defaultLocale) {
+                        for (const locale of this.locales) {
+                            if (!data[locale]) {
+                                data[locale] = data[this.defaultLocale];
+                            }
+                        }
+                    }
                 }
             }
             fileSystem.ensureDirSync(this.outputPath);

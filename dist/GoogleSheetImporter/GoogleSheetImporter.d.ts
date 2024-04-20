@@ -5,6 +5,7 @@ export declare class GoogleSheetImporter {
     outputPath: string;
     outputType: "json" | "ts";
     defaultLocale: string;
+    locales: string[];
     generate(): Promise<void>;
     private fetchHttps;
     private readCsv;

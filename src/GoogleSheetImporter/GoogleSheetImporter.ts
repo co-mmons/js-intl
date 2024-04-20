@@ -20,6 +20,8 @@ export class GoogleSheetImporter {
 
     public defaultLocale: string;
 
+    public locales: string[];
+
     public async generate() {
 
         const output: {[key: string]: string} = {};
@@ -39,6 +41,14 @@ export class GoogleSheetImporter {
 
                     if (!data[locale][key]) {
                         data[locale][key] = result[locale][key];
+                    }
+                }
+
+                if (this.locales && this.defaultLocale) {
+                    for (const locale of this.locales) {
+                        if (!data[locale]) {
+                            data[locale] = data[this.defaultLocale];
+                        }
                     }
                 }
             }
